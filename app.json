@@ -9,7 +9,10 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "GoodParent uses Face ID to keep your Check-Ins and Journal private."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -37,6 +40,18 @@
           "dark": {
             "backgroundColor": "#000000"
           }
+        }
+      ],
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "GoodParent uses Face ID to keep your Check-Ins and Journal private."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "GoodParent uses your photos to attach a picture to a Journal entry."
         }
       ]
     ],

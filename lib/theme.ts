@@ -1,0 +1,111 @@
+// Design tokens ported verbatim from the Clay design system (colors.css / spacing.css /
+// typography.css) — see DESIGN.md and docs/adr/0006. This module exists alongside the
+// NativeWind/Tailwind config for the places a className can't reach (icon `color` props,
+// gradients, the status bar). Keep both in sync if a token value ever changes.
+
+export const colors = {
+  warm: {
+    0: "#FFFFFF",
+    50: "#FAF9F5",
+    100: "#F0EEE6",
+    150: "#EAE7DC",
+    200: "#E5E4DF",
+    300: "#CFCDC4",
+    400: "#A8A69C",
+    500: "#82807A",
+    600: "#5C5A54",
+    700: "#40403E",
+    800: "#262625",
+    900: "#191918",
+  },
+  clay: {
+    50: "#FBF0EB",
+    100: "#F5DDD2",
+    200: "#E9B79E",
+    300: "#DE9877",
+    400: "#D97757",
+    500: "#C4623F",
+    600: "#A34A2C",
+    700: "#7D3720",
+  },
+  kraft: "#D4A27F",
+  kraftTint: "#F3E4D6",
+  manilla: "#EBDBBC",
+  manillaTint: "#F7EFDF",
+  sky: "#6C8FB8",
+  skyTint: "#E2EAF2",
+  moss: "#7A8B5C",
+  mossTint: "#E9EDE1",
+  green: "#4E7C59",
+  greenTint: "#E6EEE7",
+  amber: "#B5822B",
+  amberTint: "#F7EBD5",
+  red: "#B4453A",
+  redTint: "#F8E4E1",
+  blue: "#4E6E9E",
+  blueTint: "#E4EAF3",
+} as const;
+
+export const semantic = {
+  surfacePage: colors.warm[50],
+  surfaceSunken: colors.warm[100],
+  surfaceCard: colors.warm[0],
+  surfaceRaised: colors.warm[0],
+  surfaceInverse: colors.warm[900],
+  surfaceAccent: colors.clay[50],
+  surfaceHover: colors.warm[100],
+  surfaceActive: colors.warm[150],
+  surfaceDisabled: colors.warm[100],
+
+  textHeading: colors.warm[900],
+  textBody: colors.warm[800],
+  textMuted: colors.warm[600],
+  textSubtle: colors.warm[500],
+  textInverse: colors.warm[50],
+  textAccent: colors.clay[600],
+  textLink: colors.clay[600],
+  textDisabled: colors.warm[400],
+
+  borderSubtle: colors.warm[200],
+  borderDefault: colors.warm[300],
+  borderStrong: colors.warm[400],
+  borderAccent: colors.clay[400],
+  borderInverse: colors.warm[700],
+
+  actionPrimary: colors.clay[400],
+  actionPrimaryHover: colors.clay[500],
+  actionPrimaryActive: colors.clay[600],
+  actionSecondary: colors.warm[0],
+  actionInverse: colors.warm[900],
+
+  focusRing: colors.clay[400],
+  focusRingHalo: "rgba(217,119,87,.28)",
+} as const;
+
+export const spacing = {
+  0: 0,
+  1: 2,
+  2: 4,
+  3: 6,
+  4: 8,
+  5: 12,
+  6: 16,
+  7: 20,
+  8: 24,
+  9: 32,
+  10: 40,
+  11: 48,
+  12: 64,
+  13: 80,
+  14: 96,
+} as const;
+
+export const radius = {
+  xs: 4,
+  sm: 6,
+  md: 8,
+  lg: 12,
+  xl: 16,
+  "2xl": 24,
+  pill: 999,
+} as const;
