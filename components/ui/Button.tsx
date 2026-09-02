@@ -1,6 +1,6 @@
-import { ActivityIndicator, Pressable, Text, type ViewStyle } from "react-native";
+import { ActivityIndicator, Pressable, Text } from "react-native";
 
-import { colors, semantic } from "@/lib/theme";
+import { semantic } from "@/lib/theme";
 
 type Variant = "primary" | "secondary" | "ghost" | "inverse" | "danger";
 type Size = "sm" | "md" | "lg";
@@ -17,62 +17,28 @@ const TEXT_SIZE_CLS: Record<Size, string> = {
   lg: "text-body-lg",
 };
 
-function variantStyle(variant: Variant, disabled: boolean, pressed: boolean): ViewStyle {
-  if (disabled) {
-    return {
-      backgroundColor: variant === "ghost" ? "transparent" : semantic.surfaceDisabled,
-      borderColor: "transparent",
-      borderWidth: 1,
-    };
-  }
-  switch (variant) {
-    case "primary":
-      return {
-        backgroundColor: pressed ? semantic.actionPrimaryActive : semantic.actionPrimary,
-        borderColor: "transparent",
-        borderWidth: 1,
-      };
-    case "secondary":
-      return {
-        backgroundColor: pressed ? semantic.surfaceActive : semantic.actionSecondary,
-        borderColor: semantic.borderDefault,
-        borderWidth: 1,
-      };
-    case "ghost":
-      return {
-        backgroundColor: pressed ? semantic.surfaceActive : "transparent",
-        borderColor: "transparent",
-        borderWidth: 1,
-      };
-    case "inverse":
-      return {
-        backgroundColor: pressed ? colors.warm[700] : semantic.actionInverse,
-        borderColor: "transparent",
-        borderWidth: 1,
-      };
-    case "danger":
-      return {
-        backgroundColor: pressed ? colors.clay[700] : colors.red,
-        borderColor: "transparent",
-        borderWidth: 1,
-      };
-  }
-}
+// Pressed/disabled state is expressed entirely via className (NativeWind's `active:`
+// pseudo-class) rather than a function-valued `style` prop — mixing the two causes
+// react-native-css-interop to drop the className-derived styles, since Pressable's
+// dynamic `style` callback isn't a plain style object it can merge with.
+const VARIANT_CLS: Record<Variant, string> = {
+  primary: "bg-clay-400 active:bg-clay-500 border border-transparent",
+  secondary: "bg-white active:bg-warm-100 border border-warm-300",
+  ghost: "bg-transparent active:bg-warm-100 border border-transparent",
+  inverse: "bg-warm-900 active:bg-warm-700 border border-transparent",
+  danger: "bg-danger active:bg-clay-700 border border-transparent",
+};
 
-function textColor(variant: Variant, disabled: boolean): string {
-  if (disabled) return semantic.textDisabled;
-  switch (variant) {
-    case "primary":
-    case "danger":
-      return "#FFFFFF";
-    case "secondary":
-      return semantic.textBody;
-    case "ghost":
-      return semantic.textBody;
-    case "inverse":
-      return semantic.textInverse;
-  }
-}
+const DISABLED_CLS = "bg-warm-100 border border-transparent";
+const DISABLED_GHOST_CLS = "bg-transparent border border-transparent";
+
+const TEXT_COLOR: Record<Variant, string> = {
+  primary: "#FFFFFF",
+  danger: "#FFFFFF",
+  secondary: semantic.textBody,
+  ghost: semantic.textBody,
+  inverse: semantic.textInverse,
+};
 
 export function Button({
   children,
@@ -92,21 +58,27 @@ export function Button({
   onPress?: () => void;
 }) {
   const inert = disabled || loading;
+  const variantCls = inert
+    ? variant === "ghost"
+      ? DISABLED_GHOST_CLS
+      : DISABLED_CLS
+    : VARIANT_CLS[variant];
+  const textColor = inert ? semantic.textDisabled : TEXT_COLOR[variant];
+
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityState={{ disabled: inert }}
       disabled={inert}
       onPress={onPress}
-      className={`flex-row items-center justify-center rounded-md gap-2 ${SIZE_CLS[size]} ${fullWidth ? "w-full" : "self-auto"}`}
-      style={({ pressed }) => variantStyle(variant, inert, pressed)}
+      className={`flex-row items-center justify-center rounded-md gap-2 ${SIZE_CLS[size]} ${fullWidth ? "w-full" : "self-auto"} ${variantCls}`}
     >
       {loading ? (
-        <ActivityIndicator size="small" color={textColor(variant, inert)} />
+        <ActivityIndicator size="small" color={textColor} />
       ) : (
         <Text
           className={`font-sans-medium ${TEXT_SIZE_CLS[size]}`}
-          style={{ color: textColor(variant, inert) }}
+          style={{ color: textColor }}
         >
           {children}
         </Text>

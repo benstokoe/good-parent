@@ -1,7 +1,8 @@
 import { useSignIn, useSignUp, useSSO } from "@clerk/expo";
 import { router } from "expo-router";
 import { useState } from "react";
-import { Pressable, SafeAreaView, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import * as WebBrowser from "expo-web-browser";
 import Svg, { Path } from "react-native-svg";
 

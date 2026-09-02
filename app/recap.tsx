@@ -1,5 +1,6 @@
 import { router } from "expo-router";
-import { SafeAreaView, ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Card } from "@/components/ui/Card";
 import { Icon, type IconName } from "@/components/ui/icon";

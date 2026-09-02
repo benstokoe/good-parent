@@ -1,6 +1,7 @@
 import { router } from "expo-router";
 import { useState } from "react";
-import { SafeAreaView, Text, View } from "react-native";
+import { Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { BreathingOrb } from "@/components/BreathingOrb";
 import { Button } from "@/components/ui/Button";

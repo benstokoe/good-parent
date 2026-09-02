@@ -1,6 +1,7 @@
 import * as LocalAuthentication from "expo-local-authentication";
 import { useEffect } from "react";
-import { Platform, SafeAreaView, Text, View } from "react-native";
+import { Platform, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/icon";

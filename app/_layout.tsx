@@ -20,6 +20,7 @@ import { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Text, View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { AppDataProvider } from "@/lib/app-data";
 import { clerkTokenCache } from "@/lib/clerk-token-cache";
@@ -68,27 +69,29 @@ export default function RootLayout() {
   }
 
   return (
-    <ClerkProvider publishableKey={publishableKey} tokenCache={clerkTokenCache}>
-      <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
-        <AppDataProvider>
-          <GestureHandlerRootView style={{ flex: 1 }}>
-            <StatusBar style="dark" />
-            <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="index" />
-              <Stack.Screen name="auth" />
-              <Stack.Screen name="profile-setup" />
-              <Stack.Screen name="(tabs)" />
-              <Stack.Screen name="checkin" options={{ presentation: "modal" }} />
-              <Stack.Screen name="affirmation" options={{ presentation: "modal" }} />
-              <Stack.Screen name="milestones" options={{ presentation: "modal" }} />
-              <Stack.Screen name="burn" options={{ presentation: "modal" }} />
-              <Stack.Screen name="panic" options={{ presentation: "modal" }} />
-              <Stack.Screen name="account" options={{ presentation: "modal" }} />
-              <Stack.Screen name="recap" options={{ presentation: "modal" }} />
-            </Stack>
-          </GestureHandlerRootView>
-        </AppDataProvider>
-      </ConvexProviderWithClerk>
-    </ClerkProvider>
+    <SafeAreaProvider>
+      <ClerkProvider publishableKey={publishableKey} tokenCache={clerkTokenCache}>
+        <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
+          <AppDataProvider>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <StatusBar style="dark" />
+              <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="index" />
+                <Stack.Screen name="auth" />
+                <Stack.Screen name="profile-setup" />
+                <Stack.Screen name="(tabs)" />
+                <Stack.Screen name="checkin" options={{ presentation: "modal" }} />
+                <Stack.Screen name="affirmation" options={{ presentation: "modal" }} />
+                <Stack.Screen name="milestones" options={{ presentation: "modal" }} />
+                <Stack.Screen name="burn" options={{ presentation: "modal" }} />
+                <Stack.Screen name="panic" options={{ presentation: "modal" }} />
+                <Stack.Screen name="account" options={{ presentation: "modal" }} />
+                <Stack.Screen name="recap" options={{ presentation: "modal" }} />
+              </Stack>
+            </GestureHandlerRootView>
+          </AppDataProvider>
+        </ConvexProviderWithClerk>
+      </ClerkProvider>
+    </SafeAreaProvider>
   );
 }

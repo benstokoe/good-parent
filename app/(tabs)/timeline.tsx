@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
-import { SafeAreaView, ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Icon, type IconName } from "@/components/ui/icon";
 import { Input } from "@/components/ui/Input";

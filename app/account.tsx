@@ -2,7 +2,8 @@ import * as LocalAuthentication from "expo-local-authentication";
 import { useAuth } from "@clerk/expo";
 import { router } from "expo-router";
 import { useMemo, useState } from "react";
-import { Alert, Platform, SafeAreaView, ScrollView, Text, View } from "react-native";
+import { Alert, Platform, ScrollView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
