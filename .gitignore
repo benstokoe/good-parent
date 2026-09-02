@@ -1,0 +1,40 @@
+# macOS
+.DS_Store
+*.pem
+
+# Node / Expo
+node_modules/
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+*.log
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# Native
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# generated native folders
+/ios
+/android
+
+# Metro
+.metro-health-check*
+
+# local env files
+.env*.local
+
+# typescript
+*.tsbuildinfo
+
+# Claude Code / Impeccable tool-local state — not project source
+.claude/
+.impeccable/
