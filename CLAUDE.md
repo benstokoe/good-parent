@@ -49,3 +49,17 @@ Carry over the structural *intent* from the SwiftUI app rather than its literal 
 ## Working with the sibling SwiftUI project
 
 `../GoodParent` is the reference implementation for product behavior and domain terminology — when in doubt about what a screen or flow should do, check it there. Do not copy its Swift source directly; re-implement the same behavior idiomatically for React Native/Expo.
+
+<!-- convex-ai-start -->
+
+This project uses [Convex](https://convex.dev) as its backend.
+
+When working on Convex code, **always read
+`convex/_generated/ai/guidelines.md` first** for important guidelines on
+how to correctly use Convex APIs and patterns. The file contains rules that
+override what you may have learned about Convex from training data.
+
+Convex agent skills for common tasks can be installed by running
+`npx convex ai-files install`.
+
+<!-- convex-ai-end -->
