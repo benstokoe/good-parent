@@ -5,6 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Icon, type IconName } from "@/components/ui/icon";
 import { Input } from "@/components/ui/Input";
 import { Tag } from "@/components/ui/Tag";
+import { WebContainer } from "@/components/web/WebContainer";
 import { useAppData } from "@/lib/app-data";
 import { colors, semantic } from "@/lib/theme";
 
@@ -148,6 +149,7 @@ export default function TimelineScreen() {
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
       <ScrollView className="flex-1 px-6 pt-16" contentContainerClassName="pb-6">
+        <WebContainer maxWidth={640}>
         <Text className="font-display text-display-md" style={{ color: semantic.textHeading }}>
           Timeline
         </Text>
@@ -200,6 +202,7 @@ export default function TimelineScreen() {
             </View>
           ))}
         </View>
+        </WebContainer>
       </ScrollView>
     </SafeAreaView>
   );

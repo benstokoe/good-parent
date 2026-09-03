@@ -10,6 +10,8 @@ import { Field } from "@/components/ui/Field";
 import { IconButton } from "@/components/ui/IconButton";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
+import { WebContainer } from "@/components/web/WebContainer";
+import { WebGrid } from "@/components/web/WebGrid";
 import { useAppData } from "@/lib/app-data";
 import { semantic } from "@/lib/theme";
 
@@ -41,50 +43,54 @@ export default function JournalScreen() {
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
       <ScrollView className="flex-1 px-6 pt-16" contentContainerClassName="pb-6">
-        <View className="flex-row justify-between items-start">
-          <View>
-            <Text className="font-display text-display-md" style={{ color: semantic.textHeading }}>
-              Journal
-            </Text>
-            <Text
-              className="font-sans text-body-sm mt-0.5 max-w-[260px]"
-              style={{ color: semantic.textMuted }}
-            >
-              Your experience of parenthood. Not a report card.
-            </Text>
-          </View>
-          <IconButton
-            name="plus"
-            label="New entry"
-            variant="secondary"
-            onPress={() => setDialogOpen(true)}
-          />
-        </View>
-
-        <View className="mt-4">
-          <Input placeholder="Search journal" value={search} onChangeText={setSearch} />
-        </View>
-
-        <View className="gap-3 mt-3">
-          {entries.map((j) => (
-            <Card key={j.id}>
-              <View className="flex-row justify-between items-baseline">
-                <Text className="font-display text-title-sm" style={{ fontSize: 15, color: semantic.textHeading }}>
-                  {j.title}
-                </Text>
-                <Text className="text-caption" style={{ color: semantic.textSubtle }}>
-                  {j.date}
-                </Text>
-              </View>
-              <Text className="font-sans text-body-sm mt-1.5" style={{ color: semantic.textBody }}>
-                {j.body}
+        <WebContainer maxWidth={880}>
+          <View className="flex-row justify-between items-start">
+            <View>
+              <Text className="font-display text-display-md" style={{ color: semantic.textHeading }}>
+                Journal
               </Text>
-              <View className="mt-2.5">
-                <PhotoSlot />
-              </View>
-            </Card>
-          ))}
-        </View>
+              <Text
+                className="font-sans text-body-sm mt-0.5 max-w-[260px]"
+                style={{ color: semantic.textMuted }}
+              >
+                Your experience of parenthood. Not a report card.
+              </Text>
+            </View>
+            <IconButton
+              name="plus"
+              label="New entry"
+              variant="secondary"
+              onPress={() => setDialogOpen(true)}
+            />
+          </View>
+
+          <View className="mt-4">
+            <Input placeholder="Search journal" value={search} onChangeText={setSearch} />
+          </View>
+
+          <View className="mt-3">
+            <WebGrid columns={2}>
+              {entries.map((j) => (
+                <Card key={j.id}>
+                  <View className="flex-row justify-between items-baseline">
+                    <Text className="font-display text-title-sm" style={{ fontSize: 15, color: semantic.textHeading }}>
+                      {j.title}
+                    </Text>
+                    <Text className="text-caption" style={{ color: semantic.textSubtle }}>
+                      {j.date}
+                    </Text>
+                  </View>
+                  <Text className="font-sans text-body-sm mt-1.5" style={{ color: semantic.textBody }}>
+                    {j.body}
+                  </Text>
+                  <View className="mt-2.5">
+                    <PhotoSlot />
+                  </View>
+                </Card>
+              ))}
+            </WebGrid>
+          </View>
+        </WebContainer>
       </ScrollView>
 
       <Dialog

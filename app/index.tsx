@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "@clerk/expo";
 import { router } from "expo-router";
-import { Text, View } from "react-native";
+import { Platform, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Button } from "@/components/ui/Button";
 import { Icon, type IconName } from "@/components/ui/icon";
+import { MarketingHomepage } from "@/components/web/MarketingHomepage";
 import { colors, semantic } from "@/lib/theme";
 
 type Step = {
@@ -49,6 +51,24 @@ const FEATURES: { icon: IconName; label: string; text: string }[] = [
 ];
 
 export default function OnboardingScreen() {
+  const { isLoaded, isSignedIn } = useAuth();
+
+  // Web has no onboarding carousel: signed-out visitors get the marketing homepage
+  // (which explains the product itself, per PRODUCT.md), signed-in visitors skip
+  // straight into the app shell. Native keeps the carousel below unchanged.
+  if (Platform.OS === "web") {
+    if (!isLoaded) return null;
+    if (isSignedIn) {
+      router.replace("/(tabs)");
+      return null;
+    }
+    return <MarketingHomepage />;
+  }
+
+  return <OnboardingCarousel />;
+}
+
+function OnboardingCarousel() {
   const [step, setStep] = useState(0);
   const [cycleWord, setCycleWord] = useState<"Dad" | "Mum">("Dad");
 

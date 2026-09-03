@@ -7,6 +7,7 @@ import { Field } from "@/components/ui/Field";
 import { Select } from "@/components/ui/Select";
 import { Tag } from "@/components/ui/Tag";
 import { Textarea } from "@/components/ui/Textarea";
+import { WebContainer } from "@/components/web/WebContainer";
 import { type Profile, useAppData } from "@/lib/app-data";
 import { colors, semantic } from "@/lib/theme";
 
@@ -48,6 +49,7 @@ export default function ProfileSetupScreen() {
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
       <ScrollView className="flex-1 px-6 pt-16" contentContainerClassName="pb-8">
+        <WebContainer maxWidth={520}>
         <View className="mb-6">
           <Text className="font-display text-title-md" style={{ color: semantic.textHeading }}>
             A little about you
@@ -154,6 +156,7 @@ export default function ProfileSetupScreen() {
             Continue
           </Button>
         </View>
+        </WebContainer>
       </ScrollView>
     </SafeAreaView>
   );

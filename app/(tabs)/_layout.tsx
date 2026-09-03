@@ -1,9 +1,11 @@
-import { Tabs, router } from "expo-router";
+import { Slot, Tabs, router } from "expo-router";
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { Pressable, Text, View } from "react-native";
 
 import { LockGate } from "@/components/LockGate";
 import { Icon, type IconName } from "@/components/ui/icon";
+import { WebShell } from "@/components/web/WebShell";
+import { useIsWideWeb } from "@/lib/responsive";
 import { semantic } from "@/lib/theme";
 
 const TAB_ICON: Record<string, IconName> = {
@@ -79,6 +81,21 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
 }
 
 export default function TabsLayout() {
+  const isWideWeb = useIsWideWeb();
+
+  // Desktop web gets a persistent sidebar + detail-pane shell instead of a bottom tab
+  // bar (DESIGN.md Layout / docs/adr/0005); Slot just renders whichever of these routes
+  // matched, with the Sidebar driving navigation between them via the URL.
+  if (isWideWeb) {
+    return (
+      <LockGate>
+        <WebShell>
+          <Slot />
+        </WebShell>
+      </LockGate>
+    );
+  }
+
   return (
     <LockGate>
       <Tabs screenOptions={{ headerShown: false }} tabBar={(props) => <CustomTabBar {...props} />}>

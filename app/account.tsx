@@ -14,6 +14,7 @@ import { IconButton } from "@/components/ui/IconButton";
 import { Input } from "@/components/ui/Input";
 import { Switch } from "@/components/ui/Switch";
 import { Tabs } from "@/components/ui/Tabs";
+import { WebContainer } from "@/components/web/WebContainer";
 import { AFFIRMATIONS } from "@/lib/affirmations";
 import { useAppData } from "@/lib/app-data";
 import { colors, semantic } from "@/lib/theme";
@@ -65,6 +66,7 @@ export default function AccountScreen() {
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
+      <WebContainer maxWidth={640} style={{ flex: 1 }}>
       <View className="flex-row items-center gap-2.5 px-6 pb-3">
         <IconButton name="x" label="Close" onPress={() => router.back()} />
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
@@ -252,6 +254,7 @@ export default function AccountScreen() {
           </Button>
         </View>
       </ScrollView>
+      </WebContainer>
     </SafeAreaView>
   );
 }

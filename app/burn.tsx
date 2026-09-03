@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { IconButton } from "@/components/ui/IconButton";
 import { Textarea } from "@/components/ui/Textarea";
+import { WebContainer } from "@/components/web/WebContainer";
 import { semantic } from "@/lib/theme";
 
 type Phase = "compose" | "releasing" | "done";
@@ -32,6 +33,7 @@ export default function BurnScreen() {
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
+      <WebContainer maxWidth={560} style={{ flex: 1 }}>
       <View className="flex-row items-center gap-2.5 px-6 pb-3">
         <IconButton name="x" label="Close" onPress={() => router.back()} />
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
@@ -109,6 +111,7 @@ export default function BurnScreen() {
           </Animated.View>
         ) : null}
       </View>
+      </WebContainer>
     </SafeAreaView>
   );
 }
