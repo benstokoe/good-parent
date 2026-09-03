@@ -185,13 +185,13 @@ export default function OnboardingScreen() {
         </View>
 
         <View className="flex-row items-center justify-between">
-          <View className="w-20">
-            {step > 0 ? (
-              <Button variant="secondary" size="lg" onPress={() => setStep((s) => Math.max(0, s - 1))}>
-                Back
-              </Button>
-            ) : null}
-          </View>
+          {step > 0 ? (
+            <Button variant="secondary" size="lg" onPress={() => setStep((s) => Math.max(0, s - 1))}>
+              Back
+            </Button>
+          ) : (
+            <View />
+          )}
           <Button
             variant="primary"
             size="lg"

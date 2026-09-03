@@ -69,7 +69,7 @@ function OAuthButton({
 type Mode = "signup" | "login";
 
 export default function AuthScreen() {
-  const [mode, setMode] = useState<Mode>("signup");
+  const [mode, setMode] = useState<Mode>("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [verifyStep, setVerifyStep] = useState(false);
@@ -202,8 +202,8 @@ export default function AuthScreen() {
         <View className="w-full max-w-[320px] gap-6">
           <Tabs
             items={[
-              { value: "signup", label: "Sign up" },
               { value: "login", label: "Log in" },
+              { value: "signup", label: "Sign up" },
             ]}
             value={mode}
             onChange={(v) => setMode(v as Mode)}
