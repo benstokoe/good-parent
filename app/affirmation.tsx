@@ -28,11 +28,11 @@ export default function AffirmationScreen() {
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: colors.warm[900] }}>
       <WebContainer maxWidth={480} style={{ flex: 1 }}>
-      <View className="flex-row justify-between items-center px-3 pt-2 pb-1.5">
+      <View className="flex-row justify-between items-center px-6 pt-6 pb-3">
         <IconButton name="x" label="Close" onPress={() => router.back()} color="#fff" />
         <IconButton name="share-2" label="Share" color="#fff" onPress={() => {}} />
       </View>
-      <View className="px-4">
+      <View className="px-6">
         <Tabs
           items={CATEGORY_OPTIONS}
           value={category}
@@ -71,7 +71,7 @@ export default function AffirmationScreen() {
         ))}
       </View>
 
-      <View className="px-4 pb-4">
+      <View className="px-6 pb-6">
         <Button
           variant="inverse"
           fullWidth

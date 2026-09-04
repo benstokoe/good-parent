@@ -71,14 +71,14 @@ export default function PanicScreen() {
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
       <WebContainer maxWidth={560} style={{ flex: 1 }}>
-      <View className="flex-row items-center justify-between gap-2.5 px-4 pt-2 pb-1.5">
+      <View className="flex-row items-center justify-between gap-2.5 px-6 pt-6 pb-3">
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
           Panic Button
         </Text>
         <IconButton name="x" label="Close" onPress={() => router.back()} />
       </View>
 
-      <View className="px-4 pb-2.5">
+      <View className="px-6 pb-2.5">
         <Card tone="sunken" padding="sm">
           <View className="flex-row items-start gap-1">
             <Icon name="triangle-alert" size={15} color={colors.amber} />
@@ -111,7 +111,7 @@ export default function PanicScreen() {
         ) : null}
       </View>
 
-      <View className="px-4">
+      <View className="px-6">
         <Tabs
           items={[
             { value: "breathe", label: "Breathe" },
@@ -123,7 +123,7 @@ export default function PanicScreen() {
         />
       </View>
 
-      <ScrollView className="flex-1" contentContainerClassName="px-4 pt-2 pb-4">
+      <ScrollView className="flex-1" contentContainerClassName="px-6 pt-2 pb-6">
         {tab === "breathe" ? (
           <View className="items-center pt-6">
             <View className="mb-4">
@@ -192,7 +192,7 @@ export default function PanicScreen() {
       </ScrollView>
 
       {tab === "talk" ? (
-        <View className="flex-row gap-1 px-4 pt-1.5 pb-4 border-t" style={{ borderColor: semantic.borderSubtle }}>
+        <View className="flex-row gap-1 px-6 pt-1.5 pb-6 border-t" style={{ borderColor: semantic.borderSubtle }}>
           <View className="flex-1">
             <Input
               placeholder="What's going on right now?"

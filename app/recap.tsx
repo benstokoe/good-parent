@@ -61,14 +61,14 @@ export default function RecapScreen() {
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
       <WebContainer maxWidth={640} style={{ flex: 1 }}>
-      <View className="flex-row items-center justify-between gap-2.5 px-4 pt-2 pb-1.5">
+      <View className="flex-row items-center justify-between gap-2.5 px-6 pt-6 pb-3">
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
           Your recap
         </Text>
         <IconButton name="x" label="Close" onPress={() => router.back()} />
       </View>
 
-      <View className="px-4 pb-2">
+      <View className="px-6 pb-2">
         <Tabs
           items={CADENCE_OPTIONS}
           value={cadence}
@@ -76,7 +76,7 @@ export default function RecapScreen() {
         />
       </View>
 
-      <ScrollView className="flex-1" contentContainerClassName="px-4 pb-4">
+      <ScrollView className="flex-1" contentContainerClassName="px-6 pb-6">
         <Text
           className="font-display text-title-sm mb-3.5"
           style={{ fontSize: 18, color: semantic.textHeading }}

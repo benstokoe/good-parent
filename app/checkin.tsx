@@ -55,13 +55,13 @@ export default function CheckinScreen() {
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
       <WebContainer maxWidth={560} style={{ flex: 1 }}>
-      <View className="flex-row items-center justify-between gap-2.5 px-4 pt-2 pb-1.5">
+      <View className="flex-row items-center justify-between gap-2.5 px-6 pt-6 pb-3">
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
           Check-In
         </Text>
         <IconButton name="x" label="Close" onPress={() => router.back()} />
       </View>
-      <View className="flex-row gap-1.5 px-4 pb-2">
+      <View className="flex-row gap-1.5 px-6 pb-3">
         {dots.map((active, i) => (
           <View
             key={i}
@@ -71,7 +71,7 @@ export default function CheckinScreen() {
         ))}
       </View>
 
-      <ScrollView className="flex-1" contentContainerClassName="px-4 pb-3">
+      <ScrollView className="flex-1" contentContainerClassName="px-6 pb-3">
         {step === 0 ? (
           <>
             <Text
@@ -206,7 +206,7 @@ export default function CheckinScreen() {
       </ScrollView>
 
       <View
-        className="flex-row gap-2.5 px-4 pt-2 pb-4 border-t"
+        className="flex-row gap-2.5 px-6 pt-3 pb-6 border-t"
         style={{ borderColor: semantic.borderSubtle }}
       >
         {step > firstStep && step < 4 ? (

@@ -35,14 +35,14 @@ export default function BurnScreen() {
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
       <WebContainer maxWidth={560} style={{ flex: 1 }}>
-      <View className="flex-row items-center justify-between gap-2.5 px-4 pt-2 pb-1.5">
+      <View className="flex-row items-center justify-between gap-2.5 px-6 pt-6 pb-3">
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
           Burn
         </Text>
         <IconButton name="x" label="Close" onPress={() => router.back()} />
       </View>
 
-      <View className="flex-1 px-4 pb-4">
+      <View className="flex-1 px-6 pb-6">
         {phase === "compose" ? (
           <>
             <Card tone="sunken">

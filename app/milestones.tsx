@@ -53,7 +53,7 @@ export default function MilestonesScreen() {
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
       <WebContainer maxWidth={640} style={{ flex: 1 }}>
-      <View className="flex-row items-center gap-2.5 px-4 pt-2 pb-1.5">
+      <View className="flex-row items-center gap-2.5 px-6 pt-6 pb-3">
         <Text className="font-display text-title-sm flex-1" style={{ color: semantic.textHeading }}>
           Milestones
         </Text>
@@ -66,7 +66,7 @@ export default function MilestonesScreen() {
         <IconButton name="x" label="Close" onPress={() => router.back()} />
       </View>
 
-      <View className="px-4">
+      <View className="px-6">
         <Tabs
           items={[
             { value: "parent", label: "Parent" },
@@ -78,7 +78,7 @@ export default function MilestonesScreen() {
       </View>
 
       {showChildFilter ? (
-        <View className="flex-row flex-wrap gap-1.5 px-4 pt-1.5">
+        <View className="flex-row flex-wrap gap-1.5 px-6 pt-1.5">
           <Tag selected={childFilter === "all"} onPress={() => setChildFilter("all")}>
             All
           </Tag>
@@ -90,7 +90,7 @@ export default function MilestonesScreen() {
         </View>
       ) : null}
 
-      <ScrollView className="flex-1" contentContainerClassName="px-4 pt-2 pb-4">
+      <ScrollView className="flex-1" contentContainerClassName="px-6 pt-2 pb-6">
         <View className="gap-1.5">
           {tab === "parent"
             ? state.parentMilestones.map((m) => (
