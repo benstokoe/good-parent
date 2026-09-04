@@ -58,7 +58,7 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
     return (
       <Pressable
         key={name}
-        className="flex-1 items-center gap-0.5"
+        className="flex-1 items-center gap-1.5"
         onPress={() => {
           const event = navigation.emit({
             type: "tabPress",
@@ -82,7 +82,7 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
       style={{ backgroundColor: semantic.surfaceCard, borderColor: semantic.borderSubtle }}
     >
       {LEFT_TABS.map(renderTab)}
-      <View className="flex-1 items-center gap-0.5">
+      <View className="flex-1 items-center gap-1.5">
         <Pressable
           onPress={() => router.push("/panic")}
           className="w-[52px] h-[52px] rounded-full items-center justify-center -mt-4"
@@ -90,7 +90,7 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
         >
           <Icon name="message-square" size={22} color="#fff" />
         </Pressable>
-        <Text className="text-[10px] -mt-2.5" style={{ color: semantic.textMuted }}>
+        <Text className="text-[10px] -mt-1.5" style={{ color: semantic.textMuted }}>
           Panic
         </Text>
       </View>
@@ -117,7 +117,7 @@ function FloatingGlassBar() {
     const focused = isActive(name);
     const color = focused ? semantic.textAccent : semantic.textMuted;
     return (
-      <Pressable key={name} className="flex-1 items-center gap-0.5" onPress={() => go(name)}>
+      <Pressable key={name} className="flex-1 items-center gap-1.5" onPress={() => go(name)}>
         <Icon name={TAB_ICON[name] ?? "sparkles"} size={21} color={color} />
         <Text className="text-[10px]" style={{ color }}>
           {TAB_LABEL[name] ?? name}
@@ -150,7 +150,7 @@ function FloatingGlassBar() {
             }}
           >
             {LEFT_TABS.map(renderTab)}
-            <View className="flex-1 items-center gap-0.5">
+            <View className="flex-1 items-center gap-1.5">
               <View style={{ width: 21, height: 21 }} />
               <Text className="text-[10px]" style={{ color: semantic.textMuted }}>
                 Panic
