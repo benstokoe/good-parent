@@ -1,6 +1,7 @@
 import * as DialogPrimitive from "@rn-primitives/dialog";
 import * as React from "react";
 import { Platform, Text, View, type GestureResponderEvent } from "react-native";
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 import { FullWindowOverlay as RNFullWindowOverlay } from "react-native-screens";
 
 import { useSemantic } from "@/lib/theme-context";
@@ -27,34 +28,44 @@ export function Dialog({
       <DialogPrimitive.Portal>
         <FullWindowOverlay>
           <DialogPrimitive.Overlay
-            className="flex-1 items-center justify-center px-6"
+            className="flex-1"
             style={{ backgroundColor: "rgba(25,25,24,0.32)" }}
             closeOnPress={false}
             onPress={(event: GestureResponderEvent) => {
               if (event.target === event.currentTarget) onClose();
             }}
           >
-            <DialogPrimitive.Content
-              className="w-full rounded-lg p-6 gap-4"
-              style={{
-                backgroundColor: semantic.surfaceCard,
-                boxShadow: "0px 12px 32px rgba(25,25,24,0.28)",
-              }}
+            <Animated.View
+              entering={FadeIn.duration(200)}
+              exiting={FadeOut.duration(150)}
+              className="flex-1 items-center justify-center px-6"
+              pointerEvents="box-none"
             >
-              <View className="flex-row items-center justify-between">
-                <DialogPrimitive.Title asChild>
-                  <Text
-                    className="font-display text-title-sm"
-                    style={{ color: semantic.textHeading }}
-                  >
-                    {title}
-                  </Text>
-                </DialogPrimitive.Title>
-                <IconButton name="x" label="Close" onPress={onClose} />
-              </View>
-              <View className="gap-3">{children}</View>
-              {footer ? <View className="flex-row gap-2 justify-end">{footer}</View> : null}
-            </DialogPrimitive.Content>
+              <Animated.View entering={FadeIn.duration(200).delay(30)} exiting={FadeOut.duration(150)}>
+                <DialogPrimitive.Content
+                  className="w-full rounded-lg border p-6 gap-4"
+                  style={{
+                    backgroundColor: semantic.surfaceCard,
+                    borderColor: semantic.borderSubtle,
+                    boxShadow: "0px 12px 32px rgba(25,25,24,0.28)",
+                  }}
+                >
+                  <View className="flex-row items-center justify-between">
+                    <DialogPrimitive.Title asChild>
+                      <Text
+                        className="font-display text-title-sm"
+                        style={{ color: semantic.textHeading }}
+                      >
+                        {title}
+                      </Text>
+                    </DialogPrimitive.Title>
+                    <IconButton name="x" label="Close" onPress={onClose} />
+                  </View>
+                  <View className="gap-3">{children}</View>
+                  {footer ? <View className="flex-row gap-2 justify-end">{footer}</View> : null}
+                </DialogPrimitive.Content>
+              </Animated.View>
+            </Animated.View>
           </DialogPrimitive.Overlay>
         </FullWindowOverlay>
       </DialogPrimitive.Portal>
