@@ -45,11 +45,13 @@ export function Icon({
   name,
   size = 20,
   color = "currentColor",
+  filled = false,
 }: {
   name: IconName;
   size?: number;
   color?: string;
+  filled?: boolean;
 }) {
   const Cmp = ICONS[name];
-  return <Cmp size={size} color={color} strokeWidth={2} />;
+  return <Cmp size={size} color={color} fill={filled ? color : "none"} strokeWidth={2} />;
 }
