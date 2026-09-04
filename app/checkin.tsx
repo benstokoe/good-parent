@@ -55,11 +55,11 @@ export default function CheckinScreen() {
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
       <WebContainer maxWidth={560} style={{ flex: 1 }}>
-      <View className="flex-row items-center gap-2.5 px-6 pt-4 pb-3">
-        <IconButton name="x" label="Close" onPress={() => router.back()} />
+      <View className="flex-row items-center justify-between gap-2.5 px-6 pt-4 pb-3">
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
           Check-In
         </Text>
+        <IconButton name="x" label="Close" onPress={() => router.back()} />
       </View>
       <View className="flex-row gap-1.5 px-6 pb-4">
         {dots.map((active, i) => (

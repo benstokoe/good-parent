@@ -54,7 +54,6 @@ export default function MilestonesScreen() {
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
       <WebContainer maxWidth={640} style={{ flex: 1 }}>
       <View className="flex-row items-center gap-2.5 px-6 pt-4 pb-3">
-        <IconButton name="x" label="Close" onPress={() => router.back()} />
         <Text className="font-display text-title-sm flex-1" style={{ color: semantic.textHeading }}>
           Milestones
         </Text>
@@ -64,6 +63,7 @@ export default function MilestonesScreen() {
           variant="secondary"
           onPress={() => setDialogOpen(true)}
         />
+        <IconButton name="x" label="Close" onPress={() => router.back()} />
       </View>
 
       <View className="px-6">

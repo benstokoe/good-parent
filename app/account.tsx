@@ -75,11 +75,11 @@ export default function AccountScreen() {
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
       <WebContainer maxWidth={640} style={{ flex: 1 }}>
-      <View className="flex-row items-center gap-2.5 px-6 pt-4 pb-3">
-        <IconButton name="x" label="Close" onPress={() => router.back()} />
+      <View className="flex-row items-center justify-between gap-2.5 px-6 pt-4 pb-3">
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
           Account
         </Text>
+        <IconButton name="x" label="Close" onPress={() => router.back()} />
       </View>
 
       <ScrollView className="flex-1" contentContainerClassName="px-6 pt-2 pb-6">
