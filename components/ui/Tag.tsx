@@ -19,12 +19,12 @@ export function Tag({
     <Pressable
       onPress={onPress}
       className={cn(
-        "h-5 flex-row items-center justify-center rounded-full border px-1.5",
+        "flex-row items-center justify-center rounded-full border px-3.5 py-2",
         selected ? "bg-foreground border-transparent" : "bg-card border-border",
         fullWidth && "w-full",
       )}
     >
-      <Text className={cn("text-sm font-medium", selected ? "text-background" : "text-foreground")}>
+      <Text className={cn("text-sm font-medium leading-tight", selected ? "text-background" : "text-foreground")}>
         {children}
       </Text>
     </Pressable>

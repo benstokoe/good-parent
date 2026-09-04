@@ -69,7 +69,7 @@ export default function ProfileSetupScreen() {
             >
               You are a
             </Text>
-            <View className="flex-row gap-1">
+            <View className="flex-row gap-2">
               {ROLE_OPTIONS.map((opt) => (
                 <View key={opt.value} className="flex-1">
                   <Tag

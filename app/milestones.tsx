@@ -78,7 +78,7 @@ export default function MilestonesScreen() {
       </View>
 
       {showChildFilter ? (
-        <View className="flex-row flex-wrap gap-1.5 px-6 pt-1.5">
+        <View className="flex-row flex-wrap gap-2 px-6 pt-1.5">
           <Tag selected={childFilter === "all"} onPress={() => setChildFilter("all")}>
             All
           </Tag>

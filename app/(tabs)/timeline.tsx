@@ -159,7 +159,7 @@ export default function TimelineScreen() {
           Check-Ins, Milestones and Affirmations, in order. Unfiltered.
         </Text>
 
-        <View className="flex-row flex-wrap gap-1 mt-3.5">
+        <View className="flex-row flex-wrap gap-2 mt-3.5">
           {FILTERS.map((f) => (
             <Tag key={f.key} selected={filter === f.key} onPress={() => setFilter(f.key)}>
               {f.label}

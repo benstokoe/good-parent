@@ -1,6 +1,10 @@
 import { router } from "expo-router";
-import { useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import {
+  ExpoSpeechRecognitionModule,
+  useSpeechRecognitionEvent,
+} from "expo-speech-recognition";
+import { useRef, useState } from "react";
+import { Platform, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Button } from "@/components/ui/Button";
@@ -21,7 +25,8 @@ const RATING_OPTIONS = [
   { value: "Still hard", label: "Still hard" },
 ];
 
-const TAG_CHIPS = ["No sleep", "Solo parenting", "Sick kid", "Long day", "Extra help", "Good day"];
+const WENT_WELL_TAGS = ["Solo parenting", "Extra help", "Good day"];
+const NOT_WELL_TAGS = ["No sleep", "Solo parenting", "Sick kid", "Long day"];
 
 export default function CheckinScreen() {
   const semantic = useSemantic();
@@ -35,7 +40,44 @@ export default function CheckinScreen() {
   const [notWell, setNotWell] = useState("");
   const [newActionItem, setNewActionItem] = useState("");
   const [tags, setTags] = useState<string[]>([]);
-  const [recording, setRecording] = useState(false);
+  const [recordingField, setRecordingField] = useState<"wentWell" | "notWell" | null>(null);
+  const baseTextRef = useRef("");
+
+  const setFieldText = (field: "wentWell" | "notWell", text: string) =>
+    field === "wentWell" ? setWentWell(text) : setNotWell(text);
+
+  useSpeechRecognitionEvent("result", (event) => {
+    if (!recordingField) return;
+    const transcript = event.results[0]?.transcript ?? "";
+    setFieldText(
+      recordingField,
+      baseTextRef.current ? `${baseTextRef.current} ${transcript}` : transcript,
+    );
+  });
+
+  useSpeechRecognitionEvent("end", () => setRecordingField(null));
+  useSpeechRecognitionEvent("error", () => setRecordingField(null));
+
+  const toggleRecording = async (field: "wentWell" | "notWell") => {
+    if (recordingField === field) {
+      ExpoSpeechRecognitionModule.stop();
+      return;
+    }
+    if (recordingField) {
+      ExpoSpeechRecognitionModule.stop();
+    }
+    if (Platform.OS !== "web") {
+      const { granted } = await ExpoSpeechRecognitionModule.requestPermissionsAsync();
+      if (!granted) return;
+    }
+    baseTextRef.current = field === "wentWell" ? wentWell : notWell;
+    setRecordingField(field);
+    ExpoSpeechRecognitionModule.start({
+      lang: "en-US",
+      interimResults: true,
+      continuous: true,
+    });
+  };
 
   const toggleTag = (tag: string) =>
     setTags((t) => (t.includes(tag) ? t.filter((x) => x !== tag) : [...t, tag]));
@@ -71,7 +113,11 @@ export default function CheckinScreen() {
         ))}
       </View>
 
-      <ScrollView className="flex-1" contentContainerClassName="px-6 pb-3">
+      <ScrollView
+        className="flex-1"
+        contentContainerClassName="px-6 pb-3"
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
         {step === 0 ? (
           <>
             <Text
@@ -98,7 +144,7 @@ export default function CheckinScreen() {
         ) : null}
 
         {step === 1 ? (
-          <>
+          <View className="flex-1">
             <View className="flex-row items-center justify-between mb-3.5">
               <Text
                 className="font-display text-title-sm"
@@ -109,33 +155,33 @@ export default function CheckinScreen() {
               <IconButton
                 name="mic"
                 label="Record a voice note"
-                variant={recording ? "primary" : "secondary"}
-                onPress={() => setRecording((r) => !r)}
+                variant={recordingField === "wentWell" ? "primary" : "secondary"}
+                onPress={() => toggleRecording("wentWell")}
               />
             </View>
-            <View className="flex-row flex-wrap gap-1.5 mb-1.5">
-              {TAG_CHIPS.map((tag) => (
+            <View className="flex-row flex-wrap gap-2 mb-5">
+              {WENT_WELL_TAGS.map((tag) => (
                 <Tag key={tag} selected={tags.includes(tag)} onPress={() => toggleTag(tag)}>
                   {tag}
                 </Tag>
               ))}
             </View>
-            {recording ? (
+            {recordingField === "wentWell" ? (
               <Text className="text-caption mb-2.5" style={{ color: semantic.textMuted }}>
                 Listening… tap the mic to stop.
               </Text>
             ) : null}
             <Textarea
-              rows={7}
+              className="flex-1"
               placeholder="A moment, big or small…"
               value={wentWell}
               onChangeText={setWentWell}
             />
-          </>
+          </View>
         ) : null}
 
         {step === 2 ? (
-          <>
+          <View className="flex-1">
             <View className="flex-row items-center justify-between mb-3.5">
               <Text
                 className="font-display text-title-sm"
@@ -146,22 +192,29 @@ export default function CheckinScreen() {
               <IconButton
                 name="mic"
                 label="Record a voice note"
-                variant={recording ? "primary" : "secondary"}
-                onPress={() => setRecording((r) => !r)}
+                variant={recordingField === "notWell" ? "primary" : "secondary"}
+                onPress={() => toggleRecording("notWell")}
               />
             </View>
-            {recording ? (
+            <View className="flex-row flex-wrap gap-2 mb-5">
+              {NOT_WELL_TAGS.map((tag) => (
+                <Tag key={tag} selected={tags.includes(tag)} onPress={() => toggleTag(tag)}>
+                  {tag}
+                </Tag>
+              ))}
+            </View>
+            {recordingField === "notWell" ? (
               <Text className="text-caption mb-2.5" style={{ color: semantic.textMuted }}>
                 Listening… tap the mic to stop.
               </Text>
             ) : null}
             <Textarea
-              rows={7}
+              className="flex-1"
               placeholder="It's fine for this to be honest."
               value={notWell}
               onChangeText={setNotWell}
             />
-          </>
+          </View>
         ) : null}
 
         {step === 3 ? (

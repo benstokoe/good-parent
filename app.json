@@ -71,7 +71,15 @@
       "expo-image",
       "expo-secure-store",
       "expo-status-bar",
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "expo-speech-recognition",
+        {
+          "microphonePermission": "GoodParent uses your microphone to record voice notes for Check-Ins.",
+          "speechRecognitionPermission": "GoodParent uses speech recognition to turn your voice notes into text.",
+          "androidSpeechServicePackages": ["com.google.android.googlequicksearchbox"]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
