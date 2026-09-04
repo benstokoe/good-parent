@@ -4,7 +4,8 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 
 import { Button } from "@/components/ui/Button";
 import { Icon, type IconName } from "@/components/ui/icon";
-import { colors, semantic } from "@/lib/theme";
+import { colors } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 // Signed-out web homepage — the direction locked in .impeccable/surfaces/web.md
 // ("Quiet single statement", concept-seed key a604c6b8). Replaces the onboarding
@@ -21,6 +22,7 @@ function goToAuth() {
 }
 
 export function MarketingHomepage() {
+  const semantic = useSemantic();
   const [cycleWord, setCycleWord] = useState<"Dad" | "Mum">("Dad");
 
   useEffect(() => {

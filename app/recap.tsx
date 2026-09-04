@@ -8,7 +8,8 @@ import { IconButton } from "@/components/ui/IconButton";
 import { Tabs } from "@/components/ui/Tabs";
 import { WebContainer } from "@/components/web/WebContainer";
 import { useAppData } from "@/lib/app-data";
-import { colors, semantic } from "@/lib/theme";
+import { colors } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 const CADENCE_OPTIONS = [
   { value: "weekly", label: "Weekly" },
@@ -16,6 +17,7 @@ const CADENCE_OPTIONS = [
 ];
 
 export default function RecapScreen() {
+  const semantic = useSemantic();
   const { state, updateSettings } = useAppData();
   const cadence = state.settings.recapCadence;
   const isWeekly = cadence === "weekly";
@@ -74,7 +76,7 @@ export default function RecapScreen() {
         />
       </View>
 
-      <ScrollView className="flex-1 px-6" contentContainerClassName="pb-6">
+      <ScrollView className="flex-1" contentContainerClassName="px-6 pb-6">
         <Text
           className="font-display text-title-sm mb-3.5"
           style={{ fontSize: 18, color: semantic.textHeading }}

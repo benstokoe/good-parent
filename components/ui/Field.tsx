@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 
-import { semantic } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 export function Field({
   label,
@@ -11,6 +11,7 @@ export function Field({
   hint?: string;
   children: React.ReactNode;
 }) {
+  const semantic = useSemantic();
   return (
     <View className="gap-2">
       {label ? (

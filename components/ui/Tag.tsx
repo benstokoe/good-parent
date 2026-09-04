@@ -1,6 +1,6 @@
 import { Pressable, Text } from "react-native";
 
-import { semantic } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 export function Tag({
   children,
@@ -13,6 +13,7 @@ export function Tag({
   onPress?: () => void;
   fullWidth?: boolean;
 }) {
+  const semantic = useSemantic();
   return (
     <Pressable
       onPress={onPress}

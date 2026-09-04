@@ -7,7 +7,8 @@ import { Input } from "@/components/ui/Input";
 import { Tag } from "@/components/ui/Tag";
 import { WebContainer } from "@/components/web/WebContainer";
 import { useAppData } from "@/lib/app-data";
-import { colors, semantic } from "@/lib/theme";
+import { colors } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 type TimelineType = "checkin" | "milestone" | "affirmation";
 
@@ -30,6 +31,7 @@ const FILTERS: { key: "all" | TimelineType; label: string }[] = [
 ];
 
 export default function TimelineScreen() {
+  const semantic = useSemantic();
   const { state } = useAppData();
   const [filter, setFilter] = useState<"all" | TimelineType>("all");
   const [search, setSearch] = useState("");
@@ -137,7 +139,7 @@ export default function TimelineScreen() {
         text: "Survived the first year.",
       },
     ],
-    [state.checkins],
+    [state.checkins, semantic],
   );
 
   const visible = items.filter(
@@ -148,7 +150,7 @@ export default function TimelineScreen() {
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
-      <ScrollView className="flex-1 px-6 pt-16" contentContainerClassName="pb-6">
+      <ScrollView className="flex-1" contentContainerClassName="px-6 pt-4 pb-28">
         <WebContainer maxWidth={640}>
         <Text className="font-display text-display-md" style={{ color: semantic.textHeading }}>
           Timeline

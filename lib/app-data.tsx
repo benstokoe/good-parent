@@ -42,12 +42,15 @@ export type Profile = {
   challenge: string;
 };
 
+export type ThemePreference = "system" | "light" | "dark";
+
 export type Settings = {
   appLockEnabled: boolean;
   reminderEnabled: boolean;
   reminderTime: string;
   reminderFrequency: "daily" | "weekdays" | "few";
   recapCadence: "weekly" | "monthly";
+  themePreference: ThemePreference;
 };
 
 type State = {
@@ -182,6 +185,7 @@ const initialState: State = {
     reminderTime: "20:00",
     reminderFrequency: "daily",
     recapCadence: "weekly",
+    themePreference: "system",
   },
   lockUnlocked: false,
 };

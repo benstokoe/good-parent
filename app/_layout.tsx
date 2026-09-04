@@ -11,6 +11,7 @@ import {
   Inter_600SemiBold,
   Inter_700Bold,
 } from "@expo-google-fonts/inter";
+import { PortalHost } from "@rn-primitives/portal";
 import { ClerkProvider, useAuth } from "@clerk/expo";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { useFonts } from "expo-font";
@@ -26,6 +27,12 @@ import { AppDataProvider } from "@/lib/app-data";
 import { clerkTokenCache } from "@/lib/clerk-token-cache";
 import { convex } from "@/lib/convex";
 import { semantic } from "@/lib/theme";
+import { ThemeProvider, useColorSchemeValue } from "@/lib/theme-context";
+
+function ThemedStatusBar() {
+  const scheme = useColorSchemeValue();
+  return <StatusBar style={scheme === "dark" ? "light" : "dark"} />;
+}
 
 SplashScreen.preventAutoHideAsync();
 
@@ -73,22 +80,25 @@ export default function RootLayout() {
       <ClerkProvider publishableKey={publishableKey} tokenCache={clerkTokenCache}>
         <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
           <AppDataProvider>
-            <GestureHandlerRootView style={{ flex: 1 }}>
-              <StatusBar style="dark" />
-              <Stack screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="index" />
-                <Stack.Screen name="auth" />
-                <Stack.Screen name="profile-setup" />
-                <Stack.Screen name="(tabs)" />
-                <Stack.Screen name="checkin" options={{ presentation: "modal" }} />
-                <Stack.Screen name="affirmation" options={{ presentation: "modal" }} />
-                <Stack.Screen name="milestones" options={{ presentation: "modal" }} />
-                <Stack.Screen name="burn" options={{ presentation: "modal" }} />
-                <Stack.Screen name="panic" options={{ presentation: "modal" }} />
-                <Stack.Screen name="account" options={{ presentation: "modal" }} />
-                <Stack.Screen name="recap" options={{ presentation: "modal" }} />
-              </Stack>
-            </GestureHandlerRootView>
+            <ThemeProvider>
+              <GestureHandlerRootView style={{ flex: 1 }}>
+                <ThemedStatusBar />
+                <Stack screenOptions={{ headerShown: false }}>
+                  <Stack.Screen name="index" />
+                  <Stack.Screen name="auth" />
+                  <Stack.Screen name="profile-setup" />
+                  <Stack.Screen name="(tabs)" />
+                  <Stack.Screen name="checkin" options={{ presentation: "modal" }} />
+                  <Stack.Screen name="affirmation" options={{ presentation: "modal" }} />
+                  <Stack.Screen name="milestones" options={{ presentation: "modal" }} />
+                  <Stack.Screen name="burn" options={{ presentation: "modal" }} />
+                  <Stack.Screen name="panic" options={{ presentation: "modal" }} />
+                  <Stack.Screen name="account" options={{ presentation: "modal" }} />
+                  <Stack.Screen name="recap" options={{ presentation: "modal" }} />
+                </Stack>
+                <PortalHost />
+              </GestureHandlerRootView>
+            </ThemeProvider>
           </AppDataProvider>
         </ConvexProviderWithClerk>
       </ClerkProvider>

@@ -1,10 +1,14 @@
-import { useState } from "react";
-import { Modal, Pressable, ScrollView, Text } from "react-native";
+import * as SelectPrimitive from "@rn-primitives/select";
+import * as React from "react";
+import { Platform, StyleSheet } from "react-native";
+import { FullWindowOverlay as RNFullWindowOverlay } from "react-native-screens";
 
-import { semantic } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 import { Icon } from "@/components/ui/icon";
 
 export type SelectOption = { value: string; label: string };
+
+const FullWindowOverlay = Platform.OS === "ios" ? RNFullWindowOverlay : React.Fragment;
 
 export function Select({
   options,
@@ -15,58 +19,57 @@ export function Select({
   value: string;
   onChange: (value: string) => void;
 }) {
-  const [open, setOpen] = useState(false);
+  const semantic = useSemantic();
   const current = options.find((o) => o.value === value);
 
   return (
-    <>
-      <Pressable
-        onPress={() => setOpen(true)}
+    <SelectPrimitive.Root
+      value={current}
+      onValueChange={(option) => option && onChange(option.value)}
+    >
+      <SelectPrimitive.Trigger
         className="h-10 px-3 rounded-md border flex-row items-center justify-between"
         style={{ backgroundColor: semantic.surfaceCard, borderColor: semantic.borderDefault }}
       >
-        <Text
+        <SelectPrimitive.Value
+          placeholder="Select one"
           className="font-sans text-body-md"
           style={{ color: current ? semantic.textBody : semantic.textSubtle }}
-        >
-          {current?.label ?? "Select one"}
-        </Text>
+        />
         <Icon name="chevron-right" size={16} color={semantic.textSubtle} />
-      </Pressable>
-      <Modal visible={open} transparent animationType="fade" onRequestClose={() => setOpen(false)}>
-        <Pressable
-          className="flex-1 justify-end"
-          style={{ backgroundColor: "rgba(25,25,24,0.32)" }}
-          onPress={() => setOpen(false)}
-        >
-          <Pressable
-            className="rounded-t-2xl max-h-[60%] pb-8 pt-3"
-            style={{ backgroundColor: semantic.surfaceCard }}
-          >
-            <ScrollView>
-              {options.map((o) => (
-                <Pressable
-                  key={o.value}
-                  className="px-6 py-3"
-                  onPress={() => {
-                    onChange(o.value);
-                    setOpen(false);
-                  }}
-                >
-                  <Text
-                    className="font-sans text-body-md"
-                    style={{
-                      color: o.value === value ? semantic.textAccent : semantic.textBody,
-                    }}
+      </SelectPrimitive.Trigger>
+      <SelectPrimitive.Portal>
+        <FullWindowOverlay>
+          <SelectPrimitive.Overlay style={Platform.select({ native: StyleSheet.absoluteFill })}>
+            <SelectPrimitive.Content
+              position="popper"
+              sideOffset={4}
+              className="rounded-md border p-1 min-w-[8rem]"
+              style={{
+                backgroundColor: semantic.surfaceCard,
+                borderColor: semantic.borderDefault,
+                boxShadow: "0px 4px 12px rgba(25,25,24,0.12)",
+              }}
+            >
+              <SelectPrimitive.Viewport>
+                {options.map((o) => (
+                  <SelectPrimitive.Item
+                    key={o.value}
+                    value={o.value}
+                    label={o.label}
+                    className="px-3 py-2 rounded-sm"
                   >
-                    {o.label}
-                  </Text>
-                </Pressable>
-              ))}
-            </ScrollView>
-          </Pressable>
-        </Pressable>
-      </Modal>
-    </>
+                    <SelectPrimitive.ItemText
+                      className="font-sans text-body-md"
+                      style={{ color: o.value === value ? semantic.textAccent : semantic.textBody }}
+                    />
+                  </SelectPrimitive.Item>
+                ))}
+              </SelectPrimitive.Viewport>
+            </SelectPrimitive.Content>
+          </SelectPrimitive.Overlay>
+        </FullWindowOverlay>
+      </SelectPrimitive.Portal>
+    </SelectPrimitive.Root>
   );
 }

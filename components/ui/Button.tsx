@@ -1,6 +1,8 @@
 import { ActivityIndicator, Pressable, Text } from "react-native";
 
-import { semantic } from "@/lib/theme";
+import { colors } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
+import type { Semantic } from "@/lib/theme";
 
 type Variant = "primary" | "secondary" | "ghost" | "inverse" | "danger";
 type Size = "sm" | "md" | "lg";
@@ -17,28 +19,23 @@ const TEXT_SIZE_CLS: Record<Size, string> = {
   lg: "text-body-lg",
 };
 
-// Pressed/disabled state is expressed entirely via className (NativeWind's `active:`
-// pseudo-class) rather than a function-valued `style` prop — mixing the two causes
-// react-native-css-interop to drop the className-derived styles, since Pressable's
-// dynamic `style` callback isn't a plain style object it can merge with.
-const VARIANT_CLS: Record<Variant, string> = {
-  primary: "bg-clay-400 active:bg-clay-500 border border-transparent",
-  secondary: "bg-white active:bg-warm-100 border border-warm-300",
-  ghost: "bg-transparent active:bg-warm-100 border border-transparent",
-  inverse: "bg-warm-900 active:bg-warm-700 border border-transparent",
-  danger: "bg-danger active:bg-clay-700 border border-transparent",
-};
-
-const DISABLED_CLS = "bg-warm-100 border border-transparent";
-const DISABLED_GHOST_CLS = "bg-transparent border border-transparent";
-
-const TEXT_COLOR: Record<Variant, string> = {
-  primary: "#FFFFFF",
-  danger: "#FFFFFF",
-  secondary: semantic.textBody,
-  ghost: semantic.textBody,
-  inverse: semantic.textInverse,
-};
+// Background/border/text colors are computed from the active theme's semantic tokens
+// rather than hardcoded Tailwind classes, so every variant (including its pressed and
+// disabled states) adapts to light/dark. Pressed state uses Pressable's style callback.
+function variantStyle(semantic: Semantic, variant: Variant) {
+  switch (variant) {
+    case "primary":
+      return { bg: semantic.actionPrimary, pressedBg: semantic.actionPrimaryHover, border: "transparent", text: "#FFFFFF" };
+    case "secondary":
+      return { bg: semantic.actionSecondary, pressedBg: semantic.surfaceHover, border: semantic.borderDefault, text: semantic.textBody };
+    case "ghost":
+      return { bg: "transparent", pressedBg: semantic.surfaceHover, border: "transparent", text: semantic.textBody };
+    case "inverse":
+      return { bg: semantic.actionInverse, pressedBg: semantic.surfaceHover, border: "transparent", text: semantic.textInverse };
+    case "danger":
+      return { bg: colors.red, pressedBg: colors.clay[700], border: "transparent", text: "#FFFFFF" };
+  }
+}
 
 export function Button({
   children,
@@ -57,13 +54,11 @@ export function Button({
   fullWidth?: boolean;
   onPress?: () => void;
 }) {
+  const semantic = useSemantic();
   const inert = disabled || loading;
-  const variantCls = inert
-    ? variant === "ghost"
-      ? DISABLED_GHOST_CLS
-      : DISABLED_CLS
-    : VARIANT_CLS[variant];
-  const textColor = inert ? semantic.textDisabled : TEXT_COLOR[variant];
+  const v = variantStyle(semantic, variant);
+  const bg = inert ? (variant === "ghost" ? "transparent" : semantic.surfaceDisabled) : v.bg;
+  const textColor = inert ? semantic.textDisabled : v.text;
 
   return (
     <Pressable
@@ -71,7 +66,12 @@ export function Button({
       accessibilityState={{ disabled: inert }}
       disabled={inert}
       onPress={onPress}
-      className={`flex-row items-center justify-center rounded-md gap-2 ${SIZE_CLS[size]} ${fullWidth ? "w-full" : "self-auto"} ${variantCls}`}
+      className={`flex-row items-center justify-center rounded-md gap-2 ${SIZE_CLS[size]} ${fullWidth ? "w-full" : "self-auto"}`}
+      style={({ pressed }) => ({
+        backgroundColor: pressed && !inert ? v.pressedBg : bg,
+        borderWidth: 1,
+        borderColor: inert ? "transparent" : v.border,
+      })}
     >
       {loading ? (
         <ActivityIndicator size="small" color={textColor} />

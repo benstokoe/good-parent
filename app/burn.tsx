@@ -9,11 +9,12 @@ import { Card } from "@/components/ui/Card";
 import { IconButton } from "@/components/ui/IconButton";
 import { Textarea } from "@/components/ui/Textarea";
 import { WebContainer } from "@/components/web/WebContainer";
-import { semantic } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 type Phase = "compose" | "releasing" | "done";
 
 export default function BurnScreen() {
+  const semantic = useSemantic();
   const [phase, setPhase] = useState<Phase>("compose");
   const [text, setText] = useState("");
   const [releasingText, setReleasingText] = useState("");

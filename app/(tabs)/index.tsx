@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/Button";
 import { Icon, type IconName } from "@/components/ui/icon";
 import { useAppData } from "@/lib/app-data";
 import { useIsWideWeb } from "@/lib/responsive";
-import { colors, semantic } from "@/lib/theme";
+import { colors } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 const QUICK_ACTIONS: { icon: IconName; label: string; href: "/checkin" | "/affirmation" | "/milestones" | "/burn" }[] = [
   { icon: "circle-check", label: "Check-In", href: "/checkin" },
@@ -32,6 +33,7 @@ type Highlight = {
 };
 
 export default function HomeScreen() {
+  const semantic = useSemantic();
   const { state } = useAppData();
   const isWideWeb = useIsWideWeb();
   const now = new Date();
@@ -90,15 +92,6 @@ export default function HomeScreen() {
         </Text>
       </View>
       <View className="flex-row items-center gap-2">
-        <View
-          className="flex-row items-center gap-1.5 rounded-pill pl-2 pr-2.5 py-1.5"
-          style={{ backgroundColor: colors.warm[100] }}
-        >
-          <Icon name="lock" size={12} color={semantic.textMuted} />
-          <Text className="text-caption" style={{ color: semantic.textMuted }}>
-            Private to you
-          </Text>
-        </View>
         {isWideWeb ? null : (
           <Pressable
             accessibilityLabel="Account"
@@ -271,7 +264,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
-      <ScrollView className="flex-1 px-6 pt-16" contentContainerClassName="pb-6">
+      <ScrollView className="flex-1" contentContainerClassName="px-6 pt-4 pb-28">
         {header}
 
         <View className="mt-4">{recapCard}</View>
@@ -280,7 +273,7 @@ export default function HomeScreen() {
 
         <View className="mt-5">{quickActions}</View>
 
-        {lastJournalCard ? <View style={{ marginTop: 16 }}>{lastJournalCard}</View> : null}
+        {lastJournalCard ? <View className="mt-4">{lastJournalCard}</View> : null}
 
         <Text
           className="text-caption tracking-wide uppercase mt-7 mb-2.5"

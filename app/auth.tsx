@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
 import { Input } from "@/components/ui/Input";
 import { Tabs } from "@/components/ui/Tabs";
-import { semantic } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -55,6 +55,7 @@ function OAuthButton({
   children: React.ReactNode;
   onPress: () => void;
 }) {
+  const semantic = useSemantic();
   return (
     <Pressable
       onPress={onPress}
@@ -69,6 +70,7 @@ function OAuthButton({
 type Mode = "signup" | "login";
 
 export default function AuthScreen() {
+  const semantic = useSemantic();
   const [mode, setMode] = useState<Mode>("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

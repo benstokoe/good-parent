@@ -9,9 +9,10 @@ import { Tabs } from "@/components/ui/Tabs";
 import { WebContainer } from "@/components/web/WebContainer";
 import { WebGrid } from "@/components/web/WebGrid";
 import { useAppData } from "@/lib/app-data";
-import { semantic } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 export default function GrowthScreen() {
+  const semantic = useSemantic();
   const { state, resolveActionItem } = useAppData();
   const [tab, setTab] = useState<"open" | "resolved">("open");
 
@@ -20,7 +21,7 @@ export default function GrowthScreen() {
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
-      <ScrollView className="flex-1 px-6 pt-16" contentContainerClassName="pb-6">
+      <ScrollView className="flex-1" contentContainerClassName="px-6 pt-4 pb-28">
         <WebContainer maxWidth={880}>
         <Text className="font-display text-display-md" style={{ color: semantic.textHeading }}>
           Growth Space
@@ -30,7 +31,7 @@ export default function GrowthScreen() {
           going right.
         </Text>
 
-        <View className="mt-4">
+        <View className="gap-4 mt-4">
           <Card tone="accent">
             <Text
               className="text-caption tracking-wide font-sans-semibold mb-2.5"
@@ -58,9 +59,7 @@ export default function GrowthScreen() {
               </View>
             </View>
           </Card>
-        </View>
 
-        <View className="mt-4">
           <Tabs
             items={[
               { value: "open", label: "Open", count: state.actionItemsOpen.length },
@@ -69,9 +68,7 @@ export default function GrowthScreen() {
             value={tab}
             onChange={(v) => setTab(v as "open" | "resolved")}
           />
-        </View>
 
-        <View className="mt-4">
           <WebGrid columns={2}>
             {tab === "open"
               ? state.actionItemsOpen.map((a) => (

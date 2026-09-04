@@ -2,7 +2,7 @@ import { router, usePathname } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 
 import { Icon, type IconName } from "@/components/ui/icon";
-import { semantic } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 type NavItem = { href: "/(tabs)" | "/journal" | "/growth" | "/timeline"; pathname: string; icon: IconName; label: string };
 
@@ -16,6 +16,7 @@ const NAV_ITEMS: NavItem[] = [
 // Persistent left rail replacing the mobile bottom tab bar on the wide-web shell
 // (DESIGN.md Layout / docs/adr/0005) — same nav set, same tokens, desktop topology.
 export function Sidebar() {
+  const semantic = useSemantic();
   const pathname = usePathname();
 
   return (
@@ -67,16 +68,6 @@ export function Sidebar() {
       </Pressable>
 
       <View className="flex-1" />
-
-      <View
-        className="flex-row items-center gap-1.5 rounded-pill px-3 py-2 self-start mb-2"
-        style={{ backgroundColor: semantic.surfaceSunken }}
-      >
-        <Icon name="lock" size={12} color={semantic.textMuted} />
-        <Text className="text-caption" style={{ color: semantic.textMuted }}>
-          Private to you
-        </Text>
-      </View>
 
       <Pressable
         onPress={() => router.push("/account")}

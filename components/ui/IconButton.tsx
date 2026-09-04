@@ -1,6 +1,6 @@
 import { Pressable } from "react-native";
 
-import { semantic } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 import { Icon, type IconName } from "@/components/ui/icon";
 
 type Variant = "ghost" | "secondary" | "primary";
@@ -13,14 +13,6 @@ const SIZE_CLS: Record<Size, string> = {
 };
 
 const ICON_SIZES: Record<Size, number> = { sm: 15, md: 18, lg: 20 };
-
-// Pressed state is expressed via className's `active:` pseudo-class rather than a
-// function-valued `style` prop — see Button.tsx for why mixing the two breaks styling.
-const VARIANT_CLS: Record<Variant, string> = {
-  primary: "bg-clay-400 border border-transparent",
-  secondary: "bg-white border border-warm-300",
-  ghost: "bg-transparent active:bg-warm-100 border border-transparent",
-};
 
 export function IconButton({
   name,
@@ -37,12 +29,25 @@ export function IconButton({
   color?: string;
   onPress?: () => void;
 }) {
+  const semantic = useSemantic();
+  const variantStyle =
+    variant === "primary"
+      ? { backgroundColor: semantic.actionPrimary, borderColor: "transparent" }
+      : variant === "secondary"
+        ? { backgroundColor: semantic.actionSecondary, borderColor: semantic.borderDefault }
+        : { backgroundColor: "transparent", borderColor: "transparent" };
+
   return (
     <Pressable
       accessibilityLabel={label}
       accessibilityRole="button"
       onPress={onPress}
-      className={`rounded-md items-center justify-center ${SIZE_CLS[size]} ${VARIANT_CLS[variant]}`}
+      className={`rounded-md items-center justify-center border ${SIZE_CLS[size]}`}
+      style={({ pressed }) => ({
+        ...variantStyle,
+        backgroundColor:
+          pressed && variant === "ghost" ? semantic.surfaceHover : variantStyle.backgroundColor,
+      })}
     >
       <Icon
         name={name}

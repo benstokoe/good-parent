@@ -15,9 +15,11 @@ import { Tag } from "@/components/ui/Tag";
 import { Textarea } from "@/components/ui/Textarea";
 import { WebContainer } from "@/components/web/WebContainer";
 import { useAppData } from "@/lib/app-data";
-import { colors, semantic } from "@/lib/theme";
+import { colors } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 export default function MilestonesScreen() {
+  const semantic = useSemantic();
   const { state, addMilestone } = useAppData();
   const [tab, setTab] = useState<"parent" | "child">("parent");
   const [childFilter, setChildFilter] = useState<string>("all");
@@ -88,7 +90,7 @@ export default function MilestonesScreen() {
         </View>
       ) : null}
 
-      <ScrollView className="flex-1 px-6 pt-4" contentContainerClassName="pb-6">
+      <ScrollView className="flex-1" contentContainerClassName="px-6 pt-4 pb-6">
         <View className="gap-3">
           {tab === "parent"
             ? state.parentMilestones.map((m) => (

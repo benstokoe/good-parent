@@ -1,6 +1,6 @@
 import { Pressable, View, type ViewProps } from "react-native";
 
-import { semantic } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 type Tone = "default" | "sunken" | "accent" | "inverse";
 type Padding = "none" | "sm" | "md" | "lg";
@@ -10,13 +10,6 @@ const PAD_CLS: Record<Padding, string> = {
   sm: "p-4",
   md: "p-6",
   lg: "p-8",
-};
-
-const TONE_BG: Record<Tone, string> = {
-  default: semantic.surfaceCard,
-  sunken: semantic.surfaceSunken,
-  accent: semantic.surfaceAccent,
-  inverse: semantic.surfaceInverse,
 };
 
 export function Card({
@@ -32,6 +25,13 @@ export function Card({
   onPress?: () => void;
   children?: React.ReactNode;
 }) {
+  const semantic = useSemantic();
+  const TONE_BG: Record<Tone, string> = {
+    default: semantic.surfaceCard,
+    sunken: semantic.surfaceSunken,
+    accent: semantic.surfaceAccent,
+    inverse: semantic.surfaceInverse,
+  };
   const content = (
     <View
       {...rest}
@@ -39,11 +39,7 @@ export function Card({
       style={[
         {
           backgroundColor: TONE_BG[tone],
-          shadowColor: "#191918",
-          shadowOpacity: 0.06,
-          shadowRadius: 2,
-          shadowOffset: { width: 0, height: 1 },
-          elevation: 1,
+          boxShadow: "0px 1px 2px rgba(25,25,24,0.06)",
         },
         style,
       ]}

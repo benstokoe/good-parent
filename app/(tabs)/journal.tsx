@@ -13,9 +13,10 @@ import { Textarea } from "@/components/ui/Textarea";
 import { WebContainer } from "@/components/web/WebContainer";
 import { WebGrid } from "@/components/web/WebGrid";
 import { useAppData } from "@/lib/app-data";
-import { semantic } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 export default function JournalScreen() {
+  const semantic = useSemantic();
   const { state, addJournalEntry } = useAppData();
   const [search, setSearch] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -42,7 +43,7 @@ export default function JournalScreen() {
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
-      <ScrollView className="flex-1 px-6 pt-16" contentContainerClassName="pb-6">
+      <ScrollView className="flex-1" contentContainerClassName="px-6 pt-4 pb-28">
         <WebContainer maxWidth={880}>
           <View className="flex-row justify-between items-start">
             <View>

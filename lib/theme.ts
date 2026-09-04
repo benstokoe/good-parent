@@ -46,7 +46,7 @@ export const colors = {
   blueTint: "#E4EAF3",
 } as const;
 
-export const semantic = {
+export const lightSemantic = {
   surfacePage: colors.warm[50],
   surfaceSunken: colors.warm[100],
   surfaceCard: colors.warm[0],
@@ -81,6 +81,51 @@ export const semantic = {
   focusRing: colors.clay[400],
   focusRingHalo: "rgba(217,119,87,.28)",
 } as const;
+
+// Same structure as light, paper→near-black and ink→warm off-white — see DESIGN.md's
+// dark mode note — not an inverted afterthought with new roles.
+export const darkSemantic = {
+  surfacePage: colors.warm[900],
+  surfaceSunken: colors.warm[800],
+  surfaceCard: colors.warm[700],
+  surfaceRaised: colors.warm[700],
+  surfaceInverse: colors.warm[50],
+  surfaceAccent: "rgba(217,119,87,0.16)",
+  surfaceHover: colors.warm[700],
+  surfaceActive: colors.warm[600],
+  surfaceDisabled: colors.warm[800],
+
+  textHeading: colors.warm[50],
+  textBody: colors.warm[100],
+  textMuted: colors.warm[400],
+  textSubtle: colors.warm[500],
+  textInverse: colors.warm[900],
+  textAccent: colors.clay[200],
+  textLink: colors.clay[200],
+  textDisabled: colors.warm[600],
+
+  borderSubtle: colors.warm[700],
+  borderDefault: colors.warm[600],
+  borderStrong: colors.warm[500],
+  borderAccent: colors.clay[400],
+  borderInverse: colors.warm[200],
+
+  actionPrimary: colors.clay[400],
+  actionPrimaryHover: colors.clay[300],
+  actionPrimaryActive: colors.clay[200],
+  actionSecondary: colors.warm[700],
+  actionInverse: colors.warm[50],
+
+  focusRing: colors.clay[300],
+  focusRingHalo: "rgba(217,119,87,.35)",
+} as const;
+
+export type Semantic = { [K in keyof typeof lightSemantic]: string };
+
+// Kept as the default export for any call site that hasn't migrated to useSemantic()
+// yet (e.g. a value needed outside a component). Prefer useSemantic() in components
+// so colors react to the active theme.
+export const semantic = lightSemantic;
 
 export const spacing = {
   0: 0,

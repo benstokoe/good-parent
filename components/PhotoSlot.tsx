@@ -2,12 +2,13 @@ import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
 import { Image, Pressable, Text } from "react-native";
 
-import { semantic } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 // A minimal stand-in for the design's <image-slot> placeholder — lets a Journal entry
 // carry a photo picked from the device library. Not persisted (no Convex storage wiring
 // yet, see the implementation report); state is local to this component instance.
 export function PhotoSlot() {
+  const semantic = useSemantic();
   const [uri, setUri] = useState<string | null>(null);
 
   const pick = async () => {

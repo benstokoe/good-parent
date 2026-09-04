@@ -1,17 +1,9 @@
 import { Text, View } from "react-native";
 
-import { colors, semantic } from "@/lib/theme";
+import { colors } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 type Tone = "neutral" | "accent" | "success" | "warning" | "danger" | "info";
-
-const TONES: Record<Tone, { background: string; color: string }> = {
-  neutral: { background: colors.warm[100], color: semantic.textMuted },
-  accent: { background: colors.clay[50], color: colors.clay[600] },
-  success: { background: colors.greenTint, color: colors.green },
-  warning: { background: colors.amberTint, color: colors.amber },
-  danger: { background: colors.redTint, color: colors.red },
-  info: { background: colors.blueTint, color: colors.blue },
-};
 
 export function Badge({
   tone = "neutral",
@@ -22,6 +14,15 @@ export function Badge({
   dot?: boolean;
   children: string;
 }) {
+  const semantic = useSemantic();
+  const TONES: Record<Tone, { background: string; color: string }> = {
+    neutral: { background: colors.warm[100], color: semantic.textMuted },
+    accent: { background: colors.clay[50], color: colors.clay[600] },
+    success: { background: colors.greenTint, color: colors.green },
+    warning: { background: colors.amberTint, color: colors.amber },
+    danger: { background: colors.redTint, color: colors.red },
+    info: { background: colors.blueTint, color: colors.blue },
+  };
   const t = TONES[tone];
   return (
     <View

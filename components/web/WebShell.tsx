@@ -1,9 +1,10 @@
 import { View } from "react-native";
 
 import { Sidebar } from "@/components/web/Sidebar";
-import { semantic } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 export function WebShell({ children }: { children: React.ReactNode }) {
+  const semantic = useSemantic();
   return (
     <View className="flex-1 flex-row" style={{ backgroundColor: semantic.surfacePage }}>
       <Sidebar />

@@ -12,7 +12,8 @@ import { Tag } from "@/components/ui/Tag";
 import { Textarea } from "@/components/ui/Textarea";
 import { WebContainer } from "@/components/web/WebContainer";
 import { useAppData } from "@/lib/app-data";
-import { colors, semantic } from "@/lib/theme";
+import { colors } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 const RATING_OPTIONS = [
   { value: "Better", label: "Better" },
@@ -23,6 +24,7 @@ const RATING_OPTIONS = [
 const TAG_CHIPS = ["No sleep", "Solo parenting", "Sick kid", "Long day", "Extra help", "Good day"];
 
 export default function CheckinScreen() {
+  const semantic = useSemantic();
   const { state, submitCheckin } = useAppData();
   const hasFollowUp = state.actionItemsOpen.length > 0;
   const firstStep = hasFollowUp ? 0 : 1;
@@ -69,7 +71,7 @@ export default function CheckinScreen() {
         ))}
       </View>
 
-      <ScrollView className="flex-1 px-6" contentContainerClassName="pb-5">
+      <ScrollView className="flex-1" contentContainerClassName="px-6 pb-5">
         {step === 0 ? (
           <>
             <Text

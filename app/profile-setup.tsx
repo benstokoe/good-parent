@@ -9,7 +9,8 @@ import { Tag } from "@/components/ui/Tag";
 import { Textarea } from "@/components/ui/Textarea";
 import { WebContainer } from "@/components/web/WebContainer";
 import { type Profile, useAppData } from "@/lib/app-data";
-import { colors, semantic } from "@/lib/theme";
+import { colors } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 const ROLE_OPTIONS: { value: NonNullable<Profile["role"]>; label: string }[] = [
   { value: "mum", label: "Mum" },
@@ -41,6 +42,7 @@ const FEELING_LABELS = [
 ];
 
 export default function ProfileSetupScreen() {
+  const semantic = useSemantic();
   const { state, setProfile } = useAppData();
   const { profile } = state;
 
@@ -48,7 +50,7 @@ export default function ProfileSetupScreen() {
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
-      <ScrollView className="flex-1 px-6 pt-16" contentContainerClassName="pb-8">
+      <ScrollView className="flex-1" contentContainerClassName="px-6 pt-16 pb-8">
         <WebContainer maxWidth={520}>
         <View className="mb-6">
           <Text className="font-display text-title-md" style={{ color: semantic.textHeading }}>

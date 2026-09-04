@@ -12,7 +12,8 @@ import { Input } from "@/components/ui/Input";
 import { Tabs } from "@/components/ui/Tabs";
 import { WebContainer } from "@/components/web/WebContainer";
 import { AFFIRMATIONS } from "@/lib/affirmations";
-import { colors, semantic } from "@/lib/theme";
+import { colors } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 type PanicTab = "breathe" | "affirmations" | "talk";
 
@@ -25,6 +26,7 @@ const BREATHE_SEQUENCE: [string, number][] = [
 type Message = { role: "assistant" | "user"; text: string };
 
 export default function PanicScreen() {
+  const semantic = useSemantic();
   const [tab, setTab] = useState<PanicTab>("breathe");
   const [breatheCue, setBreatheCue] = useState(BREATHE_SEQUENCE[0][0]);
   const [showCrisis, setShowCrisis] = useState(false);
@@ -121,7 +123,7 @@ export default function PanicScreen() {
         />
       </View>
 
-      <ScrollView className="flex-1 px-6 pt-4" contentContainerClassName="pb-6">
+      <ScrollView className="flex-1" contentContainerClassName="px-6 pt-4 pb-6">
         {tab === "breathe" ? (
           <View className="items-center pt-8">
             <View className="mb-6">

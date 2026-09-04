@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { TextInput, View, type TextInputProps } from "react-native";
 
-import { semantic } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 export function Input({ style, ...rest }: TextInputProps) {
+  const semantic = useSemantic();
   const [focus, setFocus] = useState(false);
   return (
     <View

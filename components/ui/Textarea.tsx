@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { TextInput, type TextInputProps } from "react-native";
 
-import { semantic } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 export function Textarea({
   rows = 4,
   style,
   ...rest
 }: TextInputProps & { rows?: number }) {
+  const semantic = useSemantic();
   const [focus, setFocus] = useState(false);
   return (
     <TextInput

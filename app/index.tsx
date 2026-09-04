@@ -7,7 +7,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "@/components/ui/Button";
 import { Icon, type IconName } from "@/components/ui/icon";
 import { MarketingHomepage } from "@/components/web/MarketingHomepage";
-import { colors, semantic } from "@/lib/theme";
+import { colors } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 type Step = {
   title: string;
@@ -53,15 +54,16 @@ const FEATURES: { icon: IconName; label: string; text: string }[] = [
 export default function OnboardingScreen() {
   const { isLoaded, isSignedIn } = useAuth();
 
+  if (!isLoaded) return null;
+
+  if (isSignedIn) {
+    router.replace("/(tabs)");
+    return null;
+  }
+
   // Web has no onboarding carousel: signed-out visitors get the marketing homepage
-  // (which explains the product itself, per PRODUCT.md), signed-in visitors skip
-  // straight into the app shell. Native keeps the carousel below unchanged.
+  // (which explains the product itself, per PRODUCT.md). Native keeps the carousel below.
   if (Platform.OS === "web") {
-    if (!isLoaded) return null;
-    if (isSignedIn) {
-      router.replace("/(tabs)");
-      return null;
-    }
     return <MarketingHomepage />;
   }
 
@@ -69,6 +71,7 @@ export default function OnboardingScreen() {
 }
 
 function OnboardingCarousel() {
+  const semantic = useSemantic();
   const [step, setStep] = useState(0);
   const [cycleWord, setCycleWord] = useState<"Dad" | "Mum">("Dad");
 
