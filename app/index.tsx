@@ -89,14 +89,14 @@ function OnboardingCarousel() {
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
-      <View className="flex-1 px-6 pb-8">
-        <View className="h-8 items-end justify-center">
+      <View className="flex-1 px-4 pb-6">
+        <View className="h-6 items-end justify-center">
           <Button variant="ghost" size="sm" onPress={finish}>
             Skip
           </Button>
         </View>
 
-        <View className="flex-1 items-center justify-center gap-3 px-1">
+        <View className="flex-1 items-center justify-center gap-1.5 px-0.5">
           {current.tour ? (
             <>
               <View>
@@ -113,11 +113,11 @@ function OnboardingCarousel() {
                   {current.body}
                 </Text>
               </View>
-              <View className="gap-2.5 w-full mt-1">
+              <View className="gap-2.5 w-full mt-0.5">
                 {FEATURES.map((f) => (
                   <View
                     key={f.label}
-                    className="flex-row items-center gap-2.5 rounded-lg px-3 py-2.5"
+                    className="flex-row items-center gap-2.5 rounded-lg px-1.5 py-2.5"
                     style={{ backgroundColor: colors.warm[100] }}
                   >
                     <View
@@ -162,7 +162,7 @@ function OnboardingCarousel() {
                       Good
                     </Text>
                     <View
-                      className="rounded-lg px-4 py-1"
+                      className="rounded-lg px-2 py-0.5"
                       style={{
                         backgroundColor: cycleWord === "Dad" ? colors.skyTint : colors.manillaTint,
                       }}
@@ -184,7 +184,7 @@ function OnboardingCarousel() {
                   </Text>
                 )}
                 <Text
-                  className="font-sans text-body-sm text-center mt-2"
+                  className="font-sans text-body-sm text-center mt-1"
                   style={{ color: semantic.textMuted }}
                 >
                   {current.body}
@@ -194,7 +194,7 @@ function OnboardingCarousel() {
           )}
         </View>
 
-        <View className="flex-row justify-center gap-1.5 mb-5">
+        <View className="flex-row justify-center gap-1.5 mb-3">
           {STEPS.map((_, i) => (
             <View
               key={i}

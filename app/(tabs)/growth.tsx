@@ -21,7 +21,7 @@ export default function GrowthScreen() {
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
-      <ScrollView className="flex-1" contentContainerClassName="px-6 pt-4 pb-28">
+      <ScrollView className="flex-1" contentContainerClassName="px-4 pt-2 pb-28">
         <WebContainer maxWidth={880}>
         <Text className="font-display text-display-md" style={{ color: semantic.textHeading }}>
           Growth Space
@@ -31,7 +31,7 @@ export default function GrowthScreen() {
           going right.
         </Text>
 
-        <View className="gap-4 mt-4">
+        <View className="gap-2 mt-2">
           <Card tone="accent">
             <Text
               className="text-caption tracking-wide font-sans-semibold mb-2.5"
@@ -39,9 +39,9 @@ export default function GrowthScreen() {
             >
               YOU, THEN AND NOW
             </Text>
-            <View className="flex-row gap-3">
+            <View className="flex-row gap-1.5">
               <View className="flex-1">
-                <Text className="text-caption mb-1" style={{ color: semantic.textSubtle }}>
+                <Text className="text-caption mb-0.5" style={{ color: semantic.textSubtle }}>
                   {compareThen?.date}
                 </Text>
                 <Text className="font-sans text-body-sm" style={{ color: semantic.textBody }}>
@@ -50,7 +50,7 @@ export default function GrowthScreen() {
               </View>
               <View className="w-px" style={{ backgroundColor: semantic.borderSubtle }} />
               <View className="flex-1">
-                <Text className="text-caption mb-1" style={{ color: semantic.textSubtle }}>
+                <Text className="text-caption mb-0.5" style={{ color: semantic.textSubtle }}>
                   {compareNow?.date}
                 </Text>
                 <Text className="font-sans text-body-sm" style={{ color: semantic.textBody }}>
@@ -73,7 +73,7 @@ export default function GrowthScreen() {
             {tab === "open"
               ? state.actionItemsOpen.map((a) => (
                   <Card key={a.id}>
-                    <View className="flex-row items-center gap-2 mb-1.5">
+                    <View className="flex-row items-center gap-1 mb-1.5">
                       <Badge tone="warning">Open</Badge>
                       <Text className="text-caption ml-auto" style={{ color: semantic.textSubtle }}>
                         From {a.source}
@@ -96,7 +96,7 @@ export default function GrowthScreen() {
                 ))
               : state.actionItemsResolved.map((a) => (
                   <Card key={a.id} tone="sunken">
-                    <View className="flex-row items-center gap-2 mb-1.5">
+                    <View className="flex-row items-center gap-1 mb-1.5">
                       <Badge tone="success">Resolved</Badge>
                       <Text className="text-caption ml-auto" style={{ color: semantic.textSubtle }}>
                         {a.source}

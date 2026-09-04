@@ -21,23 +21,23 @@ export function Sidebar() {
 
   return (
     <View
-      className="w-[240px] shrink-0 border-r px-4 py-6"
+      className="w-[240px] shrink-0 border-r px-2 py-4"
       style={{ backgroundColor: semantic.surfaceCard, borderColor: semantic.borderSubtle }}
     >
-      <Pressable onPress={() => router.push("/(tabs)")} className="px-2 mb-8">
+      <Pressable onPress={() => router.push("/(tabs)")} className="px-1 mb-6">
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
           GoodParent
         </Text>
       </Pressable>
 
-      <View className="gap-1">
+      <View className="gap-0.5">
         {NAV_ITEMS.map((item) => {
           const active = pathname === item.pathname;
           return (
             <Pressable
               key={item.href}
               onPress={() => router.push(item.href)}
-              className="flex-row items-center gap-3 rounded-md px-3 py-2.5"
+              className="flex-row items-center gap-1.5 rounded-md px-1.5 py-2.5"
               style={{ backgroundColor: active ? semantic.surfaceAccent : "transparent" }}
             >
               <Icon
@@ -58,7 +58,7 @@ export function Sidebar() {
 
       <Pressable
         onPress={() => router.push("/panic")}
-        className="flex-row items-center gap-3 rounded-md px-3 py-2.5 mt-4"
+        className="flex-row items-center gap-1.5 rounded-md px-1.5 py-2.5 mt-2"
         style={{ backgroundColor: semantic.actionPrimary }}
       >
         <Icon name="message-square" size={17} color="#fff" />
@@ -71,7 +71,7 @@ export function Sidebar() {
 
       <Pressable
         onPress={() => router.push("/account")}
-        className="flex-row items-center gap-3 rounded-md px-3 py-2.5"
+        className="flex-row items-center gap-1.5 rounded-md px-1.5 py-2.5"
       >
         <Icon name="user" size={17} color={semantic.textMuted} />
         <Text className="font-sans text-body-sm" style={{ color: semantic.textBody }}>

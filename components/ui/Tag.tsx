@@ -1,7 +1,9 @@
 import { Pressable, Text } from "react-native";
 
-import { useSemantic } from "@/lib/theme-context";
+import { cn } from "@/lib/cn";
 
+// Not an RNR component (no filter-chip primitive in their registry) — styled with the
+// same border-border/bg-card/bg-foreground tokens the rest of the swapped components use.
 export function Tag({
   children,
   selected,
@@ -13,20 +15,16 @@ export function Tag({
   onPress?: () => void;
   fullWidth?: boolean;
 }) {
-  const semantic = useSemantic();
   return (
     <Pressable
       onPress={onPress}
-      className={`flex-row items-center justify-center h-7 px-3 rounded-pill border ${fullWidth ? "w-full" : ""}`}
-      style={{
-        backgroundColor: selected ? semantic.surfaceInverse : semantic.surfaceCard,
-        borderColor: selected ? "transparent" : semantic.borderDefault,
-      }}
+      className={cn(
+        "h-5 flex-row items-center justify-center rounded-full border px-1.5",
+        selected ? "bg-foreground border-transparent" : "bg-card border-border",
+        fullWidth && "w-full",
+      )}
     >
-      <Text
-        className="font-sans-medium text-body-sm"
-        style={{ color: selected ? semantic.textInverse : semantic.textBody }}
-      >
+      <Text className={cn("text-sm font-medium", selected ? "text-background" : "text-foreground")}>
         {children}
       </Text>
     </Pressable>

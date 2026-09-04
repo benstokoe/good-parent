@@ -1,10 +1,50 @@
+const { hairlineWidth } = require("nativewind/theme");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: "class",
   content: ["./app/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
       colors: {
+        // React Native Reusables' semantic tokens — driven by the CSS variables in
+        // global.css, which carry our brand palette (not shadcn's defaults). The
+        // `<alpha-value>` placeholder (rather than RNR's own plain hsl(var(--x))) is what
+        // lets opacity modifiers like bg-primary/90 resolve correctly against these vars.
+        border: "hsl(var(--border) / <alpha-value>)",
+        input: "hsl(var(--input) / <alpha-value>)",
+        ring: "hsl(var(--ring) / <alpha-value>)",
+        background: "hsl(var(--background) / <alpha-value>)",
+        foreground: "hsl(var(--foreground) / <alpha-value>)",
+        primary: {
+          DEFAULT: "hsl(var(--primary) / <alpha-value>)",
+          foreground: "hsl(var(--primary-foreground) / <alpha-value>)",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary) / <alpha-value>)",
+          foreground: "hsl(var(--secondary-foreground) / <alpha-value>)",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive) / <alpha-value>)",
+          foreground: "hsl(var(--destructive-foreground) / <alpha-value>)",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted) / <alpha-value>)",
+          foreground: "hsl(var(--muted-foreground) / <alpha-value>)",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent) / <alpha-value>)",
+          foreground: "hsl(var(--accent-foreground) / <alpha-value>)",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover) / <alpha-value>)",
+          foreground: "hsl(var(--popover-foreground) / <alpha-value>)",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card) / <alpha-value>)",
+          foreground: "hsl(var(--card-foreground) / <alpha-value>)",
+        },
         warm: {
           0: "#FFFFFF",
           50: "#FAF9F5",
@@ -60,23 +100,6 @@ module.exports = {
         "body-sm": "13px",
         caption: "12px",
       },
-      spacing: {
-        0: "0px",
-        1: "2px",
-        2: "4px",
-        3: "6px",
-        4: "8px",
-        5: "12px",
-        6: "16px",
-        7: "20px",
-        8: "24px",
-        9: "32px",
-        10: "40px",
-        11: "48px",
-        12: "64px",
-        13: "80px",
-        14: "96px",
-      },
       borderRadius: {
         xs: "4px",
         sm: "6px",
@@ -87,7 +110,10 @@ module.exports = {
         "2xl": "24px",
         pill: "999px",
       },
+      borderWidth: {
+        hairline: hairlineWidth(),
+      },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 };

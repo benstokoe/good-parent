@@ -71,16 +71,16 @@ export default function PanicScreen() {
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
       <WebContainer maxWidth={560} style={{ flex: 1 }}>
-      <View className="flex-row items-center justify-between gap-2.5 px-6 pt-4 pb-3">
+      <View className="flex-row items-center justify-between gap-2.5 px-4 pt-2 pb-1.5">
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
           Panic Button
         </Text>
         <IconButton name="x" label="Close" onPress={() => router.back()} />
       </View>
 
-      <View className="px-6 pb-2.5">
+      <View className="px-4 pb-2.5">
         <Card tone="sunken" padding="sm">
-          <View className="flex-row items-start gap-2">
+          <View className="flex-row items-start gap-1">
             <Icon name="triangle-alert" size={15} color={colors.amber} />
             <Text className="font-sans text-caption flex-1" style={{ color: semantic.textMuted, lineHeight: 18 }}>
               A lightweight coping tool, not crisis care.{" "}
@@ -95,7 +95,7 @@ export default function PanicScreen() {
           </View>
         </Card>
         {showCrisis ? (
-          <View className="mt-2 gap-1.5">
+          <View className="mt-1 gap-1.5">
             <Card padding="sm">
               <Text className="font-sans text-caption" style={{ color: semantic.textBody }}>
                 <Text className="font-sans-semibold">988 Suicide &amp; Crisis Lifeline</Text> — call
@@ -111,7 +111,7 @@ export default function PanicScreen() {
         ) : null}
       </View>
 
-      <View className="px-6">
+      <View className="px-4">
         <Tabs
           items={[
             { value: "breathe", label: "Breathe" },
@@ -123,33 +123,33 @@ export default function PanicScreen() {
         />
       </View>
 
-      <ScrollView className="flex-1" contentContainerClassName="px-6 pt-4 pb-6">
+      <ScrollView className="flex-1" contentContainerClassName="px-4 pt-2 pb-4">
         {tab === "breathe" ? (
-          <View className="items-center pt-8">
-            <View className="mb-6">
+          <View className="items-center pt-6">
+            <View className="mb-4">
               <BreathingOrb size={130} colors={[colors.clay[300], colors.clay[500]]} durationMs={14000} />
             </View>
             <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
               {breatheCue}
             </Text>
-            <Text className="text-caption mt-2" style={{ color: semantic.textMuted }}>
+            <Text className="text-caption mt-1" style={{ color: semantic.textMuted }}>
               4 seconds in, 4 hold, 6 out
             </Text>
           </View>
         ) : null}
 
         {tab === "affirmations" ? (
-          <View className="items-center pt-9">
+          <View className="items-center pt-8">
             <Text className="font-display text-title-sm" style={{ fontSize: 19, color: semantic.textHeading }}>
               I am a good parent.
             </Text>
             <Text
-              className="font-sans text-body-sm text-center mt-4"
+              className="font-sans text-body-sm text-center mt-2"
               style={{ color: semantic.textMuted, minHeight: 50 }}
             >
               {AFFIRMATIONS[affirmIndex % AFFIRMATIONS.length]}
             </Text>
-            <View className="mt-5">
+            <View className="mt-3">
               <Button
                 variant="secondary"
                 onPress={() => setAffirmIndex((i) => (i + 1) % AFFIRMATIONS.length)}
@@ -162,7 +162,7 @@ export default function PanicScreen() {
 
         {tab === "talk" ? (
           <>
-            <View className="flex-row items-center gap-1.5 mb-3">
+            <View className="flex-row items-center gap-1.5 mb-1.5">
               <Icon name="lock" size={12} color={semantic.textMuted} />
               <Text className="text-caption" style={{ color: semantic.textMuted }}>
                 On-device · nothing here is saved or sent anywhere
@@ -192,7 +192,7 @@ export default function PanicScreen() {
       </ScrollView>
 
       {tab === "talk" ? (
-        <View className="flex-row gap-2 px-6 pt-3 pb-6 border-t" style={{ borderColor: semantic.borderSubtle }}>
+        <View className="flex-row gap-1 px-4 pt-1.5 pb-4 border-t" style={{ borderColor: semantic.borderSubtle }}>
           <View className="flex-1">
             <Input
               placeholder="What's going on right now?"

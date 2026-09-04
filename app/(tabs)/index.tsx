@@ -91,12 +91,12 @@ export default function HomeScreen() {
           {todayLabel}
         </Text>
       </View>
-      <View className="flex-row items-center gap-2">
+      <View className="flex-row items-center gap-1">
         {isWideWeb ? null : (
           <Pressable
             accessibilityLabel="Account"
             onPress={() => router.push("/account")}
-            className="w-9 h-9 rounded-full items-center justify-center"
+            className="w-8 h-8 rounded-full items-center justify-center"
             style={{ backgroundColor: semantic.surfaceSunken }}
           >
             <Icon name="user" size={18} color={semantic.textMuted} />
@@ -109,7 +109,7 @@ export default function HomeScreen() {
   const recapCard = (
     <Pressable onPress={() => router.push("/recap")}>
       <Card tone="sunken">
-        <View className="flex-row items-center justify-between gap-3">
+        <View className="flex-row items-center justify-between gap-1.5">
           <View>
             <Text
               className="text-caption tracking-wide font-sans-semibold"
@@ -132,7 +132,7 @@ export default function HomeScreen() {
 
   const checkinNudge = !state.checkedInToday ? (
     <Card tone="accent">
-      <View className="flex-row items-center justify-between gap-3">
+      <View className="flex-row items-center justify-between gap-1.5">
         <View className="flex-1">
           <Text
             className="font-display text-title-sm"
@@ -158,11 +158,11 @@ export default function HomeScreen() {
           <Pressable
             key={a.label}
             onPress={() => router.push(a.href)}
-            className="flex-row items-center gap-3 rounded-lg px-3.5 py-3"
+            className="flex-row items-center gap-1.5 rounded-lg px-3.5 py-1.5"
             style={{ backgroundColor: semantic.surfaceCard }}
           >
             <View
-              className="w-9 h-9 rounded-full items-center justify-center"
+              className="w-8 h-8 rounded-full items-center justify-center"
               style={{ backgroundColor: colors.clay[50] }}
             >
               <Icon name={a.icon} size={17} color={colors.clay[400]} />
@@ -210,7 +210,7 @@ export default function HomeScreen() {
   ) : null;
 
   const highlightsList = (
-    <View className="gap-3">
+    <View className="gap-1.5">
       {highlights.map((h, i) => (
         <Card key={i} tone={h.tone}>
           <View className="flex-row items-center gap-1.5 mb-1.5">
@@ -238,19 +238,19 @@ export default function HomeScreen() {
       <ScrollView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
         <View className="px-10 pt-10 pb-10" style={{ maxWidth: 1200, width: "100%", alignSelf: "center" }}>
           {header}
-          <View className="flex-row gap-8 mt-6" style={{ alignItems: "flex-start" }}>
-            <View className="gap-4" style={{ flex: 2 }}>
+          <View className="flex-row gap-6 mt-4" style={{ alignItems: "flex-start" }}>
+            <View className="gap-2" style={{ flex: 2 }}>
               {recapCard}
               {checkinNudge}
               <Text
-                className="text-caption tracking-wide uppercase mt-3 mb-1"
+                className="text-caption tracking-wide uppercase mt-1.5 mb-0.5"
                 style={{ color: semantic.textSubtle }}
               >
                 Highlights
               </Text>
               {highlightsList}
             </View>
-            <View className="gap-4" style={{ flex: 1 }}>
+            <View className="gap-2" style={{ flex: 1 }}>
               <Text className="text-caption tracking-wide uppercase" style={{ color: semantic.textSubtle }}>
                 Quick actions
               </Text>
@@ -265,19 +265,19 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
-      <ScrollView className="flex-1" contentContainerClassName="px-6 pt-4 pb-28">
+      <ScrollView className="flex-1" contentContainerClassName="px-4 pt-2 pb-28">
         {header}
 
-        <View className="mt-4">{recapCard}</View>
+        <View className="mt-2">{recapCard}</View>
 
-        {checkinNudge ? <View className="mt-4">{checkinNudge}</View> : null}
+        {checkinNudge ? <View className="mt-2">{checkinNudge}</View> : null}
 
-        <View className="mt-5">{quickActions}</View>
+        <View className="mt-3">{quickActions}</View>
 
-        {lastJournalCard ? <View className="mt-4">{lastJournalCard}</View> : null}
+        {lastJournalCard ? <View className="mt-2">{lastJournalCard}</View> : null}
 
         <Text
-          className="text-caption tracking-wide uppercase mt-7 mb-2.5"
+          className="text-caption tracking-wide uppercase mt-5 mb-2.5"
           style={{ color: semantic.textSubtle }}
         >
           Highlights

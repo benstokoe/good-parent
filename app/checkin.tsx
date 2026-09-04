@@ -55,27 +55,27 @@ export default function CheckinScreen() {
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
       <WebContainer maxWidth={560} style={{ flex: 1 }}>
-      <View className="flex-row items-center justify-between gap-2.5 px-6 pt-4 pb-3">
+      <View className="flex-row items-center justify-between gap-2.5 px-4 pt-2 pb-1.5">
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
           Check-In
         </Text>
         <IconButton name="x" label="Close" onPress={() => router.back()} />
       </View>
-      <View className="flex-row gap-1.5 px-6 pb-4">
+      <View className="flex-row gap-1.5 px-4 pb-2">
         {dots.map((active, i) => (
           <View
             key={i}
-            className="h-1 flex-1 rounded-pill"
+            className="h-0.5 flex-1 rounded-pill"
             style={{ backgroundColor: active ? colors.clay[400] : colors.warm[200] }}
           />
         ))}
       </View>
 
-      <ScrollView className="flex-1" contentContainerClassName="px-6 pb-5">
+      <ScrollView className="flex-1" contentContainerClassName="px-4 pb-3">
         {step === 0 ? (
           <>
             <Text
-              className="text-caption tracking-wide uppercase mb-2"
+              className="text-caption tracking-wide uppercase mb-1"
               style={{ color: semantic.textSubtle }}
             >
               Following up
@@ -91,7 +91,7 @@ export default function CheckinScreen() {
                 {state.actionItemsOpen[0]?.text}
               </Text>
             </Card>
-            <View className="mt-5">
+            <View className="mt-3">
               <RadioGroup options={RATING_OPTIONS} value={rating} onChange={setRating} />
             </View>
           </>
@@ -113,7 +113,7 @@ export default function CheckinScreen() {
                 onPress={() => setRecording((r) => !r)}
               />
             </View>
-            <View className="flex-row flex-wrap gap-1.5 mb-3">
+            <View className="flex-row flex-wrap gap-1.5 mb-1.5">
               {TAG_CHIPS.map((tag) => (
                 <Tag key={tag} selected={tags.includes(tag)} onPress={() => toggleTag(tag)}>
                   {tag}
@@ -187,7 +187,7 @@ export default function CheckinScreen() {
         {step === 4 ? (
           <View className="items-center pt-10">
             <View
-              className="w-14 h-14 rounded-full items-center justify-center mb-4"
+              className="w-24 h-24 rounded-full items-center justify-center mb-2"
               style={{ backgroundColor: colors.greenTint }}
             >
               <Icon name="check" size={24} color={colors.green} />
@@ -206,7 +206,7 @@ export default function CheckinScreen() {
       </ScrollView>
 
       <View
-        className="flex-row gap-2.5 px-6 pt-4 pb-6 border-t"
+        className="flex-row gap-2.5 px-4 pt-2 pb-4 border-t"
         style={{ borderColor: semantic.borderSubtle }}
       >
         {step > firstStep && step < 4 ? (

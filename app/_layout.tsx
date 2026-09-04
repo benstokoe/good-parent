@@ -58,7 +58,7 @@ export default function RootLayout() {
   if (!publishableKey) {
     return (
       <View
-        className="flex-1 items-center justify-center px-8 gap-2"
+        className="flex-1 items-center justify-center px-6 gap-1"
         style={{ backgroundColor: semantic.surfacePage }}
       >
         <Text className="font-display text-title-md" style={{ color: semantic.textHeading }}>

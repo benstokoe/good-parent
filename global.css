@@ -1,3 +1,54 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* React Native Reusables' CSS-variable theme tokens (see docs/adr/0006), mapped to the
+   Clay design system's warm/clay palette (lib/theme.ts) instead of shadcn's defaults —
+   same variable names and hsl(var(--x) / <alpha>) shape RNR's components expect, so
+   opacity modifiers like bg-primary/90 keep working, just with our brand's channels. */
+@layer base {
+  :root {
+    --background: 48 33% 97%;
+    --foreground: 60 1% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 60 1% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 60 1% 15%;
+    --primary: 15 63% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 100%;
+    --secondary-foreground: 60 1% 15%;
+    --muted: 48 25% 92%;
+    --muted-foreground: 45 5% 35%;
+    --accent: 19 67% 95%;
+    --accent-foreground: 15 57% 41%;
+    --destructive: 5 51% 47%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 50 10% 89%;
+    --input: 49 10% 79%;
+    --ring: 15 63% 60%;
+    --radius: 0.5rem;
+  }
+
+  .dark:root {
+    --background: 60 2% 10%;
+    --foreground: 48 25% 92%;
+    --card: 60 2% 25%;
+    --card-foreground: 48 25% 92%;
+    --popover: 60 2% 25%;
+    --popover-foreground: 48 25% 92%;
+    --primary: 15 63% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 60 2% 25%;
+    --secondary-foreground: 48 25% 92%;
+    --muted: 60 1% 15%;
+    --muted-foreground: 50 6% 64%;
+    --accent: 60 2% 25%;
+    --accent-foreground: 20 63% 77%;
+    --destructive: 5 51% 47%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 60 2% 25%;
+    --input: 45 5% 35%;
+    --ring: 19 61% 67%;
+  }
+}

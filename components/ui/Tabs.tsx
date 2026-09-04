@@ -1,10 +1,13 @@
 import * as TabsPrimitive from "@rn-primitives/tabs";
-import { Text } from "react-native";
+import { Platform, Text } from "react-native";
 
-import { useSemantic } from "@/lib/theme-context";
+import { cn } from "@/lib/cn";
 
 export type TabItem = { value: string; label: string; count?: number };
 
+// React Native Reusables' tabs.tsx classNames (bg-muted list, bg-background active
+// trigger), kept behind the app's existing declarative items/value/onChange API rather
+// than requiring every call site to lay out TabsList/TabsTrigger/TabsContent by hand.
 export function Tabs({
   items,
   value,
@@ -14,35 +17,28 @@ export function Tabs({
   value: string;
   onChange: (value: string) => void;
 }) {
-  const semantic = useSemantic();
   return (
     <TabsPrimitive.Root value={value} onValueChange={onChange}>
-      <TabsPrimitive.List
-        className="flex-row items-center rounded-md p-1 self-stretch"
-        style={{ backgroundColor: semantic.surfaceSunken }}
-      >
+      <TabsPrimitive.List className="bg-muted flex h-9 flex-row items-center justify-center rounded-lg p-[3px]">
         {items.map((item) => {
           const on = item.value === value;
           return (
             <TabsPrimitive.Trigger
               key={item.value}
               value={item.value}
-              className="flex-1 flex-row items-center justify-center gap-1.5 h-[30px] rounded-sm"
-              style={{
-                backgroundColor: on ? semantic.surfaceCard : "transparent",
-                boxShadow: on ? "0px 1px 1px rgba(25,25,24,0.04)" : "none",
-              }}
+              className={cn(
+                "flex h-[calc(100%-1px)] flex-1 flex-row items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 shadow-none",
+                Platform.select({
+                  web: "focus-visible:border-ring focus-visible:ring-ring/50 outline-none transition-[color,box-shadow] focus-visible:ring-[3px]",
+                }),
+                on && "bg-background shadow-sm shadow-black/5",
+              )}
             >
-              <Text
-                className={on ? "font-sans-medium text-body-sm" : "font-sans text-body-sm"}
-                style={{ color: on ? semantic.textHeading : semantic.textMuted }}
-              >
+              <Text className={cn("text-sm font-medium", on ? "text-foreground" : "text-muted-foreground")}>
                 {item.label}
               </Text>
               {item.count !== undefined ? (
-                <Text className="text-caption" style={{ color: semantic.textSubtle }}>
-                  {item.count}
-                </Text>
+                <Text className="text-muted-foreground text-xs">{item.count}</Text>
               ) : null}
             </TabsPrimitive.Trigger>
           );

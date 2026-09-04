@@ -39,9 +39,9 @@ export function LockGate({ children }: { children: React.ReactNode }) {
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: colors.warm[900] }}>
-      <View className="flex-1 items-center justify-center px-6 gap-1">
+      <View className="flex-1 items-center justify-center px-4 gap-0.5">
         <View
-          className="w-16 h-16 rounded-full items-center justify-center mb-5"
+          className="w-16 h-16 rounded-full items-center justify-center mb-3"
           style={{ backgroundColor: "rgba(255,255,255,0.08)" }}
         >
           <Icon name="lock" size={26} color="#fff" />
@@ -55,7 +55,7 @@ export function LockGate({ children }: { children: React.ReactNode }) {
         >
           Your check-ins and journal stay private.
         </Text>
-        <View className="mt-7 w-[200px]">
+        <View className="mt-5 w-[200px]">
           <Button variant="primary" size="lg" fullWidth onPress={authenticate}>
             Use Face ID
           </Button>

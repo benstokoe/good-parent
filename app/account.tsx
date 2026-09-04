@@ -75,17 +75,17 @@ export default function AccountScreen() {
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
       <WebContainer maxWidth={640} style={{ flex: 1 }}>
-      <View className="flex-row items-center justify-between gap-2.5 px-6 pt-4 pb-3">
+      <View className="flex-row items-center justify-between gap-2.5 px-4 pt-2 pb-1.5">
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
           Account
         </Text>
         <IconButton name="x" label="Close" onPress={() => router.back()} />
       </View>
 
-      <ScrollView className="flex-1" contentContainerClassName="px-6 pt-2 pb-6">
-        <View className="gap-6">
+      <ScrollView className="flex-1" contentContainerClassName="px-4 pt-1 pb-4">
+        <View className="gap-4">
         <Card tone="sunken">
-          <View className="flex-row items-center gap-3">
+          <View className="flex-row items-center gap-1.5">
             <View
               className="w-10 h-10 rounded-full items-center justify-center"
               style={{ backgroundColor: colors.clay[100] }}
@@ -103,7 +103,7 @@ export default function AccountScreen() {
           </View>
         </Card>
 
-        <View className="gap-3">
+        <View className="gap-1.5">
           <SectionLabel>Check-in streak</SectionLabel>
           <Card>
             <View className="flex-row items-center justify-between mb-2.5">
@@ -132,11 +132,11 @@ export default function AccountScreen() {
           </Card>
         </View>
 
-        <View className="gap-3">
+        <View className="gap-1.5">
           <SectionLabel>Privacy</SectionLabel>
           <Card>
             <View className="flex-row items-center justify-between">
-              <View className="flex-1 pr-3">
+              <View className="flex-1 pr-1.5">
                 <Text className="font-sans-semibold text-body-md" style={{ color: semantic.textHeading }}>
                   App lock
                 </Text>
@@ -149,10 +149,10 @@ export default function AccountScreen() {
           </Card>
         </View>
 
-        <View className="gap-3">
+        <View className="gap-1.5">
           <SectionLabel>Your data</SectionLabel>
           <Card>
-            <View className="flex-row items-center justify-between gap-3">
+            <View className="flex-row items-center justify-between gap-1.5">
               <Text className="font-sans text-body-sm flex-1" style={{ color: semantic.textBody }}>
                 Download everything you&apos;ve written — check-ins, journal, milestones.
               </Text>
@@ -173,11 +173,11 @@ export default function AccountScreen() {
           </Card>
         </View>
 
-        <View className="gap-3">
+        <View className="gap-1.5">
           <SectionLabel>Reminders</SectionLabel>
           <Card>
             <View className="flex-row items-center justify-between">
-              <View className="flex-1 pr-3">
+              <View className="flex-1 pr-1.5">
                 <Text className="font-sans-semibold text-body-md" style={{ color: semantic.textHeading }}>
                   Daily check-in nudge
                 </Text>
@@ -191,7 +191,7 @@ export default function AccountScreen() {
               />
             </View>
             {state.settings.reminderEnabled ? (
-              <View className="gap-3 mt-4">
+              <View className="gap-1.5 mt-2">
                 <Field label="Time">
                   <Input
                     value={state.settings.reminderTime}
@@ -209,7 +209,7 @@ export default function AccountScreen() {
           </Card>
         </View>
 
-        <View className="gap-3">
+        <View className="gap-1.5">
           <SectionLabel>Recap</SectionLabel>
           <Card>
             <Text
@@ -226,7 +226,7 @@ export default function AccountScreen() {
           </Card>
         </View>
 
-        <View className="gap-3">
+        <View className="gap-1.5">
           <SectionLabel>Appearance</SectionLabel>
           <Card>
             <Text
@@ -243,25 +243,25 @@ export default function AccountScreen() {
           </Card>
         </View>
 
-        <View className="gap-3">
+        <View className="gap-1.5">
           <SectionLabel>Lock screen widget</SectionLabel>
           <View className="gap-2.5">
             <View
-              className="rounded-[20px] px-4 py-7 items-center"
+              className="rounded-[20px] px-2 py-5 items-center"
               style={{ backgroundColor: colors.warm[900] }}
             >
               <Text className="text-caption" style={{ color: colors.warm[300] }}>
                 9:41
               </Text>
               <View
-                className="w-16 h-px my-3"
+                className="w-16 h-px my-1.5"
                 style={{ backgroundColor: "rgba(255,255,255,0.15)" }}
               />
               <View
-                className="rounded-[14px] px-4 py-3 max-w-[220px]"
+                className="rounded-[14px] px-2 py-1.5 max-w-[220px]"
                 style={{ backgroundColor: "rgba(255,255,255,0.08)" }}
               >
-                <View className="flex-row items-center justify-center gap-1.5 mb-1">
+                <View className="flex-row items-center justify-center gap-1.5 mb-0.5">
                   <Icon name="sparkles" size={12} color={colors.clay[200]} />
                   <Text className="text-[9px] tracking-wide uppercase" style={{ color: colors.warm[300] }}>
                     GoodParent

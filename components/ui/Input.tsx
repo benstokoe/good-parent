@@ -1,33 +1,24 @@
-import { useState } from "react";
-import { TextInput, View, type TextInputProps } from "react-native";
+import { Platform, TextInput, type TextInputProps } from "react-native";
 
-import { useSemantic } from "@/lib/theme-context";
+import { cn } from "@/lib/cn";
 
-export function Input({ style, ...rest }: TextInputProps) {
-  const semantic = useSemantic();
-  const [focus, setFocus] = useState(false);
+// React Native Reusables' input.tsx, ported as-is (packages/registry/src/nativewind/
+// components/ui/input.tsx) — no wrapper view or manual focus-tracking; RNR's own input
+// doesn't have one either, the border/background come straight from the bg-background/
+// border-input tokens in global.css.
+export function Input({ className, ...rest }: TextInputProps) {
   return (
-    <View
-      className="h-9 px-3 rounded-md border justify-center"
-      style={{
-        backgroundColor: semantic.surfaceCard,
-        borderColor: focus ? semantic.borderAccent : semantic.borderDefault,
-      }}
-    >
-      <TextInput
-        {...rest}
-        onFocus={(e) => {
-          setFocus(true);
-          rest.onFocus?.(e);
-        }}
-        onBlur={(e) => {
-          setFocus(false);
-          rest.onBlur?.(e);
-        }}
-        placeholderTextColor={semantic.textSubtle}
-        className="font-sans text-body-md"
-        style={[{ color: semantic.textBody, padding: 0 }, style]}
-      />
-    </View>
+    <TextInput
+      className={cn(
+        "border-input bg-background text-foreground flex h-10 w-full min-w-0 flex-row items-center rounded-md border px-3 py-1 text-base leading-5 shadow-sm shadow-black/5",
+        rest.editable === false && "opacity-50",
+        Platform.select({
+          web: "placeholder:text-muted-foreground outline-none transition-[color,box-shadow] md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+          native: "placeholder:text-muted-foreground/50",
+        }),
+        className,
+      )}
+      {...rest}
+    />
   );
 }

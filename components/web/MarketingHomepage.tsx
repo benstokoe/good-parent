@@ -34,7 +34,7 @@ export function MarketingHomepage() {
 
   return (
     <ScrollView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
-      <View className="flex-row items-center justify-between px-10 pt-8">
+      <View className="flex-row items-center justify-between px-10 pt-6">
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
           GoodParent
         </Text>
@@ -45,14 +45,14 @@ export function MarketingHomepage() {
         </Pressable>
       </View>
 
-      <View className="items-center justify-center px-6" style={{ minHeight: 640 }}>
-        <View className="items-center gap-5" style={{ maxWidth: 640 }}>
-          <View className="flex-row items-center flex-wrap justify-center gap-3">
+      <View className="items-center justify-center px-4" style={{ minHeight: 640 }}>
+        <View className="items-center gap-3" style={{ maxWidth: 640 }}>
+          <View className="flex-row items-center flex-wrap justify-center gap-1.5">
             <Text className="font-display text-display-xl" style={{ color: semantic.textHeading }}>
               Good
             </Text>
             <View
-              className="rounded-lg px-5 py-1.5"
+              className="rounded-lg px-3 py-1.5"
               style={{
                 backgroundColor: cycleWord === "Dad" ? colors.skyTint : colors.manillaTint,
               }}
@@ -68,7 +68,7 @@ export function MarketingHomepage() {
           >
             A place to notice you&apos;re doing better than you think.
           </Text>
-          <View className="mt-2">
+          <View className="mt-1">
             <Button variant="primary" size="lg" onPress={goToAuth}>
               Get started
             </Button>
@@ -76,13 +76,13 @@ export function MarketingHomepage() {
         </View>
       </View>
 
-      <View className="items-center px-6 pb-20">
+      <View className="items-center px-4 pb-20">
         <View style={{ maxWidth: 900, width: "100%" }}>
           <View
             className="flex-row items-stretch rounded-xl overflow-hidden mb-10"
             style={{ backgroundColor: colors.warm[100] }}
           >
-            <View className="flex-1 p-8 gap-2">
+            <View className="flex-1 p-6 gap-1">
               <Text
                 className="text-caption tracking-wide font-sans-semibold uppercase"
                 style={{ color: semantic.textSubtle }}
@@ -94,7 +94,7 @@ export function MarketingHomepage() {
               </Text>
             </View>
             <View className="w-px" style={{ backgroundColor: semantic.borderSubtle }} />
-            <View className="flex-1 p-8 gap-2" style={{ backgroundColor: colors.clay[50] }}>
+            <View className="flex-1 p-6 gap-1" style={{ backgroundColor: colors.clay[50] }}>
               <Text
                 className="text-caption tracking-wide font-sans-semibold uppercase"
                 style={{ color: semantic.textAccent }}
@@ -108,20 +108,20 @@ export function MarketingHomepage() {
           </View>
 
           <Text
-            className="text-caption tracking-wide uppercase mb-4"
+            className="text-caption tracking-wide uppercase mb-2"
             style={{ color: semantic.textSubtle }}
           >
             Four ways in
           </Text>
-          <View className="flex-row flex-wrap gap-4 mb-10">
+          <View className="flex-row flex-wrap gap-2 mb-10">
             {FEATURES.map((f) => (
               <View
                 key={f.label}
-                className="rounded-lg p-5 gap-3"
+                className="rounded-lg p-3 gap-1.5"
                 style={{ backgroundColor: semantic.surfaceCard, flexBasis: 200, flexGrow: 1 }}
               >
                 <View
-                  className="w-9 h-9 rounded-full items-center justify-center"
+                  className="w-8 h-8 rounded-full items-center justify-center"
                   style={{ backgroundColor: colors.clay[50] }}
                 >
                   <Icon name={f.icon} size={16} color={colors.clay[400]} />
@@ -141,8 +141,8 @@ export function MarketingHomepage() {
             ))}
           </View>
 
-          <View className="flex-row items-center justify-between rounded-lg px-8 py-6" style={{ backgroundColor: colors.warm[100] }}>
-            <View className="flex-1 pr-6 gap-1">
+          <View className="flex-row items-center justify-between rounded-lg px-6 py-4" style={{ backgroundColor: colors.warm[100] }}>
+            <View className="flex-1 pr-4 gap-0.5">
               <View className="flex-row items-center gap-1.5">
                 <Icon name="lock" size={13} color={semantic.textMuted} />
                 <Text className="text-caption font-sans-semibold" style={{ color: semantic.textMuted }}>

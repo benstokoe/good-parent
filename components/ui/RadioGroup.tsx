@@ -1,10 +1,12 @@
 import * as RadioGroupPrimitive from "@rn-primitives/radio-group";
-import { Pressable, Text, View } from "react-native";
+import { Platform, Pressable, Text } from "react-native";
 
-import { useSemantic } from "@/lib/theme-context";
+import { cn } from "@/lib/cn";
 
 export type RadioOption = { value: string; label: string };
 
+// React Native Reusables' radio-group.tsx, kept behind the app's existing declarative
+// options/value/onChange API rather than the compound RadioGroupItem-per-child form.
 export function RadioGroup({
   options,
   value,
@@ -14,42 +16,28 @@ export function RadioGroup({
   value: string | null;
   onChange: (value: string) => void;
 }) {
-  const semantic = useSemantic();
   return (
-    <RadioGroupPrimitive.Root
-      value={value ?? undefined}
-      onValueChange={onChange}
-      className="gap-3"
-    >
-      {options.map((opt) => {
-        const on = value === opt.value;
-        return (
-          <Pressable
-            key={opt.value}
-            onPress={() => onChange(opt.value)}
-            className="flex-row items-center gap-3"
+    <RadioGroupPrimitive.Root value={value ?? undefined} onValueChange={onChange} className="gap-3">
+      {options.map((opt) => (
+        <Pressable
+          key={opt.value}
+          onPress={() => onChange(opt.value)}
+          className="flex-row items-center gap-2"
+        >
+          <RadioGroupPrimitive.Item
+            value={opt.value}
+            className={cn(
+              "border-input aspect-square size-4 shrink-0 items-center justify-center rounded-full border shadow-sm shadow-black/5",
+              Platform.select({
+                web: "focus-visible:border-ring focus-visible:ring-ring/50 outline-none transition-all focus-visible:ring-[3px]",
+              }),
+            )}
           >
-            <RadioGroupPrimitive.Item
-              value={opt.value}
-              className="w-[18px] h-[18px] rounded-full items-center justify-center"
-              style={{
-                backgroundColor: semantic.surfaceCard,
-                borderWidth: on ? 5 : 1,
-                borderColor: on ? semantic.actionPrimary : semantic.borderStrong,
-              }}
-            >
-              {on ? (
-                <RadioGroupPrimitive.Indicator>
-                  <View />
-                </RadioGroupPrimitive.Indicator>
-              ) : null}
-            </RadioGroupPrimitive.Item>
-            <Text className="font-sans text-body-md" style={{ color: semantic.textBody }}>
-              {opt.label}
-            </Text>
-          </Pressable>
-        );
-      })}
+            <RadioGroupPrimitive.Indicator className="bg-primary size-2 rounded-full" />
+          </RadioGroupPrimitive.Item>
+          <Text className="text-foreground text-base">{opt.label}</Text>
+        </Pressable>
+      ))}
     </RadioGroupPrimitive.Root>
   );
 }

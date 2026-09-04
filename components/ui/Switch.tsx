@@ -1,7 +1,9 @@
 import * as SwitchPrimitive from "@rn-primitives/switch";
+import { Platform } from "react-native";
 
-import { colors } from "@/lib/theme";
+import { cn } from "@/lib/cn";
 
+// React Native Reusables' switch.tsx, ported as-is.
 export function Switch({
   checked,
   onChange,
@@ -13,15 +15,20 @@ export function Switch({
     <SwitchPrimitive.Root
       checked={checked}
       onCheckedChange={onChange}
-      className="w-[52px] h-[31px] rounded-full justify-center px-[2px]"
-      style={{ backgroundColor: checked ? colors.clay[400] : colors.warm[300] }}
+      className={cn(
+        "flex h-[1.15rem] w-8 shrink-0 flex-row items-center rounded-full border border-transparent shadow-sm shadow-black/5",
+        Platform.select({
+          web: "focus-visible:border-ring focus-visible:ring-ring/50 peer inline-flex outline-none transition-all focus-visible:ring-[3px]",
+        }),
+        checked ? "bg-primary" : "bg-input",
+      )}
     >
       <SwitchPrimitive.Thumb
-        className="w-[27px] h-[27px] rounded-full bg-white"
-        style={{
-          boxShadow: "0px 1px 2px rgba(25,25,24,0.15)",
-          transform: [{ translateX: checked ? 20 : 0 }],
-        }}
+        className={cn(
+          "bg-background size-4 rounded-full transition-transform",
+          Platform.select({ web: "pointer-events-none block ring-0" }),
+          checked ? "translate-x-3.5" : "translate-x-0",
+        )}
       />
     </SwitchPrimitive.Root>
   );

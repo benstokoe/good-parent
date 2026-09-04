@@ -59,7 +59,7 @@ function OAuthButton({
   return (
     <Pressable
       onPress={onPress}
-      className="h-11 rounded-md border flex-row items-center justify-center gap-2"
+      className="h-12 rounded-md border flex-row items-center justify-center gap-1"
       style={{ backgroundColor: semantic.actionSecondary, borderColor: semantic.borderDefault }}
     >
       {children}
@@ -159,12 +159,12 @@ export default function AuthScreen() {
   if (verifyStep) {
     return (
       <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
-        <View className="flex-1 px-6 pt-16 gap-6">
+        <View className="flex-1 px-4 pt-16 gap-4">
           <View>
             <Text className="font-display text-title-md" style={{ color: semantic.textHeading }}>
               Check your email
             </Text>
-            <Text className="font-sans text-body-sm mt-1" style={{ color: semantic.textMuted }}>
+            <Text className="font-sans text-body-sm mt-0.5" style={{ color: semantic.textMuted }}>
               Enter the code we sent to {email}.
             </Text>
           </View>
@@ -191,17 +191,17 @@ export default function AuthScreen() {
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
-      <View className="flex-1 items-center px-6 pt-16 pb-8">
-        <View className="items-center mb-6">
+      <View className="flex-1 items-center px-4 pt-16 pb-6">
+        <View className="items-center mb-4">
           <Text className="font-display text-title-md" style={{ color: semantic.textHeading }}>
             GoodParent
           </Text>
-          <Text className="font-sans text-body-sm mt-1" style={{ color: semantic.textMuted }}>
+          <Text className="font-sans text-body-sm mt-0.5" style={{ color: semantic.textMuted }}>
             {mode === "login" ? "Welcome back." : "Create your private account."}
           </Text>
         </View>
 
-        <View className="w-full max-w-[320px] gap-6">
+        <View className="w-full max-w-[320px] gap-4">
           <Tabs
             items={[
               { value: "login", label: "Log in" },
@@ -237,7 +237,7 @@ export default function AuthScreen() {
             <View className="flex-1 h-px" style={{ backgroundColor: semantic.borderSubtle }} />
           </View>
 
-          <View className="gap-4">
+          <View className="gap-2">
             <Field label="Email">
               <Input
                 value={email}
@@ -268,7 +268,7 @@ export default function AuthScreen() {
           </Button>
         </View>
 
-        <View className="mt-4">
+        <View className="mt-2">
           <Text className="font-sans text-caption" style={{ color: semantic.textMuted }}>
             {mode === "login" ? "Don't have an account? " : "Already have an account? "}
             <Text

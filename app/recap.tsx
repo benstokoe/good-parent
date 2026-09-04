@@ -61,14 +61,14 @@ export default function RecapScreen() {
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
       <WebContainer maxWidth={640} style={{ flex: 1 }}>
-      <View className="flex-row items-center justify-between gap-2.5 px-6 pt-4 pb-3">
+      <View className="flex-row items-center justify-between gap-2.5 px-4 pt-2 pb-1.5">
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
           Your recap
         </Text>
         <IconButton name="x" label="Close" onPress={() => router.back()} />
       </View>
 
-      <View className="px-6 pb-4">
+      <View className="px-4 pb-2">
         <Tabs
           items={CADENCE_OPTIONS}
           value={cadence}
@@ -76,14 +76,14 @@ export default function RecapScreen() {
         />
       </View>
 
-      <ScrollView className="flex-1" contentContainerClassName="px-6 pb-6">
+      <ScrollView className="flex-1" contentContainerClassName="px-4 pb-4">
         <Text
           className="font-display text-title-sm mb-3.5"
           style={{ fontSize: 18, color: semantic.textHeading }}
         >
           {isWeekly ? "This week" : "This month"}
         </Text>
-        <View className="flex-row gap-2 mb-5">
+        <View className="flex-row gap-1 mb-3">
           {stats.map((s) => (
             <Card key={s.label} tone="accent" style={{ flex: 1 }}>
               <Text className="font-display" style={{ fontSize: 22, color: semantic.textHeading }}>
@@ -102,7 +102,7 @@ export default function RecapScreen() {
         >
           What stood out
         </Text>
-        <View className="gap-3">
+        <View className="gap-1.5">
           {highlights.map((h, i) => (
             <Card key={i}>
               <View className="flex-row items-center gap-1.5 mb-1.5">

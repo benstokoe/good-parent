@@ -35,14 +35,14 @@ export default function BurnScreen() {
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
       <WebContainer maxWidth={560} style={{ flex: 1 }}>
-      <View className="flex-row items-center justify-between gap-2.5 px-6 pt-4 pb-3">
+      <View className="flex-row items-center justify-between gap-2.5 px-4 pt-2 pb-1.5">
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
           Burn
         </Text>
         <IconButton name="x" label="Close" onPress={() => router.back()} />
       </View>
 
-      <View className="flex-1 px-6 pb-6">
+      <View className="flex-1 px-4 pb-4">
         {phase === "compose" ? (
           <>
             <Card tone="sunken">
@@ -52,7 +52,7 @@ export default function BurnScreen() {
               </Text>
             </Card>
             <Text
-              className="font-display text-title-sm my-4"
+              className="font-display text-title-sm my-2"
               style={{ fontSize: 17, color: semantic.textHeading }}
             >
               What happened?
@@ -93,7 +93,7 @@ export default function BurnScreen() {
         {phase === "done" ? (
           <Animated.View
             entering={FadeIn.duration(500)}
-            className="flex-1 items-center justify-center gap-2"
+            className="flex-1 items-center justify-center gap-1"
           >
             <Text className="font-display text-title-md" style={{ color: semantic.textHeading }}>
               It&apos;s gone.
@@ -104,7 +104,7 @@ export default function BurnScreen() {
             >
               That was a hard moment. Hard days happen — they don&apos;t define you as a parent.
             </Text>
-            <View className="mt-5">
+            <View className="mt-3">
               <Button variant="primary" onPress={() => router.back()}>
                 Done
               </Button>

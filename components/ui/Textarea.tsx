@@ -1,40 +1,29 @@
-import { useState } from "react";
-import { TextInput, type TextInputProps } from "react-native";
+import { Platform, TextInput, type TextInputProps } from "react-native";
 
-import { useSemantic } from "@/lib/theme-context";
+import { cn } from "@/lib/cn";
 
+// React Native Reusables' textarea.tsx, ported as-is — `rows` is our own alias for
+// numberOfLines (the app's existing call sites pass rows, not numberOfLines).
 export function Textarea({
   rows = 4,
-  style,
+  className,
   ...rest
 }: TextInputProps & { rows?: number }) {
-  const semantic = useSemantic();
-  const [focus, setFocus] = useState(false);
   return (
     <TextInput
-      {...rest}
       multiline
       numberOfLines={rows}
       textAlignVertical="top"
-      onFocus={(e) => {
-        setFocus(true);
-        rest.onFocus?.(e);
-      }}
-      onBlur={(e) => {
-        setFocus(false);
-        rest.onBlur?.(e);
-      }}
-      placeholderTextColor={semantic.textSubtle}
-      className="font-sans text-body-md rounded-md border px-3 py-3"
-      style={[
-        {
-          backgroundColor: semantic.surfaceCard,
-          borderColor: focus ? semantic.borderAccent : semantic.borderDefault,
-          color: semantic.textBody,
-          minHeight: rows * 22,
-        },
-        style,
-      ]}
+      className={cn(
+        "text-foreground border-input flex min-h-16 w-full flex-row rounded-md border bg-transparent px-3 py-2 text-base shadow-sm shadow-black/5",
+        Platform.select({
+          web: "placeholder:text-muted-foreground outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] md:text-sm",
+          native: "placeholder:text-muted-foreground/50",
+        }),
+        rest.editable === false && "opacity-50",
+        className,
+      )}
+      {...rest}
     />
   );
 }

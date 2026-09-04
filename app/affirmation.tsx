@@ -28,11 +28,11 @@ export default function AffirmationScreen() {
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: colors.warm[900] }}>
       <WebContainer maxWidth={480} style={{ flex: 1 }}>
-      <View className="flex-row justify-between items-center px-5 pt-4 pb-3">
+      <View className="flex-row justify-between items-center px-3 pt-2 pb-1.5">
         <IconButton name="x" label="Close" onPress={() => router.back()} color="#fff" />
         <IconButton name="share-2" label="Share" color="#fff" onPress={() => {}} />
       </View>
-      <View className="px-6">
+      <View className="px-4">
         <Tabs
           items={CATEGORY_OPTIONS}
           value={category}
@@ -43,8 +43,8 @@ export default function AffirmationScreen() {
         />
       </View>
 
-      <View className="flex-1 items-center justify-center px-8">
-        <View className="mb-9">
+      <View className="flex-1 items-center justify-center px-6">
+        <View className="mb-8">
           <BreathingOrb size={120} colors={[colors.clay[400], colors.clay[600]]} durationMs={6000} />
         </View>
         <Text
@@ -54,14 +54,14 @@ export default function AffirmationScreen() {
           I am a good parent.
         </Text>
         <Text
-          className="font-sans text-body-md text-center mt-5"
+          className="font-sans text-body-md text-center mt-3"
           style={{ color: colors.warm[300], minHeight: 50 }}
         >
           {current}
         </Text>
       </View>
 
-      <View className="flex-row justify-center gap-1.5 pb-4">
+      <View className="flex-row justify-center gap-1.5 pb-2">
         {pack.map((_, i) => (
           <View
             key={i}
@@ -71,7 +71,7 @@ export default function AffirmationScreen() {
         ))}
       </View>
 
-      <View className="px-6 pb-6">
+      <View className="px-4 pb-4">
         <Button
           variant="inverse"
           fullWidth

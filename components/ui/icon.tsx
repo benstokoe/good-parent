@@ -1,6 +1,7 @@
 import {
   Check,
   CheckCircle2,
+  ChevronDown,
   ChevronRight,
   Eye,
   Lock,
@@ -36,6 +37,7 @@ export const ICONS = {
   "share-2": Share2,
   mic: Mic,
   "chevron-right": ChevronRight,
+  "chevron-down": ChevronDown,
   user: User,
 } satisfies Record<string, LucideIcon>;
 

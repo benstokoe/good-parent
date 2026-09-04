@@ -1,18 +1,36 @@
+import { cva, type VariantProps } from "class-variance-authority";
 import { Pressable } from "react-native";
 
-import { useSemantic } from "@/lib/theme-context";
 import { Icon, type IconName } from "@/components/ui/icon";
+import { cn } from "@/lib/cn";
+import { useSemantic } from "@/lib/theme-context";
 
-type Variant = "ghost" | "secondary" | "primary";
-type Size = "sm" | "md" | "lg";
+// Sized/shaped like RNR's Button size="icon" (packages/registry/src/nativewind/
+// components/ui/button.tsx), with the same primary/secondary/ghost variant treatment as
+// our Button.tsx. Icon color is read from useSemantic() rather than a className, per
+// lib/theme.ts's note — className can't reach a Lucide icon's `color` prop.
+const iconButtonVariants = cva("items-center justify-center rounded-md border", {
+  variants: {
+    variant: {
+      primary: "bg-primary border-transparent active:bg-primary/90",
+      secondary: "bg-secondary border-border active:bg-accent",
+      ghost: "bg-transparent border-transparent active:bg-accent",
+    },
+    size: {
+      sm: "h-[30px] w-[30px]",
+      md: "h-8 w-8",
+      lg: "h-12 w-12",
+    },
+  },
+  defaultVariants: {
+    variant: "ghost",
+    size: "md",
+  },
+});
 
-const SIZE_CLS: Record<Size, string> = {
-  sm: "w-[30px] h-[30px]",
-  md: "w-9 h-9",
-  lg: "w-11 h-11",
-};
+const ICON_SIZES = { sm: 15, md: 18, lg: 20 } as const;
 
-const ICON_SIZES: Record<Size, number> = { sm: 15, md: 18, lg: 20 };
+type IconButtonVariants = VariantProps<typeof iconButtonVariants>;
 
 export function IconButton({
   name,
@@ -24,30 +42,18 @@ export function IconButton({
 }: {
   name: IconName;
   label: string;
-  variant?: Variant;
-  size?: Size;
+  variant?: NonNullable<IconButtonVariants["variant"]>;
+  size?: NonNullable<IconButtonVariants["size"]>;
   color?: string;
   onPress?: () => void;
 }) {
   const semantic = useSemantic();
-  const variantStyle =
-    variant === "primary"
-      ? { backgroundColor: semantic.actionPrimary, borderColor: "transparent" }
-      : variant === "secondary"
-        ? { backgroundColor: semantic.actionSecondary, borderColor: semantic.borderDefault }
-        : { backgroundColor: "transparent", borderColor: "transparent" };
-
   return (
     <Pressable
       accessibilityLabel={label}
       accessibilityRole="button"
       onPress={onPress}
-      className={`rounded-md items-center justify-center border ${SIZE_CLS[size]}`}
-      style={({ pressed }) => ({
-        ...variantStyle,
-        backgroundColor:
-          pressed && variant === "ghost" ? semantic.surfaceHover : variantStyle.backgroundColor,
-      })}
+      className={cn(iconButtonVariants({ variant, size }))}
     >
       <Icon
         name={name}

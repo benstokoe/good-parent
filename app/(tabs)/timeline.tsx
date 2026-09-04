@@ -150,7 +150,7 @@ export default function TimelineScreen() {
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
-      <ScrollView className="flex-1" contentContainerClassName="px-6 pt-4 pb-28">
+      <ScrollView className="flex-1" contentContainerClassName="px-4 pt-2 pb-28">
         <WebContainer maxWidth={640}>
         <Text className="font-display text-display-md" style={{ color: semantic.textHeading }}>
           Timeline
@@ -159,7 +159,7 @@ export default function TimelineScreen() {
           Check-Ins, Milestones and Affirmations, in order. Unfiltered.
         </Text>
 
-        <View className="flex-row flex-wrap gap-2 mt-3.5">
+        <View className="flex-row flex-wrap gap-1 mt-3.5">
           {FILTERS.map((f) => (
             <Tag key={f.key} selected={filter === f.key} onPress={() => setFilter(f.key)}>
               {f.label}
@@ -167,13 +167,13 @@ export default function TimelineScreen() {
           ))}
         </View>
 
-        <View className="mt-3">
+        <View className="mt-1.5">
           <Input placeholder="Search timeline" value={search} onChangeText={setSearch} />
         </View>
 
-        <View className="mt-4">
+        <View className="mt-2">
           {visible.map((t, i) => (
-            <View key={i} className="flex-row gap-3">
+            <View key={i} className="flex-row gap-1.5">
               <View className="items-center w-[22px]">
                 <View
                   className="w-[22px] h-[22px] rounded-full items-center justify-center"
@@ -185,7 +185,7 @@ export default function TimelineScreen() {
                   <View className="w-px flex-1 mt-0.5" style={{ backgroundColor: semantic.borderSubtle }} />
                 ) : null}
               </View>
-              <View className="flex-1 pb-5">
+              <View className="flex-1 pb-3">
                 <View className="flex-row gap-1.5 items-baseline">
                   <Text
                     className="text-caption font-sans-semibold"

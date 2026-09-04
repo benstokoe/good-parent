@@ -1,41 +1,81 @@
-import { ActivityIndicator, Pressable, Text } from "react-native";
+import { cva, type VariantProps } from "class-variance-authority";
+import { ActivityIndicator, Platform, Pressable, Text } from "react-native";
 
-import { colors } from "@/lib/theme";
-import { useSemantic } from "@/lib/theme-context";
-import type { Semantic } from "@/lib/theme";
+import { cn } from "@/lib/cn";
 
-type Variant = "primary" | "secondary" | "ghost" | "inverse" | "danger";
-type Size = "sm" | "md" | "lg";
+// Adapted from React Native Reusables' button.tsx (packages/registry/src/nativewind/
+// components/ui/button.tsx) — same cva structure and class names, styled through the
+// bg-primary/bg-secondary/etc tokens in global.css rather than shadcn's palette. "inverse"
+// and "danger" are app-specific additions on top of RNR's default variant set.
+const buttonVariants = cva(
+  cn(
+    "group shrink-0 flex-row items-center justify-center gap-2 rounded-md shadow-none",
+    Platform.select({
+      web: "outline-none transition-all disabled:pointer-events-none",
+    }),
+  ),
+  {
+    variants: {
+      variant: {
+        primary: cn(
+          "bg-primary active:bg-primary/90 shadow-sm shadow-black/5",
+          Platform.select({ web: "hover:bg-primary/90" }),
+        ),
+        secondary: cn(
+          "bg-secondary border-border active:bg-accent border shadow-sm shadow-black/5",
+          Platform.select({ web: "hover:bg-accent" }),
+        ),
+        ghost: cn("active:bg-accent", Platform.select({ web: "hover:bg-accent" })),
+        inverse: cn(
+          "bg-foreground active:bg-foreground/90 shadow-sm shadow-black/5",
+          Platform.select({ web: "hover:bg-foreground/90" }),
+        ),
+        danger: cn(
+          "bg-destructive active:bg-destructive/90 shadow-sm shadow-black/5",
+          Platform.select({ web: "hover:bg-destructive/90" }),
+        ),
+      },
+      size: {
+        sm: "h-9 gap-1.5 rounded-md px-3",
+        md: "h-10 px-4 py-2",
+        lg: "h-11 rounded-md px-6",
+      },
+    },
+    defaultVariants: {
+      variant: "primary",
+      size: "md",
+    },
+  },
+);
 
-const SIZE_CLS: Record<Size, string> = {
-  sm: "h-9 px-5",
-  md: "h-9 px-6",
-  lg: "h-11 px-8",
-};
+const buttonTextVariants = cva(
+  cn("text-sm font-medium", Platform.select({ web: "pointer-events-none transition-colors" })),
+  {
+    variants: {
+      variant: {
+        primary: "text-primary-foreground",
+        secondary: "text-secondary-foreground",
+        ghost: cn(
+          "text-foreground group-active:text-accent-foreground",
+          Platform.select({ web: "group-hover:text-accent-foreground" }),
+        ),
+        inverse: "text-background",
+        danger: "text-destructive-foreground",
+      },
+      size: {
+        sm: "text-sm",
+        md: "text-base",
+        lg: "text-base",
+      },
+    },
+    defaultVariants: {
+      variant: "primary",
+      size: "md",
+    },
+  },
+);
 
-const TEXT_SIZE_CLS: Record<Size, string> = {
-  sm: "text-body-sm",
-  md: "text-body-md",
-  lg: "text-body-lg",
-};
-
-// Background/border/text colors are computed from the active theme's semantic tokens
-// rather than hardcoded Tailwind classes, so every variant (including its pressed and
-// disabled states) adapts to light/dark. Pressed state uses Pressable's style callback.
-function variantStyle(semantic: Semantic, variant: Variant) {
-  switch (variant) {
-    case "primary":
-      return { bg: semantic.actionPrimary, pressedBg: semantic.actionPrimaryHover, border: "transparent", text: "#FFFFFF" };
-    case "secondary":
-      return { bg: semantic.actionSecondary, pressedBg: semantic.surfaceHover, border: semantic.borderDefault, text: semantic.textBody };
-    case "ghost":
-      return { bg: "transparent", pressedBg: semantic.surfaceHover, border: "transparent", text: semantic.textBody };
-    case "inverse":
-      return { bg: semantic.actionInverse, pressedBg: semantic.surfaceHover, border: "transparent", text: semantic.textInverse };
-    case "danger":
-      return { bg: colors.red, pressedBg: colors.clay[700], border: "transparent", text: "#FFFFFF" };
-  }
-}
+type ButtonVariants = VariantProps<typeof buttonVariants>;
 
 export function Button({
   children,
@@ -47,18 +87,14 @@ export function Button({
   onPress,
 }: {
   children: string;
-  variant?: Variant;
-  size?: Size;
+  variant?: NonNullable<ButtonVariants["variant"]>;
+  size?: NonNullable<ButtonVariants["size"]>;
   disabled?: boolean;
   loading?: boolean;
   fullWidth?: boolean;
   onPress?: () => void;
 }) {
-  const semantic = useSemantic();
   const inert = disabled || loading;
-  const v = variantStyle(semantic, variant);
-  const bg = inert ? (variant === "ghost" ? "transparent" : semantic.surfaceDisabled) : v.bg;
-  const textColor = inert ? semantic.textDisabled : v.text;
 
   return (
     <Pressable
@@ -66,22 +102,16 @@ export function Button({
       accessibilityState={{ disabled: inert }}
       disabled={inert}
       onPress={onPress}
-      className={`flex-row items-center justify-center rounded-md gap-2 ${SIZE_CLS[size]} ${fullWidth ? "w-full" : "self-auto"}`}
-      style={({ pressed }) => ({
-        backgroundColor: pressed && !inert ? v.pressedBg : bg,
-        borderWidth: 1,
-        borderColor: inert ? "transparent" : v.border,
-      })}
+      className={cn(
+        buttonVariants({ variant, size }),
+        fullWidth && "w-full",
+        inert && "opacity-50",
+      )}
     >
       {loading ? (
-        <ActivityIndicator size="small" color={textColor} />
+        <ActivityIndicator size="small" />
       ) : (
-        <Text
-          className={`font-sans-medium ${TEXT_SIZE_CLS[size]}`}
-          style={{ color: textColor }}
-        >
-          {children}
-        </Text>
+        <Text className={cn(buttonTextVariants({ variant, size }))}>{children}</Text>
       )}
     </Pressable>
   );

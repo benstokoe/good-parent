@@ -50,26 +50,26 @@ export default function ProfileSetupScreen() {
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
-      <ScrollView className="flex-1" contentContainerClassName="px-6 pt-16 pb-8">
+      <ScrollView className="flex-1" contentContainerClassName="px-4 pt-16 pb-6">
         <WebContainer maxWidth={520}>
-        <View className="mb-6">
+        <View className="mb-4">
           <Text className="font-display text-title-md" style={{ color: semantic.textHeading }}>
             A little about you
           </Text>
-          <Text className="font-sans text-body-sm mt-1" style={{ color: semantic.textMuted }}>
+          <Text className="font-sans text-body-sm mt-0.5" style={{ color: semantic.textMuted }}>
             This just helps us tailor things. Nothing here is shared.
           </Text>
         </View>
 
-        <View className="gap-5">
+        <View className="gap-3">
           <View>
             <Text
-              className="font-sans-semibold text-body-sm mb-2"
+              className="font-sans-semibold text-body-sm mb-1"
               style={{ color: semantic.textHeading }}
             >
               You are a
             </Text>
-            <View className="flex-row gap-2">
+            <View className="flex-row gap-1">
               {ROLE_OPTIONS.map((opt) => (
                 <View key={opt.value} className="flex-1">
                   <Tag
@@ -112,7 +112,7 @@ export default function ProfileSetupScreen() {
                 ? FEELING_LABELS[profile.feeling - 1]
                 : "Tap the number closest to how you feel"}
             </Text>
-            <View className="flex-row gap-2">
+            <View className="flex-row gap-1">
               {[1, 2, 3, 4, 5].map((n) => {
                 const on = profile.feeling === n;
                 return (
@@ -147,7 +147,7 @@ export default function ProfileSetupScreen() {
           </Field>
         </View>
 
-        <View className="mt-8">
+        <View className="mt-6">
           <Button
             variant="primary"
             size="lg"

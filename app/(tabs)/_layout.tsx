@@ -78,14 +78,14 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
 
   return (
     <View
-      className="flex-row items-end justify-around px-2 pt-2 pb-7 border-t"
+      className="flex-row items-end justify-around px-1 pt-1 pb-5 border-t"
       style={{ backgroundColor: semantic.surfaceCard, borderColor: semantic.borderSubtle }}
     >
       {LEFT_TABS.map(renderTab)}
       <View className="flex-1 items-center gap-1.5">
         <Pressable
           onPress={() => router.push("/panic")}
-          className="w-[52px] h-[52px] rounded-full items-center justify-center -mt-4"
+          className="w-[52px] h-[52px] rounded-full items-center justify-center -mt-2"
           style={{ backgroundColor: semantic.actionPrimary }}
         >
           <Icon name="message-square" size={22} color="#fff" />

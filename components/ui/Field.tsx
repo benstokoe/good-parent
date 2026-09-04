@@ -1,7 +1,8 @@
 import { Text, View } from "react-native";
 
-import { useSemantic } from "@/lib/theme-context";
-
+// Styled with RNR label.tsx's text treatment ("text-foreground text-sm font-medium")
+// rather than the @rn-primitives/label primitive itself — this label is a plain caption
+// above the field, not an interactive focus-the-input trigger.
 export function Field({
   label,
   hint,
@@ -11,20 +12,11 @@ export function Field({
   hint?: string;
   children: React.ReactNode;
 }) {
-  const semantic = useSemantic();
   return (
-    <View className="gap-2">
-      {label ? (
-        <Text className="font-sans-medium text-body-sm" style={{ color: semantic.textBody }}>
-          {label}
-        </Text>
-      ) : null}
+    <View className="gap-1">
+      {label ? <Text className="text-foreground text-sm font-medium">{label}</Text> : null}
       {children}
-      {hint ? (
-        <Text className="text-caption" style={{ color: semantic.textSubtle }}>
-          {hint}
-        </Text>
-      ) : null}
+      {hint ? <Text className="text-muted-foreground text-xs">{hint}</Text> : null}
     </View>
   );
 }

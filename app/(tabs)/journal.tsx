@@ -43,7 +43,7 @@ export default function JournalScreen() {
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
-      <ScrollView className="flex-1" contentContainerClassName="px-6 pt-4 pb-28">
+      <ScrollView className="flex-1" contentContainerClassName="px-4 pt-2 pb-28">
         <WebContainer maxWidth={880}>
           <View className="flex-row justify-between items-start">
             <View>
@@ -65,11 +65,11 @@ export default function JournalScreen() {
             />
           </View>
 
-          <View className="mt-4">
+          <View className="mt-2">
             <Input placeholder="Search journal" value={search} onChangeText={setSearch} />
           </View>
 
-          <View className="mt-3">
+          <View className="mt-1.5">
             <WebGrid columns={2}>
               {entries.map((j) => (
                 <Card key={j.id}>
