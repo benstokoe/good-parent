@@ -35,7 +35,7 @@ export default function BurnScreen() {
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
       <WebContainer maxWidth={560} style={{ flex: 1 }}>
-      <View className="flex-row items-center gap-2.5 px-6 pb-3">
+      <View className="flex-row items-center gap-2.5 px-6 pt-4 pb-3">
         <IconButton name="x" label="Close" onPress={() => router.back()} />
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
           Burn

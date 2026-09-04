@@ -28,7 +28,7 @@ export default function AffirmationScreen() {
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: colors.warm[900] }}>
       <WebContainer maxWidth={480} style={{ flex: 1 }}>
-      <View className="flex-row justify-between items-center px-5 pb-3">
+      <View className="flex-row justify-between items-center px-5 pt-4 pb-3">
         <IconButton name="x" label="Close" onPress={() => router.back()} color="#fff" />
         <IconButton name="share-2" label="Share" color="#fff" onPress={() => {}} />
       </View>
