@@ -68,7 +68,7 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
           if (!focused && !event.defaultPrevented) navigation.navigate(entry.route.name);
         }}
       >
-        <Icon name={TAB_ICON[name] ?? "sparkles"} size={21} color={color} filled={focused} />
+        <Icon name={TAB_ICON[name] ?? "sparkles"} size={21} color={color} />
         <Text className="text-[10px]" style={{ color }}>
           {TAB_LABEL[name] ?? name}
         </Text>
@@ -118,7 +118,7 @@ function FloatingGlassBar() {
     const color = focused ? semantic.textAccent : semantic.textMuted;
     return (
       <Pressable key={name} className="flex-1 items-center gap-0.5" onPress={() => go(name)}>
-        <Icon name={TAB_ICON[name] ?? "sparkles"} size={21} color={color} filled={focused} />
+        <Icon name={TAB_ICON[name] ?? "sparkles"} size={21} color={color} />
         <Text className="text-[10px]" style={{ color }}>
           {TAB_LABEL[name] ?? name}
         </Text>
