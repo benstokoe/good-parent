@@ -82,7 +82,7 @@ export default function HomeScreen() {
   ];
 
   const header = (
-    <View className="flex-row justify-between items-start">
+    <View className="flex-row justify-between items-center">
       <View>
         <Text className="font-display text-display-md" style={{ color: semantic.textHeading }}>
           {greeting}
@@ -96,7 +96,8 @@ export default function HomeScreen() {
           <Pressable
             accessibilityLabel="Account"
             onPress={() => router.push("/account")}
-            className="w-8 h-8 rounded-full items-center justify-center"
+            className="w-9 h-9 rounded-full items-center justify-center"
+            style={{ backgroundColor: semantic.surfaceSunken }}
           >
             <Icon name="user" size={18} color={semantic.textMuted} />
           </Pressable>
