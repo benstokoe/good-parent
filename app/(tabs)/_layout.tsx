@@ -150,7 +150,11 @@ function FloatingGlassBar() {
             }}
           >
             {LEFT_TABS.map(renderTab)}
-            <View className="flex-1 items-center" />
+            <View className="flex-1 items-center justify-end pb-3" style={{ alignSelf: "stretch" }}>
+              <Text className="text-[10px]" style={{ color: semantic.textMuted }}>
+                Panic
+              </Text>
+            </View>
             {RIGHT_TABS.map(renderTab)}
           </GlassView>
           <GlassView
