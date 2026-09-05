@@ -22,6 +22,7 @@
     "@react-navigation/elements": "^2.6.3",
     "@react-navigation/native": "^7.1.8",
     "@rn-primitives/dialog": "^1.5.2",
+    "@rn-primitives/popover": "^1.5.2",
     "@rn-primitives/portal": "^1.5.3",
     "@rn-primitives/radio-group": "^1.5.2",
     "@rn-primitives/select": "^1.5.2",

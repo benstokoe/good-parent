@@ -1,8 +1,10 @@
-import { useState } from "react";
+import type { TriggerRef } from "@rn-primitives/popover";
+import { useRef, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 
 import { Icon } from "@/components/ui/icon";
 import { Input } from "@/components/ui/Input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/Popover";
 import { Tag } from "@/components/ui/Tag";
 import { useSemantic } from "@/lib/theme-context";
 
@@ -24,6 +26,7 @@ export function TagPicker({
   const semantic = useSemantic();
   const [expanded, setExpanded] = useState(false);
   const [draft, setDraft] = useState("");
+  const triggerRef = useRef<TriggerRef>(null);
 
   const commonTags = allTags.slice(0, COMMON_TAG_COUNT);
   // A tag the entry already carries stays visible even if collapsed view would hide it —
@@ -38,11 +41,12 @@ export function TagPicker({
     onAddCustomTag(value);
     onToggle(value);
     setDraft("");
+    triggerRef.current?.close();
   };
 
   return (
     <View className="gap-2.5">
-      <View className="flex-row flex-wrap gap-2">
+      <View className="flex-row flex-wrap gap-2 items-center">
         {visible.map((tag) => (
           <Tag key={tag} selected={selected.includes(tag)} onPress={() => onToggle(tag)}>
             {tag}
@@ -59,30 +63,45 @@ export function TagPicker({
             </Text>
           </Pressable>
         ) : null}
-      </View>
 
-      <View className="flex-row gap-2 items-center">
-        <Input
-          className="flex-1"
-          placeholder="Add a custom tag"
-          value={draft}
-          onChangeText={setDraft}
-          onSubmitEditing={submitCustomTag}
-          returnKeyType="done"
-        />
-        <Pressable
-          onPress={submitCustomTag}
-          disabled={!draft.trim()}
-          accessibilityLabel="Add tag"
-          accessibilityRole="button"
-          className="w-11 h-11 rounded-full items-center justify-center"
-          style={{
-            backgroundColor: semantic.surfaceSunken,
-            opacity: draft.trim() ? 1 : 0.5,
-          }}
-        >
-          <Icon name="plus" size={18} color={semantic.textHeading} />
-        </Pressable>
+        <Popover>
+          <PopoverTrigger ref={triggerRef} asChild>
+            <Pressable
+              accessibilityLabel="Add a custom tag"
+              accessibilityRole="button"
+              className="w-11 h-11 rounded-full items-center justify-center"
+              style={{ backgroundColor: semantic.surfaceSunken }}
+            >
+              <Icon name="plus" size={18} color={semantic.textHeading} />
+            </Pressable>
+          </PopoverTrigger>
+          <PopoverContent className="w-64">
+            <View className="flex-row gap-2 items-center">
+              <Input
+                autoFocus
+                className="flex-1"
+                placeholder="Add a custom tag"
+                value={draft}
+                onChangeText={setDraft}
+                onSubmitEditing={submitCustomTag}
+                returnKeyType="done"
+              />
+              <Pressable
+                onPress={submitCustomTag}
+                disabled={!draft.trim()}
+                accessibilityLabel="Add tag"
+                accessibilityRole="button"
+                className="w-11 h-11 rounded-full items-center justify-center"
+                style={{
+                  backgroundColor: semantic.surfaceSunken,
+                  opacity: draft.trim() ? 1 : 0.5,
+                }}
+              >
+                <Icon name="plus" size={18} color={semantic.textHeading} />
+              </Pressable>
+            </View>
+          </PopoverContent>
+        </Popover>
       </View>
     </View>
   );
