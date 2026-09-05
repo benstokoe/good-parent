@@ -1,0 +1,16 @@
+# Walks the bottom tab bar and confirms each destination actually renders,
+# then returns to Home. Catches a broken route/import before a user does.
+appId: com.benstokoe.goodparent
+---
+- launchApp
+- extendedWaitUntil:
+    visible: "RECENT"
+    timeout: 8000
+- tapOn: "Timeline"
+- assertVisible: "Check-Ins, Milestones and Affirmations, in order. Unfiltered."
+- tapOn: "Growth"
+- assertVisible: "Growth Space"
+- tapOn: "Journal"
+- assertVisible: "Journal"
+- tapOn: "Home"
+- assertVisible: "RECENT"

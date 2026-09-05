@@ -54,12 +54,13 @@ const FEATURES: { icon: IconName; label: string; text: string }[] = [
 export default function OnboardingScreen() {
   const { isLoaded, isSignedIn } = useAuth();
 
-  if (!isLoaded) return null;
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      router.replace("/(tabs)");
+    }
+  }, [isLoaded, isSignedIn]);
 
-  if (isSignedIn) {
-    router.replace("/(tabs)");
-    return null;
-  }
+  if (!isLoaded || isSignedIn) return null;
 
   // Web has no onboarding carousel: signed-out visitors get the marketing homepage
   // (which explains the product itself, per PRODUCT.md). Native keeps the carousel below.

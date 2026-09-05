@@ -1,0 +1,50 @@
+# Full Check-In flow: rating a follow-up, tagging + writing both prompts,
+# skipping the optional action item, and landing on the saved confirmation.
+# Relies on the in-memory seed data always having an open action item, so
+# the flow always starts on the "Last time you were working on this" step.
+#
+# Each step transition below waits explicitly (extendedWaitUntil) rather than
+# firing tapOn/assertVisible immediately, matching tab-navigation.yaml's
+# pattern: hammering the XCTest driver with tight retries right after a cold
+# launch or a step re-render has been seen to crash the injected test runner
+# mid-viewHierarchy-fetch ("Device became unreachable"), failing the whole
+# flow even though the app itself never crashed.
+appId: com.benstokoe.goodparent
+---
+- launchApp
+- extendedWaitUntil:
+    visible: "Start"
+    timeout: 8000
+- tapOn: "Start"
+- assertVisible: "Last time you were working on this"
+- tapOn: "Better"
+- tapOn: "Continue"
+
+- extendedWaitUntil:
+    visible: "What went well today?"
+    timeout: 8000
+- tapOn: "Good day"
+- tapOn: "A moment, big or small…"
+- inputText: "Read two extra books at bedtime without rushing."
+- hideKeyboard
+- tapOn: "Continue"
+
+- extendedWaitUntil:
+    visible: "What didn't go so well?"
+    timeout: 8000
+- tapOn: "No sleep"
+- tapOn: "It's fine for this to be honest."
+- inputText: "Snapped when she wouldn't get dressed."
+- hideKeyboard
+- tapOn: "Continue"
+
+- extendedWaitUntil:
+    visible: "Anything to work on?"
+    timeout: 8000
+- tapOn: "Save check-in"
+
+- extendedWaitUntil:
+    visible: "Check-in saved"
+    timeout: 8000
+- tapOn: "Done"
+- assertVisible: "Check-In"

@@ -15,7 +15,7 @@ export function Textarea({
       numberOfLines={rows}
       textAlignVertical="top"
       className={cn(
-        "text-foreground border-input flex min-h-16 w-full flex-row rounded-md border bg-transparent px-3 py-2 text-base shadow-sm shadow-black/5",
+        "text-foreground border-input flex min-h-16 w-full flex-row rounded-md border bg-transparent px-4 py-3 text-base shadow-sm shadow-black/5",
         Platform.select({
           web: "placeholder:text-muted-foreground outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] md:text-sm",
           native: "placeholder:text-muted-foreground/50",

@@ -1,0 +1,15 @@
+# Smoke test: the home screen loads with its core sections and the tab bar
+# is intact. Avoids the time-of-day-dependent greeting text on purpose.
+appId: com.benstokoe.goodparent
+---
+- launchApp
+- assertVisible: "Check-In"
+- assertVisible: "Affirmation"
+- assertVisible: "Milestones"
+- assertVisible: "Burn"
+- assertVisible: "RECENT"
+- assertVisible: "Home"
+- assertVisible: "Journal"
+- assertVisible: "Growth"
+- assertVisible: "Timeline"
+- assertVisible: "Panic"
