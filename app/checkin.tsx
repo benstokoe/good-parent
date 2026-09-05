@@ -4,8 +4,8 @@ import {
   useSpeechRecognitionEvent,
 } from "expo-speech-recognition";
 import { useRef, useState } from "react";
-import { Platform, ScrollView, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -30,6 +30,7 @@ const NOT_WELL_TAGS = ["No sleep", "Solo parenting", "Sick kid", "Long day"];
 
 export default function CheckinScreen() {
   const semantic = useSemantic();
+  const insets = useSafeAreaInsets();
   const { state, submitCheckin } = useAppData();
   const hasFollowUp = state.actionItemsOpen.length > 0;
   const firstStep = hasFollowUp ? 0 : 1;
@@ -95,7 +96,11 @@ export default function CheckinScreen() {
   const dots = [0, 1, 2, 3].map((i) => i <= Math.min(step, 3));
 
   return (
-    <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
+    <SafeAreaView
+      className="flex-1"
+      edges={["top", "left", "right"]}
+      style={{ backgroundColor: semantic.surfacePage }}
+    >
       <WebContainer maxWidth={560} style={{ flex: 1 }}>
       <View className="flex-row items-center justify-between gap-2.5 px-6 pt-6 pb-3">
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
@@ -113,6 +118,10 @@ export default function CheckinScreen() {
         ))}
       </View>
 
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
       <ScrollView
         className="flex-1"
         contentContainerClassName="px-6 pb-3"
@@ -259,8 +268,8 @@ export default function CheckinScreen() {
       </ScrollView>
 
       <View
-        className="flex-row gap-2.5 px-6 pt-3 pb-6 border-t"
-        style={{ borderColor: semantic.borderSubtle }}
+        className="flex-row gap-2.5 px-6 pt-3 border-t"
+        style={{ borderColor: semantic.borderSubtle, paddingBottom: insets.bottom + 32 }}
       >
         {step > firstStep && step < 4 ? (
           <Button variant="secondary" onPress={back}>
@@ -281,6 +290,7 @@ export default function CheckinScreen() {
           </View>
         )}
       </View>
+      </KeyboardAvoidingView>
       </WebContainer>
     </SafeAreaView>
   );

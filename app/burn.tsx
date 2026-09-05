@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { KeyboardAvoidingView, Platform, Text, View } from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 
 import { Button } from "@/components/ui/Button";
@@ -15,6 +15,7 @@ type Phase = "compose" | "releasing" | "done";
 
 export default function BurnScreen() {
   const semantic = useSemantic();
+  const insets = useSafeAreaInsets();
   const [phase, setPhase] = useState<Phase>("compose");
   const [text, setText] = useState("");
   const [releasingText, setReleasingText] = useState("");
@@ -33,7 +34,11 @@ export default function BurnScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
+    <SafeAreaView
+      className="flex-1"
+      edges={["top", "left", "right"]}
+      style={{ backgroundColor: semantic.surfacePage }}
+    >
       <WebContainer maxWidth={560} style={{ flex: 1 }}>
       <View className="flex-row items-center justify-between gap-2.5 px-6 pt-6 pb-3">
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
@@ -42,7 +47,11 @@ export default function BurnScreen() {
         <IconButton name="x" label="Close" onPress={() => router.back()} />
       </View>
 
-      <View className="flex-1 px-6 pb-6">
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+      <View className="flex-1 px-6" style={{ paddingBottom: insets.bottom + 32 }}>
         {phase === "compose" ? (
           <>
             <Card tone="sunken">
@@ -112,6 +121,7 @@ export default function BurnScreen() {
           </Animated.View>
         ) : null}
       </View>
+      </KeyboardAvoidingView>
       </WebContainer>
     </SafeAreaView>
   );

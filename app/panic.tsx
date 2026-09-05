@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { BreathingOrb } from "@/components/BreathingOrb";
 import { Button } from "@/components/ui/Button";
@@ -27,6 +27,7 @@ type Message = { role: "assistant" | "user"; text: string };
 
 export default function PanicScreen() {
   const semantic = useSemantic();
+  const insets = useSafeAreaInsets();
   const [tab, setTab] = useState<PanicTab>("breathe");
   const [breatheCue, setBreatheCue] = useState(BREATHE_SEQUENCE[0][0]);
   const [showCrisis, setShowCrisis] = useState(false);
@@ -69,7 +70,11 @@ export default function PanicScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
+    <SafeAreaView
+      className="flex-1"
+      edges={["top", "left", "right"]}
+      style={{ backgroundColor: semantic.surfacePage }}
+    >
       <WebContainer maxWidth={560} style={{ flex: 1 }}>
       <View className="flex-row items-center justify-between gap-2.5 px-6 pt-6 pb-3">
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
@@ -123,6 +128,10 @@ export default function PanicScreen() {
         />
       </View>
 
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
       <ScrollView className="flex-1" contentContainerClassName="px-6 pt-2 pb-6">
         {tab === "breathe" ? (
           <View className="items-center pt-6">
@@ -192,7 +201,10 @@ export default function PanicScreen() {
       </ScrollView>
 
       {tab === "talk" ? (
-        <View className="flex-row gap-1 px-6 pt-1.5 pb-6 border-t" style={{ borderColor: semantic.borderSubtle }}>
+        <View
+          className="flex-row gap-1 px-6 pt-1.5 border-t"
+          style={{ borderColor: semantic.borderSubtle, paddingBottom: insets.bottom + 32 }}
+        >
           <View className="flex-1">
             <Input
               placeholder="What's going on right now?"
@@ -204,6 +216,7 @@ export default function PanicScreen() {
           <IconButton name="send" label="Send" variant="secondary" onPress={send} />
         </View>
       ) : null}
+      </KeyboardAvoidingView>
       </WebContainer>
     </SafeAreaView>
   );
