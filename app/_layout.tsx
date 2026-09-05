@@ -28,6 +28,7 @@ import { clerkTokenCache } from "@/lib/clerk-token-cache";
 import { convex } from "@/lib/convex";
 import { semantic } from "@/lib/theme";
 import { ThemeProvider, useColorSchemeValue } from "@/lib/theme-context";
+import { ToastProvider } from "@/lib/toast";
 
 function ThemedStatusBar() {
   const scheme = useColorSchemeValue();
@@ -82,22 +83,24 @@ export default function RootLayout() {
           <AppDataProvider>
             <ThemeProvider>
               <GestureHandlerRootView style={{ flex: 1 }}>
-                <ThemedStatusBar />
-                <Stack screenOptions={{ headerShown: false }}>
-                  <Stack.Screen name="index" />
-                  <Stack.Screen name="auth" />
-                  <Stack.Screen name="profile-setup" />
-                  <Stack.Screen name="(tabs)" />
-                  <Stack.Screen name="checkin" options={{ presentation: "modal" }} />
-                  <Stack.Screen name="journal-entry" options={{ presentation: "modal" }} />
-                  <Stack.Screen name="affirmation" options={{ presentation: "modal" }} />
-                  <Stack.Screen name="milestones" options={{ presentation: "modal" }} />
-                  <Stack.Screen name="burn" options={{ presentation: "modal" }} />
-                  <Stack.Screen name="panic" options={{ presentation: "modal" }} />
-                  <Stack.Screen name="account" options={{ presentation: "modal" }} />
-                  <Stack.Screen name="recap" options={{ presentation: "modal" }} />
-                </Stack>
-                <PortalHost />
+                <ToastProvider>
+                  <ThemedStatusBar />
+                  <Stack screenOptions={{ headerShown: false }}>
+                    <Stack.Screen name="index" />
+                    <Stack.Screen name="auth" />
+                    <Stack.Screen name="profile-setup" />
+                    <Stack.Screen name="(tabs)" />
+                    <Stack.Screen name="checkin" options={{ presentation: "modal" }} />
+                    <Stack.Screen name="journal-entry" options={{ presentation: "modal" }} />
+                    <Stack.Screen name="affirmation" options={{ presentation: "modal" }} />
+                    <Stack.Screen name="milestones" options={{ presentation: "modal" }} />
+                    <Stack.Screen name="burn" options={{ presentation: "modal" }} />
+                    <Stack.Screen name="panic" options={{ presentation: "modal" }} />
+                    <Stack.Screen name="account" options={{ presentation: "modal" }} />
+                    <Stack.Screen name="recap" options={{ presentation: "modal" }} />
+                  </Stack>
+                  <PortalHost />
+                </ToastProvider>
               </GestureHandlerRootView>
             </ThemeProvider>
           </AppDataProvider>

@@ -52,6 +52,7 @@ export function PhotoSlot({
             onPress={() => setUri(null)}
             accessibilityLabel="Remove photo"
             accessibilityRole="button"
+            hitSlop={4}
             className="absolute top-2 right-2 w-9 h-9 rounded-full items-center justify-center bg-black/50"
           >
             <Icon name="x" size={16} color="#fff" />
@@ -124,6 +125,7 @@ export function PhotoGrid({
             onPress={() => removeAt(index)}
             accessibilityLabel="Remove photo"
             accessibilityRole="button"
+            hitSlop={10}
             className="absolute top-1 right-1 w-6 h-6 rounded-full items-center justify-center bg-black/50"
           >
             <Icon name="x" size={12} color="#fff" />

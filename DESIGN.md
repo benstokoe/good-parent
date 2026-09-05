@@ -117,7 +117,7 @@ components:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.textPrimary}"
     rounded: "{rounded.lg}"
-    padding: "12px"
+    padding: "16px"
   input:
     backgroundColor: "{colors.background}"
     textColor: "{colors.textPrimary}"
@@ -227,7 +227,7 @@ Two radius families cover the whole app: **pill/capsule** (buttons, tabs, badges
 - **Background:** `default` tone = `surface`; `sunken` tone = `surfaceSunken` (recap teaser, recessed content); `accent` tone = `Gray100` (a pale clay-adjacent tint, not the accent color itself).
 - **Shadow:** `xs` only — cards sit barely above the page, never dramatically elevated.
 - **Border:** none; the tonal background does the separating.
-- **Internal Padding:** `md`/12px by default; `sm`/8px or `lg`/20px for denser or looser content.
+- **Internal Padding:** `md`/16px by default — anything less reads as cramped; `sm`/12px or `lg`/24px for denser or looser content.
 
 ### Inputs / Fields
 - **Style:** `background` fill, 1px Hairline border, `md`/8px radius — the one place a border and a fill coexist.

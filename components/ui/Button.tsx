@@ -9,7 +9,7 @@ import { cn } from "@/lib/cn";
 // and "danger" are app-specific additions on top of RNR's default variant set.
 const buttonVariants = cva(
   cn(
-    "group shrink-0 flex-row items-center justify-center gap-2 rounded-md shadow-none",
+    "group shrink-0 flex-row items-center justify-center gap-2 rounded-full shadow-none",
     Platform.select({
       web: "outline-none transition-all disabled:pointer-events-none",
     }),
@@ -36,9 +36,9 @@ const buttonVariants = cva(
         ),
       },
       size: {
-        sm: "h-11 gap-1.5 rounded-md px-3",
+        sm: "h-11 gap-1.5 px-3",
         md: "h-12 px-4 py-2",
-        lg: "h-14 rounded-md px-6",
+        lg: "h-14 px-6",
       },
     },
     defaultVariants: {

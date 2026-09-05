@@ -1,12 +1,11 @@
 import type { TriggerRef } from "@rn-primitives/popover";
 import { useRef, useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { View } from "react-native";
 
-import { Icon } from "@/components/ui/icon";
+import { IconButton } from "@/components/ui/IconButton";
 import { Input } from "@/components/ui/Input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/Popover";
 import { Tag } from "@/components/ui/Tag";
-import { useSemantic } from "@/lib/theme-context";
 
 // Roughly two rows' worth on a mobile-width screen — an approximation, since actual
 // row count depends on label length and screen width, not something worth measuring for.
@@ -23,7 +22,6 @@ export function TagPicker({
   onToggle: (tag: string) => void;
   onAddCustomTag: (tag: string) => void;
 }) {
-  const semantic = useSemantic();
   const [expanded, setExpanded] = useState(false);
   const [draft, setDraft] = useState("");
   const triggerRef = useRef<TriggerRef>(null);
@@ -53,27 +51,12 @@ export function TagPicker({
           </Tag>
         ))}
         {!expanded && allTags.length > visible.length ? (
-          <Pressable
-            onPress={() => setExpanded(true)}
-            className="flex-row items-center justify-center rounded-full border px-3.5 py-3"
-            style={{ borderColor: semantic.borderDefault }}
-          >
-            <Text className="font-sans text-sm font-medium" style={{ color: semantic.textMuted }}>
-              See all
-            </Text>
-          </Pressable>
+          <Tag onPress={() => setExpanded(true)}>See all</Tag>
         ) : null}
 
         <Popover>
           <PopoverTrigger ref={triggerRef} asChild>
-            <Pressable
-              accessibilityLabel="Add a custom tag"
-              accessibilityRole="button"
-              className="w-11 h-11 rounded-full items-center justify-center"
-              style={{ backgroundColor: semantic.surfaceSunken }}
-            >
-              <Icon name="plus" size={18} color={semantic.textHeading} />
-            </Pressable>
+            <IconButton name="plus" label="Add a custom tag" variant="sunken" />
           </PopoverTrigger>
           <PopoverContent className="w-64">
             <View className="flex-row gap-2 items-center">
@@ -86,19 +69,13 @@ export function TagPicker({
                 onSubmitEditing={submitCustomTag}
                 returnKeyType="done"
               />
-              <Pressable
-                onPress={submitCustomTag}
+              <IconButton
+                name="plus"
+                label="Add tag"
+                variant="sunken"
                 disabled={!draft.trim()}
-                accessibilityLabel="Add tag"
-                accessibilityRole="button"
-                className="w-11 h-11 rounded-full items-center justify-center"
-                style={{
-                  backgroundColor: semantic.surfaceSunken,
-                  opacity: draft.trim() ? 1 : 0.5,
-                }}
-              >
-                <Icon name="plus" size={18} color={semantic.textHeading} />
-              </Pressable>
+                onPress={submitCustomTag}
+              />
             </View>
           </PopoverContent>
         </Popover>
