@@ -3,7 +3,7 @@ import { useState } from "react";
 import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { PhotoSlot } from "@/components/PhotoSlot";
+import { PhotoGrid } from "@/components/PhotoSlot";
 import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
 import { IconButton } from "@/components/ui/IconButton";
@@ -19,13 +19,13 @@ export default function JournalEntryScreen() {
   const { addJournalEntry } = useAppData();
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const [photoUri, setPhotoUri] = useState<string | null>(null);
+  const [photoUris, setPhotoUris] = useState<string[]>([]);
 
   const canSave = title.trim().length > 0 || body.trim().length > 0;
 
   const save = () => {
     if (!canSave) return;
-    addJournalEntry(title, body, photoUri ?? undefined);
+    addJournalEntry(title, body, photoUris.length > 0 ? photoUris : undefined);
     router.back();
   };
 
@@ -63,7 +63,7 @@ export default function JournalEntryScreen() {
               />
             </Field>
 
-            <PhotoSlot uri={photoUri} onChange={setPhotoUri} height={160} />
+            <PhotoGrid uris={photoUris} onChange={setPhotoUris} />
 
             <View className="flex-1">
               <Text className="text-foreground text-sm font-medium mb-1">

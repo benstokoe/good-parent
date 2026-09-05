@@ -51,7 +51,7 @@ export default defineSchema({
     userId: v.string(),
     title: v.string(),
     body: v.string(),
-    photoStorageId: v.optional(v.id("_storage")),
+    photoStorageIds: v.optional(v.array(v.id("_storage"))),
   }).index("by_user", ["userId"]),
 
   parentMilestones: defineTable({

@@ -67,12 +67,29 @@ export default function JournalScreen() {
                     {j.body}
                   </Text>
                   <View className="mt-2.5">
-                    {j.photoUri ? (
-                      <Image
-                        source={{ uri: j.photoUri }}
-                        className="w-full h-[120px] rounded-[10px]"
-                        resizeMode="cover"
-                      />
+                    {j.photoUris && j.photoUris.length > 0 ? (
+                      <View className="flex-row gap-1.5">
+                        {j.photoUris.slice(0, 3).map((uri, index) => {
+                          const extra = j.photoUris!.length - 3;
+                          const isLastVisible = index === 2 && extra > 0;
+                          return (
+                            <View key={uri + index} className="flex-1 relative">
+                              <Image
+                                source={{ uri }}
+                                className="w-full h-[120px] rounded-[10px]"
+                                resizeMode="cover"
+                              />
+                              {isLastVisible ? (
+                                <View className="absolute inset-0 rounded-[10px] items-center justify-center bg-black/40">
+                                  <Text className="font-sans text-body-sm font-medium text-white">
+                                    +{extra}
+                                  </Text>
+                                </View>
+                              ) : null}
+                            </View>
+                          );
+                        })}
+                      </View>
                     ) : (
                       <PhotoSlot />
                     )}

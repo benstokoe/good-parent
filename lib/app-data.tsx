@@ -12,7 +12,7 @@ export type JournalEntry = {
   date: string;
   body: string;
   photoId: string;
-  photoUri?: string;
+  photoUris?: string[];
 };
 
 export type ParentMilestone = { id: string; title: string; date: string; note: string };
@@ -193,7 +193,7 @@ const initialState: State = {
 
 type Ctx = {
   state: State;
-  addJournalEntry: (title: string, body: string, photoUri?: string) => void;
+  addJournalEntry: (title: string, body: string, photoUris?: string[]) => void;
   addMilestone: (kind: "parent" | "child", title: string, note: string) => void;
   resolveActionItem: (id: string) => void;
   submitCheckin: (input: {
@@ -212,7 +212,7 @@ const AppDataContext = createContext<Ctx | null>(null);
 export function AppDataProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<State>(initialState);
 
-  const addJournalEntry = useCallback((title: string, body: string, photoUri?: string) => {
+  const addJournalEntry = useCallback((title: string, body: string, photoUris?: string[]) => {
     setState((s) => ({
       ...s,
       journalEntries: [
@@ -222,7 +222,7 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
           title: title.trim() || "Untitled",
           date: "Today",
           body: body.trim(),
-          photoUri,
+          photoUris,
         },
         ...s.journalEntries,
       ],
