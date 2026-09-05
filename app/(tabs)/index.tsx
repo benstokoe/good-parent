@@ -70,10 +70,10 @@ export default function HomeScreen() {
           <Pressable
             accessibilityLabel="Account"
             onPress={() => router.push("/account")}
-            className="w-8 h-8 rounded-full items-center justify-center"
+            className="w-11 h-11 rounded-full items-center justify-center"
             style={{ backgroundColor: semantic.surfaceSunken }}
           >
-            <Icon name="user" size={18} color={semantic.textMuted} />
+            <Icon name="user" size={20} color={semantic.textMuted} />
           </Pressable>
         )}
       </View>

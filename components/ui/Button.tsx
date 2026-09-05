@@ -36,9 +36,9 @@ const buttonVariants = cva(
         ),
       },
       size: {
-        sm: "h-9 gap-1.5 rounded-md px-3",
-        md: "h-10 px-4 py-2",
-        lg: "h-11 rounded-md px-6",
+        sm: "h-11 gap-1.5 rounded-md px-3",
+        md: "h-12 px-4 py-2",
+        lg: "h-14 rounded-md px-6",
       },
     },
     defaultVariants: {

@@ -17,9 +17,9 @@ const iconButtonVariants = cva("items-center justify-center rounded-md border", 
       ghost: "bg-transparent border-transparent active:bg-accent",
     },
     size: {
-      sm: "h-[30px] w-[30px]",
-      md: "h-8 w-8",
-      lg: "h-12 w-12",
+      sm: "h-9 w-9",
+      md: "h-11 w-11",
+      lg: "h-14 w-14",
     },
   },
   defaultVariants: {
@@ -28,7 +28,7 @@ const iconButtonVariants = cva("items-center justify-center rounded-md border", 
   },
 });
 
-const ICON_SIZES = { sm: 15, md: 18, lg: 20 } as const;
+const ICON_SIZES = { sm: 17, md: 20, lg: 24 } as const;
 
 type IconButtonVariants = VariantProps<typeof iconButtonVariants>;
 

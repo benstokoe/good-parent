@@ -19,7 +19,7 @@ export function Tag({
     <Pressable
       onPress={onPress}
       className={cn(
-        "flex-row items-center justify-center rounded-full border px-3.5 py-2",
+        "flex-row items-center justify-center rounded-full border px-3.5 py-3",
         selected ? "bg-foreground border-transparent" : "bg-card border-border",
         fullWidth && "w-full",
       )}

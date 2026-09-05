@@ -119,7 +119,7 @@ export default function ProfileSetupScreen() {
                   <Pressable
                     key={n}
                     onPress={() => setProfile({ feeling: n })}
-                    className="flex-1 h-10 rounded-md border items-center justify-center"
+                    className="flex-1 h-12 rounded-md border items-center justify-center"
                     style={{
                       backgroundColor: on ? colors.clay[400] : semantic.surfaceCard,
                       borderColor: semantic.borderDefault,
