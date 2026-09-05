@@ -54,7 +54,7 @@ export default function JournalScreen() {
           <View className="mt-1.5">
             <WebGrid columns={2}>
               {entries.map((j) => (
-                <Card key={j.id}>
+                <Card key={j.id} onPress={() => router.push({ pathname: "/journal-entry", params: { id: j.id } })}>
                   <View className="flex-row justify-between items-baseline">
                     <Text className="font-display text-title-sm" style={{ fontSize: 15, color: semantic.textHeading }}>
                       {j.title}
@@ -66,6 +66,21 @@ export default function JournalScreen() {
                   <Text className="font-sans text-body-sm mt-1.5" style={{ color: semantic.textBody }}>
                     {j.body}
                   </Text>
+                  {j.tags && j.tags.length > 0 ? (
+                    <View className="flex-row flex-wrap gap-1.5 mt-1.5">
+                      {j.tags.map((tag) => (
+                        <View
+                          key={tag}
+                          className="rounded-full px-2.5 py-0.5"
+                          style={{ backgroundColor: semantic.surfaceSunken }}
+                        >
+                          <Text className="font-sans text-caption" style={{ color: semantic.textMuted }}>
+                            {tag}
+                          </Text>
+                        </View>
+                      ))}
+                    </View>
+                  ) : null}
                   <View className="mt-2.5">
                     {j.photoUris && j.photoUris.length > 0 ? (
                       <View className="flex-row gap-1.5">

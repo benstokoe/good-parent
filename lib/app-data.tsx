@@ -13,6 +13,7 @@ export type JournalEntry = {
   body: string;
   photoId: string;
   photoUris?: string[];
+  tags?: string[];
 };
 
 export type ParentMilestone = { id: string; title: string; date: string; note: string };
@@ -45,6 +46,27 @@ export type Profile = {
 
 export type ThemePreference = "system" | "light" | "dark";
 
+// The curated set shown as "most common" tags on the Journal compose screen — editorially
+// chosen to fit the Journal's unstructured, not-goodness-framed tone (see CONTEXT.md),
+// not derived from usage. Anything a parent types beyond this list becomes a custom tag,
+// stored in state.journalCustomTags so it's offered again from "See all" next time.
+export const JOURNAL_DEFAULT_TAGS = [
+  "Milestone",
+  "Trip",
+  "Funny",
+  "Hard day",
+  "Firsts",
+  "Family time",
+  "Quiet moment",
+  "Big feelings",
+  "Sick day",
+  "Sleep",
+  "School",
+  "Outdoors",
+  "Holiday",
+  "Friends",
+];
+
 export type Settings = {
   appLockEnabled: boolean;
   reminderEnabled: boolean;
@@ -56,6 +78,7 @@ export type Settings = {
 
 type State = {
   journalEntries: JournalEntry[];
+  journalCustomTags: string[];
   parentMilestones: ParentMilestone[];
   childMilestones: ChildMilestone[];
   actionItemsOpen: ActionItem[];
@@ -68,6 +91,7 @@ type State = {
 };
 
 const initialState: State = {
+  journalCustomTags: [],
   journalEntries: [
     {
       id: "journal-1",
@@ -193,7 +217,15 @@ const initialState: State = {
 
 type Ctx = {
   state: State;
-  addJournalEntry: (title: string, body: string, photoUris?: string[]) => void;
+  addJournalEntry: (title: string, body: string, photoUris?: string[], tags?: string[]) => void;
+  updateJournalEntry: (
+    id: string,
+    title: string,
+    body: string,
+    photoUris?: string[],
+    tags?: string[],
+  ) => void;
+  addCustomJournalTag: (tag: string) => void;
   addMilestone: (kind: "parent" | "child", title: string, note: string) => void;
   resolveActionItem: (id: string) => void;
   submitCheckin: (input: {
@@ -212,21 +244,49 @@ const AppDataContext = createContext<Ctx | null>(null);
 export function AppDataProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<State>(initialState);
 
-  const addJournalEntry = useCallback((title: string, body: string, photoUris?: string[]) => {
-    setState((s) => ({
-      ...s,
-      journalEntries: [
-        {
-          id: `journal-${Date.now()}`,
-          photoId: `journal-photo-${Date.now()}`,
-          title: title.trim() || "Untitled",
-          date: "Today",
-          body: body.trim(),
-          photoUris,
-        },
-        ...s.journalEntries,
-      ],
-    }));
+  const addJournalEntry = useCallback(
+    (title: string, body: string, photoUris?: string[], tags?: string[]) => {
+      setState((s) => ({
+        ...s,
+        journalEntries: [
+          {
+            id: `journal-${Date.now()}`,
+            photoId: `journal-photo-${Date.now()}`,
+            title: title.trim() || "Untitled",
+            date: "Today",
+            body: body.trim(),
+            photoUris,
+            tags,
+          },
+          ...s.journalEntries,
+        ],
+      }));
+    },
+    [],
+  );
+
+  const updateJournalEntry = useCallback(
+    (id: string, title: string, body: string, photoUris?: string[], tags?: string[]) => {
+      setState((s) => ({
+        ...s,
+        journalEntries: s.journalEntries.map((entry) =>
+          entry.id === id
+            ? { ...entry, title: title.trim() || "Untitled", body: body.trim(), photoUris, tags }
+            : entry,
+        ),
+      }));
+    },
+    [],
+  );
+
+  const addCustomJournalTag = useCallback((tag: string) => {
+    const trimmed = tag.trim();
+    if (!trimmed) return;
+    setState((s) => {
+      const known = [...JOURNAL_DEFAULT_TAGS, ...s.journalCustomTags];
+      if (known.some((t) => t.toLowerCase() === trimmed.toLowerCase())) return s;
+      return { ...s, journalCustomTags: [...s.journalCustomTags, trimmed] };
+    });
   }, []);
 
   const addMilestone = useCallback((kind: "parent" | "child", title: string, note: string) => {
@@ -321,6 +381,8 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
     () => ({
       state,
       addJournalEntry,
+      updateJournalEntry,
+      addCustomJournalTag,
       addMilestone,
       resolveActionItem,
       submitCheckin,
@@ -328,7 +390,18 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
       updateSettings,
       unlockApp,
     }),
-    [state, addJournalEntry, addMilestone, resolveActionItem, submitCheckin, setProfile, updateSettings, unlockApp],
+    [
+      state,
+      addJournalEntry,
+      updateJournalEntry,
+      addCustomJournalTag,
+      addMilestone,
+      resolveActionItem,
+      submitCheckin,
+      setProfile,
+      updateSettings,
+      unlockApp,
+    ],
   );
 
   return <AppDataContext.Provider value={value}>{children}</AppDataContext.Provider>;
