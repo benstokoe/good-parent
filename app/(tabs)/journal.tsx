@@ -1,15 +1,12 @@
+import { router } from "expo-router";
 import { useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { Image, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { PhotoSlot } from "@/components/PhotoSlot";
 import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Dialog } from "@/components/ui/Dialog";
-import { Field } from "@/components/ui/Field";
 import { IconButton } from "@/components/ui/IconButton";
 import { Input } from "@/components/ui/Input";
-import { Textarea } from "@/components/ui/Textarea";
 import { WebContainer } from "@/components/web/WebContainer";
 import { WebGrid } from "@/components/web/WebGrid";
 import { useAppData } from "@/lib/app-data";
@@ -17,29 +14,14 @@ import { useSemantic } from "@/lib/theme-context";
 
 export default function JournalScreen() {
   const semantic = useSemantic();
-  const { state, addJournalEntry } = useAppData();
+  const { state } = useAppData();
   const [search, setSearch] = useState("");
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
 
   const entries = search.trim()
     ? state.journalEntries.filter((j) =>
         `${j.title} ${j.body}`.toLowerCase().includes(search.toLowerCase()),
       )
     : state.journalEntries;
-
-  const closeDialog = () => {
-    setDialogOpen(false);
-    setTitle("");
-    setBody("");
-  };
-
-  const save = () => {
-    if (!title.trim() && !body.trim()) return;
-    addJournalEntry(title, body);
-    closeDialog();
-  };
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
@@ -61,7 +43,7 @@ export default function JournalScreen() {
               name="plus"
               label="New entry"
               variant="secondary"
-              onPress={() => setDialogOpen(true)}
+              onPress={() => router.push("/journal-entry")}
             />
           </View>
 
@@ -85,7 +67,15 @@ export default function JournalScreen() {
                     {j.body}
                   </Text>
                   <View className="mt-2.5">
-                    <PhotoSlot />
+                    {j.photoUri ? (
+                      <Image
+                        source={{ uri: j.photoUri }}
+                        className="w-full h-[120px] rounded-[10px]"
+                        resizeMode="cover"
+                      />
+                    ) : (
+                      <PhotoSlot />
+                    )}
                   </View>
                 </Card>
               ))}
@@ -93,34 +83,6 @@ export default function JournalScreen() {
           </View>
         </WebContainer>
       </ScrollView>
-
-      <Dialog
-        open={dialogOpen}
-        title="New journal entry"
-        onClose={closeDialog}
-        footer={
-          <>
-            <Button variant="ghost" onPress={closeDialog}>
-              Cancel
-            </Button>
-            <Button variant="primary" onPress={save}>
-              Save
-            </Button>
-          </>
-        }
-      >
-        <Field label="Title">
-          <Input placeholder="A few words" value={title} onChangeText={setTitle} />
-        </Field>
-        <Field label="What's on your mind">
-          <Textarea
-            rows={5}
-            placeholder="Trips, moments, feelings…"
-            value={body}
-            onChangeText={setBody}
-          />
-        </Field>
-      </Dialog>
     </SafeAreaView>
   );
 }

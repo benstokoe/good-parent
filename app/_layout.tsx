@@ -89,6 +89,7 @@ export default function RootLayout() {
                   <Stack.Screen name="profile-setup" />
                   <Stack.Screen name="(tabs)" />
                   <Stack.Screen name="checkin" options={{ presentation: "modal" }} />
+                  <Stack.Screen name="journal-entry" options={{ presentation: "modal" }} />
                   <Stack.Screen name="affirmation" options={{ presentation: "modal" }} />
                   <Stack.Screen name="milestones" options={{ presentation: "modal" }} />
                   <Stack.Screen name="burn" options={{ presentation: "modal" }} />
