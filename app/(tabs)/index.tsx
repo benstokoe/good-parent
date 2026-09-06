@@ -1,12 +1,12 @@
 import { router } from "expo-router";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Icon, type IconName } from "@/components/ui/icon";
 import { useAppData } from "@/lib/app-data";
-import { colors } from "@/lib/theme";
+import { colors, fontFamily, typography } from "@/lib/theme";
 import { useSemantic } from "@/lib/theme-context";
 
 const QUICK_ACTIONS: { icon: IconName; label: string; href: "/checkin" | "/affirmation" | "/milestones" | "/burn" }[] = [
@@ -54,21 +54,16 @@ export default function HomeScreen() {
   };
 
   const header = (
-    <View className="flex-row justify-between items-center">
+    <View style={styles.header}>
       <View>
-        <Text className="font-display text-display-md" style={{ color: semantic.textHeading }}>
-          {greeting}
-        </Text>
-        <Text className="font-sans text-body-sm mt-0.5" style={{ color: semantic.textMuted }}>
-          {todayLabel}
-        </Text>
+        <Text style={[styles.greeting, { color: semantic.textHeading }]}>{greeting}</Text>
+        <Text style={[styles.dateLabel, { color: semantic.textMuted }]}>{todayLabel}</Text>
       </View>
-      <View className="flex-row items-center gap-1">
+      <View style={styles.headerActions}>
         <Pressable
           accessibilityLabel="Account"
           onPress={() => router.push("/account")}
-          className="w-11 h-11 rounded-full items-center justify-center"
-          style={{ backgroundColor: semantic.surfaceSunken }}
+          style={[styles.accountButton, { backgroundColor: semantic.surfaceSunken }]}
         >
           <Icon name="user" size={20} color={semantic.textMuted} />
         </Pressable>
@@ -79,18 +74,10 @@ export default function HomeScreen() {
   const recapCard = (
     <Pressable onPress={() => router.push("/recap")}>
       <Card tone="sunken" padding="lg">
-        <View className="flex-row items-center justify-between gap-2">
+        <View style={styles.rowBetween}>
           <View>
-            <Text
-              className="text-caption tracking-wide font-sans-semibold"
-              style={{ color: semantic.textMuted }}
-            >
-              YOUR WEEK
-            </Text>
-            <Text
-              className="font-display text-title-sm mt-1"
-              style={{ fontSize: 16, color: semantic.textHeading }}
-            >
+            <Text style={[styles.sectionLabel, { color: semantic.textMuted }]}>YOUR WEEK</Text>
+            <Text style={[styles.recapTitle, { color: semantic.textHeading }]}>
               3 check-ins, 2 milestones. Worth a look.
             </Text>
           </View>
@@ -102,15 +89,12 @@ export default function HomeScreen() {
 
   const checkinNudge = (
     <Card tone="accent" padding="lg">
-      <View className="flex-row items-center justify-between gap-2">
-        <View className="flex-1">
-          <Text
-            className="font-display text-title-sm"
-            style={{ fontSize: 17, color: semantic.textHeading }}
-          >
+      <View style={styles.rowBetween}>
+        <View style={styles.flex1}>
+          <Text style={[styles.checkinTitle, { color: semantic.textHeading }]}>
             Haven&apos;t checked in today
           </Text>
-          <Text className="font-sans text-body-sm mt-1" style={{ color: semantic.textMuted }}>
+          <Text style={[styles.bodySmMt1, { color: semantic.textMuted }]}>
             Two minutes, three questions.
           </Text>
         </View>
@@ -126,20 +110,13 @@ export default function HomeScreen() {
   const todayCard = !state.checkedInToday ? checkinNudge : recapCard;
 
   const quickActions = (
-    <View className="flex-row justify-between">
+    <View style={styles.quickActionsRow}>
       {QUICK_ACTIONS.map((a) => (
-        <Pressable
-          key={a.label}
-          onPress={() => router.push(a.href)}
-          className="flex-1 items-center gap-1.5"
-        >
-          <View
-            className="w-[46px] h-[46px] rounded-full items-center justify-center"
-            style={{ backgroundColor: colors.clay[50] }}
-          >
+        <Pressable key={a.label} onPress={() => router.push(a.href)} style={styles.quickAction}>
+          <View style={[styles.quickActionIcon, { backgroundColor: colors.clay[50] }]}>
             <Icon name={a.icon} size={20} color={colors.clay[400]} />
           </View>
-          <Text className="text-caption text-center" style={{ color: semantic.textBody }}>
+          <Text style={[typography.caption, styles.textCenter, { color: semantic.textBody }]}>
             {a.label}
           </Text>
         </Pressable>
@@ -150,51 +127,36 @@ export default function HomeScreen() {
   // One recent moment as proof there's more, then a plain link to the full run on
   // Timeline — not a second scrollable list competing with the one above it.
   const recentSection = (
-    <View className="gap-2.5">
+    <View style={styles.recentSection}>
       <Card tone={recentHighlight.tone} padding="lg">
-        <View className="flex-row items-center gap-1.5 mb-2">
+        <View style={styles.recentHeaderRow}>
           <Icon name={recentHighlight.icon} size={13} color={recentHighlight.labelColor} />
-          <Text
-            className="text-caption tracking-wide font-sans-semibold"
-            style={{ color: recentHighlight.labelColor }}
-          >
+          <Text style={[styles.sectionLabel, { color: recentHighlight.labelColor }]}>
             {recentHighlight.label}
           </Text>
-          <Text className="text-caption ml-auto" style={{ color: semantic.textSubtle }}>
+          <Text style={[typography.caption, styles.marginLeftAuto, { color: semantic.textSubtle }]}>
             {recentHighlight.date}
           </Text>
         </View>
-        <Text className="font-sans text-body-sm" style={{ color: semantic.textBody }}>
-          {recentHighlight.text}
-        </Text>
+        <Text style={[typography.bodySM, { color: semantic.textBody }]}>{recentHighlight.text}</Text>
       </Card>
-      <Pressable
-        onPress={() => router.push("/timeline")}
-        className="flex-row items-center justify-center gap-1 py-1"
-      >
-        <Text className="font-sans-medium text-body-sm" style={{ color: semantic.textAccent }}>
-          See full timeline
-        </Text>
+      <Pressable onPress={() => router.push("/timeline")} style={styles.seeAllRow}>
+        <Text style={[styles.seeAllText, { color: semantic.textAccent }]}>See full timeline</Text>
         <Icon name="chevron-right" size={14} color={semantic.textAccent} />
       </Pressable>
     </View>
   );
 
   return (
-    <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
-      <ScrollView className="flex-1" contentContainerClassName="px-4 pt-3 pb-28">
+    <SafeAreaView style={[styles.flex1, { backgroundColor: semantic.surfacePage }]}>
+      <ScrollView style={styles.flex1} contentContainerStyle={styles.scrollContent}>
         {header}
 
-        <View className="gap-6 mt-6">
+        <View style={styles.contentStack}>
           {todayCard}
           {quickActions}
-          <View className="gap-2.5">
-            <Text
-              className="text-caption tracking-wide uppercase"
-              style={{ color: semantic.textSubtle }}
-            >
-              Recent
-            </Text>
+          <View style={styles.recentGroup}>
+            <Text style={[styles.recentGroupLabel, { color: semantic.textSubtle }]}>Recent</Text>
             {recentSection}
           </View>
         </View>
@@ -202,3 +164,48 @@ export default function HomeScreen() {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  flex1: { flex: 1 },
+  header: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  greeting: typography.displayMD,
+  dateLabel: { ...typography.bodySM, marginTop: 2 },
+  headerActions: { flexDirection: "row", alignItems: "center", gap: 4 },
+  accountButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 999,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  rowBetween: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8 },
+  sectionLabel: { ...typography.caption, fontFamily: fontFamily.bodySemibold, letterSpacing: 0.3 },
+  recapTitle: { ...typography.titleSM, marginTop: 4, fontSize: 16 },
+  checkinTitle: { ...typography.titleSM, fontSize: 17 },
+  bodySmMt1: { ...typography.bodySM, marginTop: 4 },
+  quickActionsRow: { flexDirection: "row", justifyContent: "space-between" },
+  quickAction: { flex: 1, alignItems: "center", gap: 6 },
+  quickActionIcon: {
+    width: 46,
+    height: 46,
+    borderRadius: 999,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  textCenter: { textAlign: "center" },
+  recentSection: { gap: 10 },
+  recentHeaderRow: { flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 8 },
+  marginLeftAuto: { marginLeft: "auto" },
+  seeAllRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 4,
+    paddingVertical: 4,
+  },
+  seeAllText: { ...typography.bodySM, fontFamily: fontFamily.bodyMedium },
+  scrollContent: { paddingHorizontal: 16, paddingTop: 12, paddingBottom: 112 },
+  contentStack: { gap: 24, marginTop: 24 },
+  recentGroup: { gap: 10 },
+  recentGroupLabel: { ...typography.caption, letterSpacing: 0.3, textTransform: "uppercase" },
+});

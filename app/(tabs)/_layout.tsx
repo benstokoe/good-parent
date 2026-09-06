@@ -1,7 +1,7 @@
 import { Tabs, router, usePathname } from "expo-router";
 import type { BottomTabBarProps } from "expo-router/build/react-navigation/bottom-tabs";
 import { GlassContainer, GlassView, isGlassEffectAPIAvailable } from "expo-glass-effect";
-import { Platform, Pressable, Text, View } from "react-native";
+import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { LockGate } from "@/components/LockGate";
@@ -56,7 +56,7 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
     return (
       <Pressable
         key={name}
-        className="flex-1 items-center gap-1.5"
+        style={styles.tab}
         onPress={() => {
           const event = navigation.emit({
             type: "tabPress",
@@ -67,30 +67,24 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
         }}
       >
         <Icon name={TAB_ICON[name] ?? "sparkles"} size={21} color={color} />
-        <Text className="text-[10px]" style={{ color }}>
-          {TAB_LABEL[name] ?? name}
-        </Text>
+        <Text style={[styles.tabLabel, { color }]}>{TAB_LABEL[name] ?? name}</Text>
       </Pressable>
     );
   };
 
   return (
     <View
-      className="flex-row items-end justify-around px-1 pt-1 pb-5 border-t"
-      style={{ backgroundColor: semantic.surfaceCard, borderColor: semantic.borderSubtle }}
+      style={[styles.customBar, { backgroundColor: semantic.surfaceCard, borderColor: semantic.borderSubtle }]}
     >
       {LEFT_TABS.map(renderTab)}
-      <View className="flex-1 items-center gap-1.5">
+      <View style={styles.tab}>
         <Pressable
           onPress={() => router.push("/panic")}
-          className="w-[52px] h-[52px] rounded-full items-center justify-center -mt-2"
-          style={{ backgroundColor: semantic.actionPrimary }}
+          style={[styles.panicButton, { backgroundColor: semantic.actionPrimary }]}
         >
           <Icon name="message-square" size={22} color="#fff" />
         </Pressable>
-        <Text className="text-[10px] -mt-1.5" style={{ color: semantic.textMuted }}>
-          Panic
-        </Text>
+        <Text style={[styles.tabLabel, styles.panicLabel, { color: semantic.textMuted }]}>Panic</Text>
       </View>
       {RIGHT_TABS.map(renderTab)}
     </View>
@@ -115,11 +109,9 @@ function FloatingGlassBar() {
     const focused = isActive(name);
     const color = focused ? semantic.textAccent : semantic.textMuted;
     return (
-      <Pressable key={name} className="flex-1 items-center gap-1.5" onPress={() => go(name)}>
+      <Pressable key={name} style={styles.tab} onPress={() => go(name)}>
         <Icon name={TAB_ICON[name] ?? "sparkles"} size={21} color={color} />
-        <Text className="text-[10px]" style={{ color }}>
-          {TAB_LABEL[name] ?? name}
-        </Text>
+        <Text style={[styles.tabLabel, { color }]}>{TAB_LABEL[name] ?? name}</Text>
       </Pressable>
     );
   };
@@ -148,11 +140,9 @@ function FloatingGlassBar() {
             }}
           >
             {LEFT_TABS.map(renderTab)}
-            <View className="flex-1 items-center gap-1.5">
+            <View style={styles.tab}>
               <View style={{ width: 21, height: 21 }} />
-              <Text className="text-[10px]" style={{ color: semantic.textMuted }}>
-                Panic
-              </Text>
+              <Text style={[styles.tabLabel, { color: semantic.textMuted }]}>Panic</Text>
             </View>
             {RIGHT_TABS.map(renderTab)}
           </GlassView>
@@ -169,10 +159,7 @@ function FloatingGlassBar() {
               borderRadius: 999,
             }}
           >
-            <Pressable
-              onPress={() => router.push("/panic")}
-              className="w-[52px] h-[52px] rounded-full items-center justify-center"
-            >
+            <Pressable onPress={() => router.push("/panic")} style={styles.glassPanicButton}>
               <Icon name="message-square" size={22} color={semantic.actionPrimary} />
             </Pressable>
           </GlassView>
@@ -207,3 +194,33 @@ export default function TabsLayout() {
     </LockGate>
   );
 }
+
+const styles = StyleSheet.create({
+  tab: { flex: 1, alignItems: "center", gap: 6 },
+  tabLabel: { fontSize: 10 },
+  panicLabel: { marginTop: -6 },
+  customBar: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "space-around",
+    paddingHorizontal: 4,
+    paddingTop: 4,
+    paddingBottom: 20,
+    borderTopWidth: 1,
+  },
+  panicButton: {
+    width: 52,
+    height: 52,
+    borderRadius: 999,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: -8,
+  },
+  glassPanicButton: {
+    width: 52,
+    height: 52,
+    borderRadius: 999,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});

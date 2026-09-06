@@ -19,13 +19,13 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { AppDataProvider } from "@/lib/app-data";
 import { clerkTokenCache } from "@/lib/clerk-token-cache";
 import { convex } from "@/lib/convex";
-import { semantic } from "@/lib/theme";
+import { semantic, spacing, typography } from "@/lib/theme";
 import { ThemeProvider, useColorSchemeValue } from "@/lib/theme-context";
 import { ToastProvider } from "@/lib/toast";
 
@@ -57,17 +57,11 @@ export default function RootLayout() {
 
   if (!publishableKey) {
     return (
-      <View
-        className="flex-1 items-center justify-center px-6 gap-1"
-        style={{ backgroundColor: semantic.surfacePage }}
-      >
-        <Text className="font-display text-title-md" style={{ color: semantic.textHeading }}>
+      <View style={[styles.missingConfig, { backgroundColor: semantic.surfacePage }]}>
+        <Text style={[typography.titleMD, { color: semantic.textHeading }]}>
           Missing Clerk configuration
         </Text>
-        <Text
-          className="font-sans text-body-md text-center"
-          style={{ color: semantic.textMuted }}
-        >
+        <Text style={[typography.bodyMD, styles.missingConfigBody, { color: semantic.textMuted }]}>
           Set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY (and EXPO_PUBLIC_CONVEX_URL,
           EXPO_PUBLIC_CLERK_ISSUER_URL) in .env.local — see .env.example.
         </Text>
@@ -107,3 +101,16 @@ export default function RootLayout() {
     </SafeAreaProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  missingConfig: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: spacing[8],
+    gap: spacing[2],
+  },
+  missingConfigBody: {
+    textAlign: "center",
+  },
+});
