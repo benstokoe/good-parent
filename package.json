@@ -17,19 +17,11 @@
     "@clerk/expo": "^4.6.2",
     "@expo-google-fonts/fraunces": "^0.4.1",
     "@expo-google-fonts/inter": "^0.4.2",
+    "@expo/ui": "~57.0.16",
     "@expo/vector-icons": "^15.0.3",
     "@react-navigation/bottom-tabs": "^7.4.0",
     "@react-navigation/elements": "^2.6.3",
     "@react-navigation/native": "^7.1.8",
-    "@rn-primitives/dialog": "^1.5.2",
-    "@rn-primitives/popover": "^1.5.2",
-    "@rn-primitives/portal": "^1.5.3",
-    "@rn-primitives/radio-group": "^1.5.2",
-    "@rn-primitives/select": "^1.5.2",
-    "@rn-primitives/slot": "^1.5.2",
-    "@rn-primitives/switch": "^1.5.2",
-    "@rn-primitives/tabs": "^1.5.2",
-    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "convex": "^1.45.0",
     "expo": "^57.0.19",
@@ -88,7 +80,7 @@
       "^@/(.*)$": "<rootDir>/$1"
     },
     "transformIgnorePatterns": [
-      "/node_modules/(?!(.pnpm|react-native|@react-native|@react-native-community|expo|@expo|@expo-google-fonts|@rn-primitives|react-navigation|@react-navigation|@sentry/react-native|native-base|standard-navigation))"
+      "/node_modules/(?!(.pnpm|react-native|@react-native|@react-native-community|expo|@expo|@expo-google-fonts|react-navigation|@react-navigation|@sentry/react-native|native-base|standard-navigation))"
     ],
     "testPathIgnorePatterns": [
       "/node_modules/",

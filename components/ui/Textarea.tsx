@@ -1,29 +1,72 @@
-import { Platform, TextInput, type TextInputProps } from "react-native";
+import { useState } from "react";
+import { View, type StyleProp, type ViewStyle } from "react-native";
 
-import { cn } from "@/lib/cn";
+import { Host, TextInput } from "@expo/ui";
 
-// React Native Reusables' textarea.tsx, ported as-is — `rows` is our own alias for
-// numberOfLines (the app's existing call sites pass rows, not numberOfLines).
+import { radius, spacing, typography } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
+
 export function Textarea({
+  value,
+  onChangeText,
+  placeholder,
+  autoFocus,
   rows = 4,
-  className,
-  ...rest
-}: TextInputProps & { rows?: number }) {
+  style,
+}: {
+  value: string;
+  onChangeText: (text: string) => void;
+  placeholder?: string;
+  autoFocus?: boolean;
+  rows?: number;
+  style?: StyleProp<ViewStyle>;
+}) {
+  const semantic = useSemantic();
+  const [focused, setFocused] = useState(false);
+
   return (
-    <TextInput
-      multiline
-      numberOfLines={rows}
-      textAlignVertical="top"
-      className={cn(
-        "text-foreground border-input flex min-h-16 w-full flex-row rounded-md border bg-transparent px-4 py-3 text-base shadow-sm shadow-black/5",
-        Platform.select({
-          web: "placeholder:text-muted-foreground outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] md:text-sm",
-          native: "placeholder:text-muted-foreground/50",
-        }),
-        rest.editable === false && "opacity-50",
-        className,
-      )}
-      {...rest}
-    />
+    // See Input.tsx: border/background/radius live on a plain RN View rather than on the
+    // SwiftUI TextInput's own `style`, since @expo/ui's `modifiers` escape hatch (needed for a
+    // properly rounded border) applies innermost, before its own padding — wrapping only the
+    // naked field rather than the padded box.
+    <View
+      style={[
+        {
+          borderRadius: radius.md,
+          borderWidth: 1,
+          borderColor: focused ? semantic.borderAccent : semantic.borderDefault,
+          backgroundColor: semantic.surfacePage,
+        },
+        style,
+      ]}
+    >
+      <Host
+        matchContents={style ? undefined : { vertical: true }}
+        style={style ? { flex: 1, width: "100%" } : { width: "100%" }}
+      >
+        <TextInput
+          defaultValue={value}
+          onChangeText={onChangeText}
+          placeholder={placeholder}
+          placeholderTextColor={semantic.textSubtle}
+          autoFocus={autoFocus}
+          multiline
+          numberOfLines={rows}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          cursorColor={semantic.focusRing}
+          style={{
+            backgroundColor: "transparent",
+            paddingHorizontal: spacing[5],
+            paddingVertical: spacing[4],
+          }}
+          textStyle={{
+            fontFamily: typography.bodyMD.fontFamily,
+            fontSize: typography.bodyMD.fontSize,
+            color: semantic.textBody,
+          }}
+        />
+      </Host>
+    </View>
   );
 }

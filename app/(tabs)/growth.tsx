@@ -6,8 +6,6 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Tabs } from "@/components/ui/Tabs";
-import { WebContainer } from "@/components/web/WebContainer";
-import { WebGrid } from "@/components/web/WebGrid";
 import { useAppData } from "@/lib/app-data";
 import { useSemantic } from "@/lib/theme-context";
 
@@ -22,7 +20,6 @@ export default function GrowthScreen() {
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
       <ScrollView className="flex-1" contentContainerClassName="px-4 pt-2 pb-28">
-        <WebContainer maxWidth={880}>
         <Text className="font-display text-display-md" style={{ color: semantic.textHeading }}>
           Growth Space
         </Text>
@@ -69,7 +66,7 @@ export default function GrowthScreen() {
             onChange={(v) => setTab(v as "open" | "resolved")}
           />
 
-          <WebGrid columns={2}>
+          <View style={{ gap: 12 }}>
             {tab === "open"
               ? state.actionItemsOpen.map((a) => (
                   <Card key={a.id}>
@@ -107,9 +104,8 @@ export default function GrowthScreen() {
                     </Text>
                   </Card>
                 ))}
-          </WebGrid>
+          </View>
         </View>
-        </WebContainer>
       </ScrollView>
     </SafeAreaView>
   );

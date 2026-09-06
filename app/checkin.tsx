@@ -14,7 +14,6 @@ import { IconButton } from "@/components/ui/IconButton";
 import { RadioGroup } from "@/components/ui/RadioGroup";
 import { Tag } from "@/components/ui/Tag";
 import { Textarea } from "@/components/ui/Textarea";
-import { WebContainer } from "@/components/web/WebContainer";
 import { useAppData } from "@/lib/app-data";
 import { colors } from "@/lib/theme";
 import { useSemantic } from "@/lib/theme-context";
@@ -101,7 +100,6 @@ export default function CheckinScreen() {
       edges={["top", "left", "right"]}
       style={{ backgroundColor: semantic.surfacePage }}
     >
-      <WebContainer maxWidth={560} style={{ flex: 1 }}>
       <View className="flex-row items-center justify-between gap-2.5 px-6 pt-6 pb-3">
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
           Check-In
@@ -181,7 +179,7 @@ export default function CheckinScreen() {
               </Text>
             ) : null}
             <Textarea
-              className="flex-1"
+              style={{ flex: 1 }}
               placeholder="A moment, big or small…"
               value={wentWell}
               onChangeText={setWentWell}
@@ -218,7 +216,7 @@ export default function CheckinScreen() {
               </Text>
             ) : null}
             <Textarea
-              className="flex-1"
+              style={{ flex: 1 }}
               placeholder="It's fine for this to be honest."
               value={notWell}
               onChangeText={setNotWell}
@@ -291,7 +289,6 @@ export default function CheckinScreen() {
         )}
       </View>
       </KeyboardAvoidingView>
-      </WebContainer>
     </SafeAreaView>
   );
 }

@@ -1,11 +1,8 @@
 import { Pressable, Text } from "react-native";
 
-import { cn } from "@/lib/cn";
+import { radius, spacing, typography } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
-// Not an RNR component (no filter-chip primitive in their registry) — styled with the
-// same border-border/bg-card/bg-foreground tokens the rest of the swapped components use.
-// `size="sm"` is the read-only badge look for tags rendered on a card (e.g. journal entry
-// tags) — same unselected pill language, scaled down instead of forked into a new component.
 export function Tag({
   children,
   selected,
@@ -19,24 +16,31 @@ export function Tag({
   fullWidth?: boolean;
   size?: "sm" | "md";
 }) {
+  const semantic = useSemantic();
+
   return (
     <Pressable
       onPress={onPress}
       accessibilityRole={onPress ? "button" : undefined}
       accessibilityState={onPress ? { selected: !!selected } : undefined}
-      className={cn(
-        "flex-row items-center justify-center rounded-full border",
-        size === "sm" ? "px-2.5 py-0.5" : "px-3.5 py-3",
-        selected ? "bg-primary border-transparent" : "bg-card border-border",
-        fullWidth && "w-full",
-      )}
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        alignSelf: fullWidth ? "stretch" : "flex-start",
+        borderRadius: radius.pill,
+        borderWidth: selected ? 0 : 1,
+        borderColor: semantic.borderDefault,
+        backgroundColor: selected ? semantic.actionPrimary : semantic.surfaceCard,
+        paddingHorizontal: size === "sm" ? spacing[5] : spacing[6],
+        paddingVertical: size === "sm" ? spacing[1] : spacing[4],
+      }}
     >
       <Text
-        className={cn(
-          "font-medium leading-tight",
-          size === "sm" ? "text-caption" : "text-sm",
-          selected ? "text-primary-foreground" : "text-foreground",
-        )}
+        style={[
+          size === "sm" ? typography.caption : typography.bodySM,
+          { fontFamily: typography.ui.fontFamily, color: selected ? semantic.textInverse : semantic.textBody },
+        ]}
       >
         {children}
       </Text>

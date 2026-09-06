@@ -6,7 +6,6 @@ import { Card } from "@/components/ui/Card";
 import { Icon, type IconName } from "@/components/ui/icon";
 import { IconButton } from "@/components/ui/IconButton";
 import { Tabs } from "@/components/ui/Tabs";
-import { WebContainer } from "@/components/web/WebContainer";
 import { useAppData } from "@/lib/app-data";
 import { colors } from "@/lib/theme";
 import { useSemantic } from "@/lib/theme-context";
@@ -60,7 +59,6 @@ export default function RecapScreen() {
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
-      <WebContainer maxWidth={640} style={{ flex: 1 }}>
       <View className="flex-row items-center justify-between gap-2.5 px-6 pt-6 pb-3">
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
           Your recap
@@ -124,7 +122,6 @@ export default function RecapScreen() {
           ))}
         </View>
       </ScrollView>
-      </WebContainer>
     </SafeAreaView>
   );
 }

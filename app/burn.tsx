@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { IconButton } from "@/components/ui/IconButton";
 import { Textarea } from "@/components/ui/Textarea";
-import { WebContainer } from "@/components/web/WebContainer";
 import { useSemantic } from "@/lib/theme-context";
 
 type Phase = "compose" | "releasing" | "done";
@@ -39,7 +38,6 @@ export default function BurnScreen() {
       edges={["top", "left", "right"]}
       style={{ backgroundColor: semantic.surfacePage }}
     >
-      <WebContainer maxWidth={560} style={{ flex: 1 }}>
       <View className="flex-row items-center justify-between gap-2.5 px-6 pt-6 pb-3">
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
           Burn
@@ -122,7 +120,6 @@ export default function BurnScreen() {
         ) : null}
       </View>
       </KeyboardAvoidingView>
-      </WebContainer>
     </SafeAreaView>
   );
 }

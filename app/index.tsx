@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/expo";
 import { router } from "expo-router";
-import { Platform, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Button } from "@/components/ui/Button";
 import { Icon, type IconName } from "@/components/ui/icon";
-import { MarketingHomepage } from "@/components/web/MarketingHomepage";
 import { colors } from "@/lib/theme";
 import { useSemantic } from "@/lib/theme-context";
 
@@ -61,12 +60,6 @@ export default function OnboardingScreen() {
   }, [isLoaded, isSignedIn]);
 
   if (!isLoaded || isSignedIn) return null;
-
-  // Web has no onboarding carousel: signed-out visitors get the marketing homepage
-  // (which explains the product itself, per PRODUCT.md). Native keeps the carousel below.
-  if (Platform.OS === "web") {
-    return <MarketingHomepage />;
-  }
 
   return <OnboardingCarousel />;
 }

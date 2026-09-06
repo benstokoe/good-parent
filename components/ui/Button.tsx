@@ -1,81 +1,16 @@
-import { cva, type VariantProps } from "class-variance-authority";
-import { ActivityIndicator, Platform, Pressable, Text } from "react-native";
+import { ActivityIndicator, Pressable, Text, type StyleProp, type ViewStyle } from "react-native";
 
-import { cn } from "@/lib/cn";
+import { colors, radius, shadows, spacing, typography } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
-// Adapted from React Native Reusables' button.tsx (packages/registry/src/nativewind/
-// components/ui/button.tsx) — same cva structure and class names, styled through the
-// bg-primary/bg-secondary/etc tokens in global.css rather than shadcn's palette. "inverse"
-// and "danger" are app-specific additions on top of RNR's default variant set.
-const buttonVariants = cva(
-  cn(
-    "group shrink-0 flex-row items-center justify-center gap-2 rounded-full shadow-none",
-    Platform.select({
-      web: "outline-none transition-all disabled:pointer-events-none",
-    }),
-  ),
-  {
-    variants: {
-      variant: {
-        primary: cn(
-          "bg-primary active:bg-primary/90 shadow-sm shadow-black/5",
-          Platform.select({ web: "hover:bg-primary/90" }),
-        ),
-        secondary: cn(
-          "bg-secondary border-border active:bg-accent border shadow-sm shadow-black/5",
-          Platform.select({ web: "hover:bg-accent" }),
-        ),
-        ghost: cn("active:bg-accent", Platform.select({ web: "hover:bg-accent" })),
-        inverse: cn(
-          "bg-foreground active:bg-foreground/90 shadow-sm shadow-black/5",
-          Platform.select({ web: "hover:bg-foreground/90" }),
-        ),
-        danger: cn(
-          "bg-destructive active:bg-destructive/90 shadow-sm shadow-black/5",
-          Platform.select({ web: "hover:bg-destructive/90" }),
-        ),
-      },
-      size: {
-        sm: "h-11 gap-1.5 px-3",
-        md: "h-12 px-4 py-2",
-        lg: "h-14 px-6",
-      },
-    },
-    defaultVariants: {
-      variant: "primary",
-      size: "md",
-    },
-  },
-);
+export type ButtonVariant = "primary" | "secondary" | "ghost" | "inverse" | "danger";
+export type ButtonSize = "sm" | "md" | "lg";
 
-const buttonTextVariants = cva(
-  cn("text-sm font-medium", Platform.select({ web: "pointer-events-none transition-colors" })),
-  {
-    variants: {
-      variant: {
-        primary: "text-primary-foreground",
-        secondary: "text-secondary-foreground",
-        ghost: cn(
-          "text-foreground group-active:text-accent-foreground",
-          Platform.select({ web: "group-hover:text-accent-foreground" }),
-        ),
-        inverse: "text-background",
-        danger: "text-destructive-foreground",
-      },
-      size: {
-        sm: "text-sm",
-        md: "text-base",
-        lg: "text-base",
-      },
-    },
-    defaultVariants: {
-      variant: "primary",
-      size: "md",
-    },
-  },
-);
-
-type ButtonVariants = VariantProps<typeof buttonVariants>;
+const SIZE: Record<ButtonSize, { height: number; paddingHorizontal: number; fontSize: number }> = {
+  sm: { height: 44, paddingHorizontal: spacing[5], fontSize: typography.bodySM.fontSize },
+  md: { height: 48, paddingHorizontal: spacing[6], fontSize: typography.bodyMD.fontSize },
+  lg: { height: 56, paddingHorizontal: spacing[8], fontSize: typography.bodyMD.fontSize },
+};
 
 export function Button({
   children,
@@ -85,16 +20,21 @@ export function Button({
   loading = false,
   fullWidth = false,
   onPress,
+  style,
 }: {
   children: string;
-  variant?: NonNullable<ButtonVariants["variant"]>;
-  size?: NonNullable<ButtonVariants["size"]>;
+  variant?: ButtonVariant;
+  size?: ButtonSize;
   disabled?: boolean;
   loading?: boolean;
   fullWidth?: boolean;
   onPress?: () => void;
+  style?: StyleProp<ViewStyle>;
 }) {
+  const semantic = useSemantic();
   const inert = disabled || loading;
+  const { backgroundColor, borderColor, textColor } = buttonColors(variant, semantic);
+  const sizeStyle = SIZE[size];
 
   return (
     <Pressable
@@ -102,17 +42,60 @@ export function Button({
       accessibilityState={{ disabled: inert }}
       disabled={inert}
       onPress={onPress}
-      className={cn(
-        buttonVariants({ variant, size }),
-        fullWidth && "w-full",
-        inert && "opacity-50",
-      )}
+      style={({ pressed }) => [
+        {
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: spacing[3],
+          borderRadius: radius.pill,
+          height: sizeStyle.height,
+          paddingHorizontal: sizeStyle.paddingHorizontal,
+          alignSelf: fullWidth ? "stretch" : "flex-start",
+          backgroundColor,
+          borderWidth: borderColor ? 1 : 0,
+          borderColor,
+          opacity: inert ? 0.5 : pressed ? 0.7 : 1,
+        },
+        variant !== "ghost" ? shadows.sm : null,
+        style,
+      ]}
     >
       {loading ? (
-        <ActivityIndicator size="small" />
+        <ActivityIndicator size="small" color={textColor} />
       ) : (
-        <Text className={cn(buttonTextVariants({ variant, size }))}>{children}</Text>
+        <Text style={{ fontFamily: typography.ui.fontFamily, fontSize: sizeStyle.fontSize, color: textColor }}>
+          {children}
+        </Text>
       )}
     </Pressable>
   );
+}
+
+function buttonColors(variant: ButtonVariant, semantic: ReturnType<typeof useSemantic>) {
+  switch (variant) {
+    case "secondary":
+      return {
+        backgroundColor: semantic.actionSecondary,
+        borderColor: semantic.borderDefault,
+        textColor: semantic.textBody,
+      };
+    case "ghost":
+      return { backgroundColor: "transparent", borderColor: undefined, textColor: semantic.textBody };
+    case "inverse":
+      return {
+        backgroundColor: semantic.actionInverse,
+        borderColor: undefined,
+        textColor: semantic.textInverse,
+      };
+    case "danger":
+      return { backgroundColor: colors.red, borderColor: undefined, textColor: "#FFFFFF" };
+    case "primary":
+    default:
+      return {
+        backgroundColor: semantic.actionPrimary,
+        borderColor: undefined,
+        textColor: "#FFFFFF",
+      };
+  }
 }

@@ -1,4 +1,4 @@
-import { Slot, Tabs, router, usePathname } from "expo-router";
+import { Tabs, router, usePathname } from "expo-router";
 import type { BottomTabBarProps } from "expo-router/build/react-navigation/bottom-tabs";
 import { GlassContainer, GlassView, isGlassEffectAPIAvailable } from "expo-glass-effect";
 import { Platform, Pressable, Text, View } from "react-native";
@@ -6,8 +6,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { LockGate } from "@/components/LockGate";
 import { Icon, type IconName } from "@/components/ui/icon";
-import { WebShell } from "@/components/web/WebShell";
-import { useIsWideWeb } from "@/lib/responsive";
 import { colors } from "@/lib/theme";
 import { useSemantic } from "@/lib/theme-context";
 
@@ -185,21 +183,6 @@ function FloatingGlassBar() {
 }
 
 export default function TabsLayout() {
-  const isWideWeb = useIsWideWeb();
-
-  // Desktop web gets a persistent sidebar + detail-pane shell instead of a bottom tab
-  // bar (DESIGN.md Layout / docs/adr/0005); Slot just renders whichever of these routes
-  // matched, with the Sidebar driving navigation between them via the URL.
-  if (isWideWeb) {
-    return (
-      <LockGate>
-        <WebShell>
-          <Slot />
-        </WebShell>
-      </LockGate>
-    );
-  }
-
   return (
     <LockGate>
       <View style={{ flex: 1 }}>

@@ -6,7 +6,6 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Icon, type IconName } from "@/components/ui/icon";
 import { useAppData } from "@/lib/app-data";
-import { useIsWideWeb } from "@/lib/responsive";
 import { colors } from "@/lib/theme";
 import { useSemantic } from "@/lib/theme-context";
 
@@ -35,7 +34,6 @@ type Highlight = {
 export default function HomeScreen() {
   const semantic = useSemantic();
   const { state } = useAppData();
-  const isWideWeb = useIsWideWeb();
   const now = new Date();
   const greeting = greetingFor(now.getHours());
   const todayLabel = now.toLocaleDateString(undefined, {
@@ -66,16 +64,14 @@ export default function HomeScreen() {
         </Text>
       </View>
       <View className="flex-row items-center gap-1">
-        {isWideWeb ? null : (
-          <Pressable
-            accessibilityLabel="Account"
-            onPress={() => router.push("/account")}
-            className="w-11 h-11 rounded-full items-center justify-center"
-            style={{ backgroundColor: semantic.surfaceSunken }}
-          >
-            <Icon name="user" size={20} color={semantic.textMuted} />
-          </Pressable>
-        )}
+        <Pressable
+          accessibilityLabel="Account"
+          onPress={() => router.push("/account")}
+          className="w-11 h-11 rounded-full items-center justify-center"
+          style={{ backgroundColor: semantic.surfaceSunken }}
+        >
+          <Icon name="user" size={20} color={semantic.textMuted} />
+        </Pressable>
       </View>
     </View>
   );
@@ -130,43 +126,24 @@ export default function HomeScreen() {
   const todayCard = !state.checkedInToday ? checkinNudge : recapCard;
 
   const quickActions = (
-    <View className={isWideWeb ? "gap-2.5" : "flex-row justify-between"}>
-      {QUICK_ACTIONS.map((a) =>
-        isWideWeb ? (
-          <Pressable
-            key={a.label}
-            onPress={() => router.push(a.href)}
-            className="flex-row items-center gap-1.5 rounded-lg px-3.5 py-1.5"
-            style={{ backgroundColor: semantic.surfaceCard }}
+    <View className="flex-row justify-between">
+      {QUICK_ACTIONS.map((a) => (
+        <Pressable
+          key={a.label}
+          onPress={() => router.push(a.href)}
+          className="flex-1 items-center gap-1.5"
+        >
+          <View
+            className="w-[46px] h-[46px] rounded-full items-center justify-center"
+            style={{ backgroundColor: colors.clay[50] }}
           >
-            <View
-              className="w-8 h-8 rounded-full items-center justify-center"
-              style={{ backgroundColor: colors.clay[50] }}
-            >
-              <Icon name={a.icon} size={17} color={colors.clay[400]} />
-            </View>
-            <Text className="font-sans-medium text-body-sm" style={{ color: semantic.textBody }}>
-              {a.label}
-            </Text>
-          </Pressable>
-        ) : (
-          <Pressable
-            key={a.label}
-            onPress={() => router.push(a.href)}
-            className="flex-1 items-center gap-1.5"
-          >
-            <View
-              className="w-[46px] h-[46px] rounded-full items-center justify-center"
-              style={{ backgroundColor: colors.clay[50] }}
-            >
-              <Icon name={a.icon} size={20} color={colors.clay[400]} />
-            </View>
-            <Text className="text-caption text-center" style={{ color: semantic.textBody }}>
-              {a.label}
-            </Text>
-          </Pressable>
-        ),
-      )}
+            <Icon name={a.icon} size={20} color={colors.clay[400]} />
+          </View>
+          <Text className="text-caption text-center" style={{ color: semantic.textBody }}>
+            {a.label}
+          </Text>
+        </Pressable>
+      ))}
     </View>
   );
 
@@ -202,39 +179,6 @@ export default function HomeScreen() {
       </Pressable>
     </View>
   );
-
-  if (isWideWeb) {
-    // Desktop: two columns instead of one stretched phone stack — today's single card
-    // and the recent-moment teaser on the left, quick actions as a standing side panel
-    // on the right, both visible without scrolling past each other.
-    return (
-      <ScrollView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
-        <View className="px-10 pt-10 pb-10" style={{ maxWidth: 1200, width: "100%", alignSelf: "center" }}>
-          {header}
-          <View className="flex-row gap-8 mt-8" style={{ alignItems: "flex-start" }}>
-            <View className="gap-6" style={{ flex: 2 }}>
-              {todayCard}
-              <View className="gap-2.5">
-                <Text
-                  className="text-caption tracking-wide uppercase"
-                  style={{ color: semantic.textSubtle }}
-                >
-                  Recent
-                </Text>
-                {recentSection}
-              </View>
-            </View>
-            <View className="gap-2.5" style={{ flex: 1 }}>
-              <Text className="text-caption tracking-wide uppercase" style={{ color: semantic.textSubtle }}>
-                Quick actions
-              </Text>
-              {quickActions}
-            </View>
-          </View>
-        </View>
-      </ScrollView>
-    );
-  }
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>

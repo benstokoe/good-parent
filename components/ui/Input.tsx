@@ -1,24 +1,88 @@
-import { Platform, TextInput, type TextInputProps } from "react-native";
+import { useState, type Ref } from "react";
+import { View, type KeyboardTypeOptions, type ReturnKeyTypeOptions, type StyleProp, type ViewStyle } from "react-native";
 
-import { cn } from "@/lib/cn";
+import { Host, TextInput, type TextInputRef } from "@expo/ui";
 
-// React Native Reusables' input.tsx, ported as-is (packages/registry/src/nativewind/
-// components/ui/input.tsx) — no wrapper view or manual focus-tracking; RNR's own input
-// doesn't have one either, the border/background come straight from the bg-background/
-// border-input tokens in global.css.
-export function Input({ className, ...rest }: TextInputProps) {
+import { radius, spacing, typography } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
+
+export type { TextInputRef };
+
+export type InputProps = {
+  value: string;
+  onChangeText: (text: string) => void;
+  placeholder?: string;
+  autoFocus?: boolean;
+  keyboardType?: KeyboardTypeOptions;
+  autoCapitalize?: "none" | "sentences" | "words" | "characters";
+  secureTextEntry?: boolean;
+  returnKeyType?: ReturnKeyTypeOptions;
+  onSubmitEditing?: () => void;
+  style?: StyleProp<ViewStyle>;
+  ref?: Ref<TextInputRef>;
+};
+
+export function Input({
+  value,
+  onChangeText,
+  placeholder,
+  autoFocus,
+  keyboardType,
+  autoCapitalize,
+  secureTextEntry,
+  returnKeyType,
+  onSubmitEditing,
+  style,
+  ref,
+}: InputProps) {
+  const semantic = useSemantic();
+  const [focused, setFocused] = useState(false);
+
   return (
-    <TextInput
-      className={cn(
-        "border-input bg-background text-foreground flex w-full min-w-0 flex-row items-center rounded-md border px-4 py-3 text-base leading-5 shadow-sm shadow-black/5",
-        rest.editable === false && "opacity-50",
-        Platform.select({
-          web: "placeholder:text-muted-foreground outline-none transition-[color,box-shadow] md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-          native: "placeholder:text-muted-foreground/50",
-        }),
-        className,
-      )}
-      {...rest}
-    />
+    // The border/background/radius live on a plain RN View, not on the SwiftUI TextInput's
+    // own `style` — @expo/ui applies a user-supplied `modifiers` escape hatch (needed for a
+    // properly rounded border) *innermost*, before its own padding/background modifiers, so
+    // a border set that way wraps only the naked field, not the padded box. Keeping decoration
+    // on an outer RN View sidesteps that and gets normal, reliable RN border/radius rendering.
+    <View
+      style={[
+        {
+          borderRadius: radius.md,
+          borderWidth: 1,
+          borderColor: focused ? semantic.borderAccent : semantic.borderDefault,
+          backgroundColor: semantic.surfacePage,
+        },
+        style,
+      ]}
+    >
+      <Host matchContents={{ vertical: true }} style={{ width: "100%" }}>
+        <TextInput
+          ref={ref}
+          defaultValue={value}
+          onChangeText={onChangeText}
+          placeholder={placeholder}
+          placeholderTextColor={semantic.textSubtle}
+          autoFocus={autoFocus}
+          keyboardType={keyboardType}
+          autoCapitalize={autoCapitalize}
+          secureTextEntry={secureTextEntry}
+          returnKeyType={returnKeyType}
+          onSubmitEditing={onSubmitEditing ? () => onSubmitEditing() : undefined}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          cursorColor={semantic.focusRing}
+          style={{
+            backgroundColor: "transparent",
+            paddingHorizontal: spacing[5],
+            paddingVertical: spacing[4],
+          }}
+          textStyle={{
+            fontFamily: typography.bodyMD.fontFamily,
+            fontSize: typography.bodyMD.fontSize,
+            color: semantic.textBody,
+          }}
+        />
+      </Host>
+    </View>
   );
 }

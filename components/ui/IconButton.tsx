@@ -1,54 +1,40 @@
-import { cva, type VariantProps } from "class-variance-authority";
-import { forwardRef } from "react";
 import { Pressable, type View } from "react-native";
 
 import { Icon, type IconName } from "@/components/ui/icon";
-import { cn } from "@/lib/cn";
+import { radius } from "@/lib/theme";
 import { useSemantic } from "@/lib/theme-context";
 
-// Sized/shaped like RNR's Button size="icon" (packages/registry/src/nativewind/
-// components/ui/button.tsx), with the same primary/secondary/ghost variant treatment as
-// our Button.tsx. Icon color is read from useSemantic() rather than a className, per
-// lib/theme.ts's note — className can't reach a Lucide icon's `color` prop.
-const iconButtonVariants = cva("items-center justify-center rounded-full border", {
-  variants: {
-    variant: {
-      primary: "bg-primary border-transparent active:bg-primary/90",
-      secondary: "bg-secondary border-border active:bg-accent",
-      sunken: "bg-muted border-transparent active:bg-accent",
-      ghost: "bg-transparent border-transparent active:bg-accent",
-    },
-    size: {
-      sm: "h-9 w-9",
-      md: "h-11 w-11",
-      lg: "h-14 w-14",
-    },
-  },
-  defaultVariants: {
-    variant: "ghost",
-    size: "md",
-  },
-});
+export type IconButtonVariant = "primary" | "secondary" | "sunken" | "ghost";
+export type IconButtonSize = "sm" | "md" | "lg";
 
-const ICON_SIZES = { sm: 17, md: 20, lg: 24 } as const;
+const SIZE: Record<IconButtonSize, number> = { sm: 36, md: 44, lg: 56 };
+const ICON_SIZE: Record<IconButtonSize, number> = { sm: 17, md: 20, lg: 24 };
 
-type IconButtonVariants = VariantProps<typeof iconButtonVariants>;
-
-// forwardRef so IconButton can sit as a Popover/Dialog trigger's `asChild` child — those
+// ref so IconButton can sit as a Popover/Dialog trigger's `asChild` child — those
 // primitives clone their child and attach a ref to measure/anchor against it.
-export const IconButton = forwardRef<
-  View,
-  {
-    name: IconName;
-    label: string;
-    variant?: NonNullable<IconButtonVariants["variant"]>;
-    size?: NonNullable<IconButtonVariants["size"]>;
-    color?: string;
-    disabled?: boolean;
-    onPress?: () => void;
-  }
->(function IconButton({ name, label, variant = "ghost", size = "md", color, disabled, onPress }, ref) {
+export function IconButton({
+  name,
+  label,
+  variant = "ghost",
+  size = "md",
+  color,
+  disabled,
+  onPress,
+  ref,
+}: {
+  name: IconName;
+  label: string;
+  variant?: IconButtonVariant;
+  size?: IconButtonSize;
+  color?: string;
+  disabled?: boolean;
+  onPress?: () => void;
+  ref?: React.Ref<View>;
+}) {
   const semantic = useSemantic();
+  const { backgroundColor, borderColor, iconColor } = iconButtonColors(variant, semantic);
+  const dimension = SIZE[size];
+
   return (
     <Pressable
       ref={ref}
@@ -56,13 +42,39 @@ export const IconButton = forwardRef<
       accessibilityRole="button"
       disabled={disabled}
       onPress={onPress}
-      className={cn(iconButtonVariants({ variant, size }), disabled && "opacity-50")}
+      style={({ pressed }) => [
+        {
+          alignItems: "center",
+          justifyContent: "center",
+          width: dimension,
+          height: dimension,
+          borderRadius: radius.pill,
+          backgroundColor,
+          borderWidth: borderColor ? 1 : 0,
+          borderColor,
+          opacity: disabled ? 0.5 : pressed ? 0.7 : 1,
+        },
+      ]}
     >
-      <Icon
-        name={name}
-        size={ICON_SIZES[size]}
-        color={color ?? (variant === "primary" ? "#fff" : semantic.textMuted)}
-      />
+      <Icon name={name} size={ICON_SIZE[size]} color={color ?? iconColor} />
     </Pressable>
   );
-});
+}
+
+function iconButtonColors(variant: IconButtonVariant, semantic: ReturnType<typeof useSemantic>) {
+  switch (variant) {
+    case "primary":
+      return { backgroundColor: semantic.actionPrimary, borderColor: undefined, iconColor: "#FFFFFF" };
+    case "secondary":
+      return {
+        backgroundColor: semantic.actionSecondary,
+        borderColor: semantic.borderDefault,
+        iconColor: semantic.textBody,
+      };
+    case "sunken":
+      return { backgroundColor: semantic.surfaceSunken, borderColor: undefined, iconColor: semantic.textMuted };
+    case "ghost":
+    default:
+      return { backgroundColor: "transparent", borderColor: undefined, iconColor: semantic.textMuted };
+  }
+}

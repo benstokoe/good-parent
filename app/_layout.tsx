@@ -11,7 +11,6 @@ import {
   Inter_600SemiBold,
   Inter_700Bold,
 } from "@expo-google-fonts/inter";
-import { PortalHost } from "@rn-primitives/portal";
 import { ClerkProvider, useAuth } from "@clerk/expo";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { useFonts } from "expo-font";
@@ -99,7 +98,6 @@ export default function RootLayout() {
                     <Stack.Screen name="account" options={{ presentation: "modal" }} />
                     <Stack.Screen name="recap" options={{ presentation: "modal" }} />
                   </Stack>
-                  <PortalHost />
                 </ToastProvider>
               </GestureHandlerRootView>
             </ThemeProvider>

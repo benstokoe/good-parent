@@ -1,26 +1,32 @@
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View, type StyleProp, type ViewStyle } from "react-native";
 
-import { cn } from "@/lib/cn";
+import { spacing, typography } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
-// Styled with RNR label.tsx's text treatment ("text-foreground text-sm font-medium")
-// rather than the @rn-primitives/label primitive itself — this label is a plain caption
-// above the field, not an interactive focus-the-input trigger.
 export function Field({
   label,
   hint,
-  className,
+  style,
   children,
 }: {
   label?: string;
   hint?: string;
-  className?: string;
+  style?: StyleProp<ViewStyle>;
   children: React.ReactNode;
 }) {
+  const semantic = useSemantic();
+
   return (
-    <View className={cn("gap-1", className)}>
-      {label ? <Text className="font-sans text-foreground text-sm font-medium">{label}</Text> : null}
+    <View style={[styles.container, style]}>
+      {label ? <Text style={[styles.label, { color: semantic.textBody }]}>{label}</Text> : null}
       {children}
-      {hint ? <Text className="font-sans text-muted-foreground text-xs">{hint}</Text> : null}
+      {hint ? <Text style={[styles.hint, { color: semantic.textMuted }]}>{hint}</Text> : null}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { gap: spacing[2] },
+  label: typography.ui,
+  hint: typography.caption,
+});

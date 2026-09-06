@@ -1,11 +1,11 @@
-import type { TriggerRef } from "@rn-primitives/popover";
 import { useRef, useState } from "react";
-import { View } from "react-native";
+import { KeyboardAvoidingView, Modal, Platform, Pressable, StyleSheet, View } from "react-native";
 
 import { IconButton } from "@/components/ui/IconButton";
-import { Input } from "@/components/ui/Input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/Popover";
+import { Input, type TextInputRef } from "@/components/ui/Input";
 import { Tag } from "@/components/ui/Tag";
+import { radius, shadows, spacing } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 // Roughly two rows' worth on a mobile-width screen — an approximation, since actual
 // row count depends on label length and screen width, not something worth measuring for.
@@ -22,9 +22,11 @@ export function TagPicker({
   onToggle: (tag: string) => void;
   onAddCustomTag: (tag: string) => void;
 }) {
+  const semantic = useSemantic();
   const [expanded, setExpanded] = useState(false);
+  const [adding, setAdding] = useState(false);
   const [draft, setDraft] = useState("");
-  const triggerRef = useRef<TriggerRef>(null);
+  const draftInputRef = useRef<TextInputRef>(null);
 
   const commonTags = allTags.slice(0, COMMON_TAG_COUNT);
   // A tag the entry already carries stays visible even if collapsed view would hide it —
@@ -39,12 +41,13 @@ export function TagPicker({
     onAddCustomTag(value);
     onToggle(value);
     setDraft("");
-    triggerRef.current?.close();
+    draftInputRef.current?.clear();
+    setAdding(false);
   };
 
   return (
-    <View className="gap-2.5">
-      <View className="flex-row flex-wrap gap-2 items-center">
+    <View style={{ gap: spacing[4] }}>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing[3], alignItems: "center" }}>
         {visible.map((tag) => (
           <Tag key={tag} selected={selected.includes(tag)} onPress={() => onToggle(tag)}>
             {tag}
@@ -54,15 +57,41 @@ export function TagPicker({
           <Tag onPress={() => setExpanded(true)}>See all</Tag>
         ) : null}
 
-        <Popover>
-          <PopoverTrigger ref={triggerRef} asChild>
-            <IconButton name="plus" label="Add a custom tag" variant="sunken" />
-          </PopoverTrigger>
-          <PopoverContent className="w-64">
-            <View className="flex-row gap-2 items-center">
+        <IconButton name="plus" label="Add a custom tag" variant="sunken" onPress={() => setAdding(true)} />
+      </View>
+
+      {/* Plain RN Modal, not @expo/ui's universal BottomSheet — see the note in
+          components/ui/Dialog.tsx: BottomSheet doesn't reliably deliver touches to
+          plain Pressable children (this popup's "Add tag" button). */}
+      <Modal visible={adding} transparent animationType="fade" onRequestClose={() => setAdding(false)}>
+        <View style={{ flex: 1 }}>
+          <Pressable
+            style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(0,0,0,0.5)" }]}
+            onPress={() => setAdding(false)}
+          />
+          <KeyboardAvoidingView
+            pointerEvents="box-none"
+            style={{ flex: 1, justifyContent: "flex-end" }}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+          >
+            <View
+              style={[
+                {
+                  flexDirection: "row",
+                  gap: spacing[3],
+                  alignItems: "center",
+                  padding: spacing[6],
+                  borderTopLeftRadius: radius.lg,
+                  borderTopRightRadius: radius.lg,
+                  backgroundColor: semantic.surfaceCard,
+                },
+                shadows.overlay,
+              ]}
+            >
               <Input
+                ref={draftInputRef}
                 autoFocus
-                className="flex-1"
+                style={{ flex: 1 }}
                 placeholder="Add a custom tag"
                 value={draft}
                 onChangeText={setDraft}
@@ -77,9 +106,9 @@ export function TagPicker({
                 onPress={submitCustomTag}
               />
             </View>
-          </PopoverContent>
-        </Popover>
-      </View>
+          </KeyboardAvoidingView>
+        </View>
+      </Modal>
     </View>
   );
 }

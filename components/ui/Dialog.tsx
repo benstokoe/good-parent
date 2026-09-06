@@ -1,24 +1,13 @@
-import * as DialogPrimitive from "@rn-primitives/dialog";
-import * as React from "react";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  Text,
-  View,
-  type GestureResponderEvent,
-} from "react-native";
-import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
-import { FullWindowOverlay as RNFullWindowOverlay } from "react-native-screens";
+import { KeyboardAvoidingView, Modal, Platform, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { IconButton } from "@/components/ui/IconButton";
-import { cn } from "@/lib/cn";
+import { radius, shadows, spacing, typography } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
-const FullWindowOverlay =
-  Platform.OS === "ios" ? RNFullWindowOverlay : React.Fragment;
-
-// React Native Reusables' dialog.tsx — bg-background/50 overlay, bg-background
-// border-border content with FadeIn/FadeOut — ported with the app's own close-button
-// placement (see components/ui/IconButton.tsx) instead of RNR's floating top-right X.
+// Plain RN Modal, not @expo/ui's universal BottomSheet: verified on-device that
+// BottomSheet's SwiftUI sheet doesn't deliver touches to plain RN Pressable children
+// (a footer's Cancel/Save buttons never fire onPress, though a native @expo/ui TextInput
+// child inside the same sheet works fine) — a real defect, not a styling choice.
 export function Dialog({
   open,
   title,
@@ -32,58 +21,43 @@ export function Dialog({
   footer?: React.ReactNode;
   children: React.ReactNode;
 }) {
+  const semantic = useSemantic();
+
   return (
-    <DialogPrimitive.Root
-      open={open}
-      onOpenChange={(next) => !next && onClose()}
-    >
-      <DialogPrimitive.Portal>
-        <FullWindowOverlay>
-          <DialogPrimitive.Overlay
-            className="flex-1 bg-black/50"
-            closeOnPress={false}
-            onPress={(event: GestureResponderEvent) => {
-              if (event.target === event.currentTarget) onClose();
-            }}
+    <Modal visible={open} transparent animationType="fade" onRequestClose={onClose}>
+      <View style={{ flex: 1 }}>
+        <Pressable
+          style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(0,0,0,0.5)" }]}
+          onPress={onClose}
+        />
+        <KeyboardAvoidingView
+          pointerEvents="box-none"
+          style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: spacing[6] }}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <View
+            style={[
+              {
+                width: "100%",
+                gap: spacing[6],
+                borderRadius: radius.lg,
+                padding: spacing[6],
+                backgroundColor: semantic.surfaceCard,
+              },
+              shadows.lg,
+            ]}
           >
-            <KeyboardAvoidingView
-              style={{ flex: 1 }}
-              behavior={Platform.OS === "ios" ? "padding" : "height"}
-            >
-              <Animated.View
-                entering={FadeIn.duration(200)}
-                exiting={FadeOut.duration(150)}
-                className="flex-1 items-center justify-center px-4"
-                pointerEvents="box-none"
-              >
-                <Animated.View
-                  entering={FadeIn.duration(200).delay(30)}
-                  exiting={FadeOut.duration(150)}
-                >
-                  <DialogPrimitive.Content className="bg-card border-border w-full gap-4 rounded-lg border p-6 shadow-lg shadow-black/5">
-                    <View className="flex-row items-center justify-between">
-                      <DialogPrimitive.Title asChild>
-                        <Text
-                          className={cn(
-                            "font-display text-title-sm text-foreground",
-                          )}
-                        >
-                          {title}
-                        </Text>
-                      </DialogPrimitive.Title>
-                      <IconButton name="x" label="Close" onPress={onClose} />
-                    </View>
-                    <View className="gap-1.5">{children}</View>
-                    {footer ? (
-                      <View className="flex-row gap-1 justify-end">{footer}</View>
-                    ) : null}
-                  </DialogPrimitive.Content>
-                </Animated.View>
-              </Animated.View>
-            </KeyboardAvoidingView>
-          </DialogPrimitive.Overlay>
-        </FullWindowOverlay>
-      </DialogPrimitive.Portal>
-    </DialogPrimitive.Root>
+            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+              <Text style={[typography.titleSM, { color: semantic.textHeading }]}>{title}</Text>
+              <IconButton name="x" label="Close" onPress={onClose} />
+            </View>
+            <View style={{ gap: spacing[5] }}>{children}</View>
+            {footer ? (
+              <View style={{ flexDirection: "row", gap: spacing[3], justifyContent: "flex-end" }}>{footer}</View>
+            ) : null}
+          </View>
+        </KeyboardAvoidingView>
+      </View>
+    </Modal>
   );
 }

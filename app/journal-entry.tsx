@@ -2,7 +2,6 @@ import { router, useLocalSearchParams } from "expo-router";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { JournalEntryForm } from "@/components/JournalEntryForm";
-import { WebContainer } from "@/components/web/WebContainer";
 import { useSemantic } from "@/lib/theme-context";
 
 export default function JournalEntryScreen() {
@@ -16,9 +15,7 @@ export default function JournalEntryScreen() {
       edges={["top", "left", "right"]}
       style={{ backgroundColor: semantic.surfacePage }}
     >
-      <WebContainer maxWidth={560} style={{ flex: 1 }}>
-        <JournalEntryForm id={id} onClose={() => router.back()} bottomInset={insets.bottom} />
-      </WebContainer>
+      <JournalEntryForm id={id} onClose={() => router.back()} bottomInset={insets.bottom} />
     </SafeAreaView>
   );
 }

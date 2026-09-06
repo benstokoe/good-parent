@@ -154,3 +154,73 @@ export const radius = {
   "2xl": 24,
   pill: 999,
 } as const;
+
+// Font families registered via expo-font in app/_layout.tsx's useFonts() call — keep in
+// sync with that list.
+export const fontFamily = {
+  displayRegular: "Fraunces_400Regular",
+  displaySemibold: "Fraunces_600SemiBold",
+  displayBold: "Fraunces_700Bold",
+  bodyRegular: "Inter_400Regular",
+  bodyMedium: "Inter_500Medium",
+  bodySemibold: "Inter_600SemiBold",
+  bodyBold: "Inter_700Bold",
+} as const;
+
+// DESIGN.md's named type scale. The Serif-Is-A-Moment Rule: Fraunces only at Title size
+// and above — everything Body-sized or smaller stays Inter.
+export const typography = {
+  displayXL: { fontFamily: fontFamily.displaySemibold, fontSize: 64, lineHeight: 70 },
+  displayLG: { fontFamily: fontFamily.displaySemibold, fontSize: 48, lineHeight: 54 },
+  displayMD: { fontFamily: fontFamily.displaySemibold, fontSize: 38, lineHeight: 44 },
+  titleLG: { fontFamily: fontFamily.displaySemibold, fontSize: 30, lineHeight: 36 },
+  titleMD: { fontFamily: fontFamily.displaySemibold, fontSize: 24, lineHeight: 30 },
+  titleSM: { fontFamily: fontFamily.displaySemibold, fontSize: 20, lineHeight: 26 },
+  bodyLG: { fontFamily: fontFamily.bodyRegular, fontSize: 17, lineHeight: 24 },
+  bodyMD: { fontFamily: fontFamily.bodyRegular, fontSize: 15, lineHeight: 22 },
+  bodySM: { fontFamily: fontFamily.bodyRegular, fontSize: 13, lineHeight: 18 },
+  caption: { fontFamily: fontFamily.bodyRegular, fontSize: 12, lineHeight: 16 },
+  ui: { fontFamily: fontFamily.bodyMedium, fontSize: 13, lineHeight: 18 },
+} as const;
+
+// DESIGN.md's Warm Shadow Rule: every shadow is black at low opacity, never tinted —
+// depth stays quiet even though the rest of the system is warm. React Native has no
+// single cross-platform shadow prop, so each token carries both the iOS shadow* props
+// and the Android `elevation` fallback.
+export const shadows = {
+  xs: {
+    shadowColor: "#000",
+    shadowOpacity: 0.04,
+    shadowRadius: 1,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 1,
+  },
+  sm: {
+    shadowColor: "#000",
+    shadowOpacity: 0.06,
+    shadowRadius: 2,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 2,
+  },
+  md: {
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 4,
+  },
+  lg: {
+    shadowColor: "#000",
+    shadowOpacity: 0.16,
+    shadowRadius: 20,
+    shadowOffset: { width: 0, height: 9 },
+    elevation: 9,
+  },
+  overlay: {
+    shadowColor: "#000",
+    shadowOpacity: 0.28,
+    shadowRadius: 32,
+    shadowOffset: { width: 0, height: 12 },
+    elevation: 16,
+  },
+} as const;

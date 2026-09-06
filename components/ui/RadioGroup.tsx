@@ -1,12 +1,10 @@
-import * as RadioGroupPrimitive from "@rn-primitives/radio-group";
-import { Platform, Pressable, Text } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
-import { cn } from "@/lib/cn";
+import { radius, spacing, typography } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
 export type RadioOption = { value: string; label: string };
 
-// React Native Reusables' radio-group.tsx, kept behind the app's existing declarative
-// options/value/onChange API rather than the compound RadioGroupItem-per-child form.
 export function RadioGroup({
   options,
   value,
@@ -16,28 +14,51 @@ export function RadioGroup({
   value: string | null;
   onChange: (value: string) => void;
 }) {
+  const semantic = useSemantic();
+
   return (
-    <RadioGroupPrimitive.Root value={value ?? undefined} onValueChange={onChange} className="gap-1">
-      {options.map((opt) => (
-        <Pressable
-          key={opt.value}
-          onPress={() => onChange(opt.value)}
-          className="flex-row items-center gap-3 py-2.5"
-        >
-          <RadioGroupPrimitive.Item
-            value={opt.value}
-            className={cn(
-              "border-input aspect-square size-6 shrink-0 items-center justify-center rounded-full border shadow-sm shadow-black/5",
-              Platform.select({
-                web: "focus-visible:border-ring focus-visible:ring-ring/50 outline-none transition-all focus-visible:ring-[3px]",
-              }),
-            )}
+    <View style={{ gap: spacing[2] }}>
+      {options.map((opt) => {
+        const selected = opt.value === value;
+        return (
+          <Pressable
+            key={opt.value}
+            accessibilityRole="radio"
+            accessibilityState={{ selected }}
+            onPress={() => onChange(opt.value)}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: spacing[6],
+              paddingVertical: spacing[5],
+            }}
           >
-            <RadioGroupPrimitive.Indicator className="bg-primary size-3 rounded-full" />
-          </RadioGroupPrimitive.Item>
-          <Text className="text-foreground text-base">{opt.label}</Text>
-        </Pressable>
-      ))}
-    </RadioGroupPrimitive.Root>
+            <View
+              style={{
+                width: 24,
+                height: 24,
+                borderRadius: radius.pill,
+                borderWidth: 1,
+                borderColor: selected ? semantic.borderAccent : semantic.borderDefault,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {selected ? (
+                <View
+                  style={{
+                    width: 12,
+                    height: 12,
+                    borderRadius: radius.pill,
+                    backgroundColor: semantic.actionPrimary,
+                  }}
+                />
+              ) : null}
+            </View>
+            <Text style={[typography.bodyMD, { color: semantic.textBody }]}>{opt.label}</Text>
+          </Pressable>
+        );
+      })}
+    </View>
   );
 }

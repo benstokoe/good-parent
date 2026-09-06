@@ -1,53 +1,52 @@
-import { cva, type VariantProps } from "class-variance-authority";
-import { Pressable, View, type ViewProps } from "react-native";
+import { Pressable, View, type StyleProp, type ViewProps, type ViewStyle } from "react-native";
 
-import { cn } from "@/lib/cn";
+import { radius, shadows, spacing } from "@/lib/theme";
+import { useSemantic } from "@/lib/theme-context";
 
-// Adapted from React Native Reusables' card.tsx, minus RNR's border: DESIGN.md separates
-// filled cards from the page via tonal surface steps only, never a stroke. sunken/accent/
-// inverse map our extra surface tokens onto the same tone+shadow structure per DESIGN.md's
-// card spec (default = surface, sunken = surfaceSunken, accent = a pale clay-adjacent tint).
-const cardVariants = cva("rounded-xl shadow-sm shadow-black/5", {
-  variants: {
-    tone: {
-      default: "bg-card",
-      sunken: "bg-muted",
-      accent: "bg-accent",
-      inverse: "bg-foreground",
-    },
-    padding: {
-      none: "p-0",
-      sm: "p-3",
-      md: "p-4",
-      lg: "p-6",
-    },
-  },
-  defaultVariants: {
-    tone: "default",
-    padding: "md",
-  },
-});
+export type CardTone = "default" | "sunken" | "accent" | "inverse";
+export type CardPadding = "none" | "sm" | "md" | "lg";
 
-type CardVariants = VariantProps<typeof cardVariants>;
+const PADDING: Record<CardPadding, number> = {
+  none: 0,
+  sm: spacing[5],
+  md: spacing[6],
+  lg: spacing[8],
+};
 
 export function Card({
   tone = "default",
   padding = "md",
   onPress,
-  className,
+  style,
   children,
   ...rest
 }: ViewProps & {
-  tone?: NonNullable<CardVariants["tone"]>;
-  padding?: NonNullable<CardVariants["padding"]>;
+  tone?: CardTone;
+  padding?: CardPadding;
   onPress?: () => void;
+  style?: StyleProp<ViewStyle>;
   children?: React.ReactNode;
 }) {
+  const semantic = useSemantic();
+  const backgroundColor = cardBackground(tone, semantic);
+
   const content = (
-    <View {...rest} className={cn(cardVariants({ tone, padding }), className)}>
+    <View
+      {...rest}
+      style={[
+        {
+          borderRadius: radius.lg,
+          padding: PADDING[padding],
+          backgroundColor,
+        },
+        shadows.xs,
+        style,
+      ]}
+    >
       {children}
     </View>
   );
+
   if (onPress) {
     return (
       <Pressable onPress={onPress} accessibilityRole="button">
@@ -56,4 +55,18 @@ export function Card({
     );
   }
   return content;
+}
+
+function cardBackground(tone: CardTone, semantic: ReturnType<typeof useSemantic>) {
+  switch (tone) {
+    case "sunken":
+      return semantic.surfaceSunken;
+    case "accent":
+      return semantic.surfaceAccent;
+    case "inverse":
+      return semantic.surfaceInverse;
+    case "default":
+    default:
+      return semantic.surfaceCard;
+  }
 }

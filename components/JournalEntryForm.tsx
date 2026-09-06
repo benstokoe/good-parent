@@ -87,7 +87,7 @@ export const JournalEntryForm = forwardRef<
 
   return (
     <View className="flex-1">
-      <View className="flex-row items-center justify-between gap-2.5 px-6 pt-6 pb-3">
+      <View className="flex-row items-center justify-between gap-2.5 px-6 pt-6 pb-4">
         <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
           {isEditing ? "Edit entry" : "New entry"}
         </Text>
@@ -97,7 +97,7 @@ export const JournalEntryForm = forwardRef<
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <ScrollView
           className="flex-1"
-          contentContainerClassName="px-6 pb-3 gap-3"
+          contentContainerClassName="px-6 pt-1 pb-5 gap-6"
           contentContainerStyle={{ flexGrow: 1 }}
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag"
@@ -106,9 +106,9 @@ export const JournalEntryForm = forwardRef<
             <Input placeholder="A few words" value={title} onChangeText={setTitle} />
           </Field>
 
-          <Field label="What's on your mind" className="flex-1">
+          <Field label="What's on your mind" style={{ flex: 1 }}>
             <Textarea
-              className="flex-1"
+              style={{ flex: 1 }}
               placeholder="Trips, moments, feelings…"
               value={body}
               onChangeText={setBody}
@@ -129,7 +129,7 @@ export const JournalEntryForm = forwardRef<
         </ScrollView>
 
         <View
-          className="px-6 pt-3 border-t"
+          className="px-6 pt-4 border-t"
           style={{ borderColor: semantic.borderSubtle, paddingBottom: bottomInset + 32 }}
         >
           <Button variant="primary" fullWidth disabled={!canSave} onPress={save}>
