@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/Textarea";
 import { useAppData } from "@/lib/app-data";
 import { colors } from "@/lib/theme";
 import { useSemantic } from "@/lib/theme-context";
+import { useVoiceRecognition } from "@/lib/use-voice-recognition";
 
 const RATING_OPTIONS = [
   { value: "Better", label: "Better" },
@@ -23,15 +24,7 @@ const RATING_OPTIONS = [
 const WENT_WELL_TAGS = ["Solo parenting", "Extra help", "Good day"];
 const NOT_WELL_TAGS = ["No sleep", "Solo parenting", "Sick kid", "Long day"];
 
-type SpeechRecognitionModule = typeof import("expo-speech-recognition");
-
-let speechRecognition: SpeechRecognitionModule | null = null;
-try {
-  speechRecognition = require("expo-speech-recognition");
-} catch {
-  // Native module not present (e.g. Expo Go) — voice notes are unavailable.
-}
-const useSpeechRecognitionEvent = speechRecognition?.useSpeechRecognitionEvent ?? (() => {});
+type CheckinField = "wentWell" | "notWell";
 
 export default function CheckinScreen() {
   const semantic = useSemantic();
@@ -46,46 +39,12 @@ export default function CheckinScreen() {
   const [notWell, setNotWell] = useState("");
   const [newActionItem, setNewActionItem] = useState("");
   const [tags, setTags] = useState<string[]>([]);
-  const [recordingField, setRecordingField] = useState<"wentWell" | "notWell" | null>(null);
-  const baseTextRef = useRef("");
 
-  const setFieldText = (field: "wentWell" | "notWell", text: string) =>
+  const setFieldText = (field: CheckinField, text: string) =>
     field === "wentWell" ? setWentWell(text) : setNotWell(text);
 
-  useSpeechRecognitionEvent("result", (event) => {
-    if (!recordingField) return;
-    const transcript = event.results[0]?.transcript ?? "";
-    setFieldText(
-      recordingField,
-      baseTextRef.current ? `${baseTextRef.current} ${transcript}` : transcript,
-    );
-  });
-
-  useSpeechRecognitionEvent("end", () => setRecordingField(null));
-  useSpeechRecognitionEvent("error", () => setRecordingField(null));
-
-  const toggleRecording = async (field: "wentWell" | "notWell") => {
-    const module = speechRecognition?.ExpoSpeechRecognitionModule;
-    if (!module) return;
-    if (recordingField === field) {
-      module.stop();
-      return;
-    }
-    if (recordingField) {
-      module.stop();
-    }
-    if (Platform.OS !== "web") {
-      const { granted } = await module.requestPermissionsAsync();
-      if (!granted) return;
-    }
-    baseTextRef.current = field === "wentWell" ? wentWell : notWell;
-    setRecordingField(field);
-    module.start({
-      lang: "en-US",
-      interimResults: true,
-      continuous: true,
-    });
-  };
+  const { isAvailable: isVoiceAvailable, recordingField, toggleRecording } =
+    useVoiceRecognition<CheckinField>({ onTranscript: setFieldText });
 
   const toggleTag = (tag: string) =>
     setTags((t) => (t.includes(tag) ? t.filter((x) => x !== tag) : [...t, tag]));
@@ -167,12 +126,12 @@ export default function CheckinScreen() {
               >
                 What went well today?
               </Text>
-              {speechRecognition ? (
+              {isVoiceAvailable ? (
                 <IconButton
                   name="mic"
                   label="Record a voice note"
                   variant={recordingField === "wentWell" ? "primary" : "secondary"}
-                  onPress={() => toggleRecording("wentWell")}
+                  onPress={() => toggleRecording("wentWell", wentWell)}
                 />
               ) : null}
             </View>
@@ -206,12 +165,12 @@ export default function CheckinScreen() {
               >
                 What didn&apos;t go so well?
               </Text>
-              {speechRecognition ? (
+              {isVoiceAvailable ? (
                 <IconButton
                   name="mic"
                   label="Record a voice note"
                   variant={recordingField === "notWell" ? "primary" : "secondary"}
-                  onPress={() => toggleRecording("notWell")}
+                  onPress={() => toggleRecording("notWell", notWell)}
                 />
               ) : null}
             </View>
