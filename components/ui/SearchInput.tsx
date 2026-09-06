@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Pressable, View } from "react-native";
 
 import { Host, TextInput, type TextInputRef } from "@expo/ui";
@@ -26,6 +26,14 @@ export function SearchInput({
     onChangeText("");
     inputRef.current?.clear();
   };
+
+  // The underlying native field is uncontrolled (only seeded via `defaultValue`), so a
+  // reset from outside this component — e.g. a "clear filters" action — updates `value`
+  // without touching what's displayed. Sync the native field whenever the caller drives
+  // it back to empty.
+  useEffect(() => {
+    if (value === "") inputRef.current?.clear();
+  }, [value]);
 
   return (
     <View
