@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ActivityIndicator, Pressable, Text, type StyleProp, type ViewStyle } from "react-native";
 
 import { colors, radius, shadows, spacing, typography } from "@/lib/theme";
@@ -35,6 +36,7 @@ export function Button({
   const inert = disabled || loading;
   const { backgroundColor, borderColor, textColor } = buttonColors(variant, semantic);
   const sizeStyle = SIZE[size];
+  const [pressed, setPressed] = useState(false);
 
   return (
     <Pressable
@@ -42,7 +44,9 @@ export function Button({
       accessibilityState={{ disabled: inert }}
       disabled={inert}
       onPress={onPress}
-      style={({ pressed }) => [
+      onPressIn={() => setPressed(true)}
+      onPressOut={() => setPressed(false)}
+      style={[
         {
           flexDirection: "row",
           alignItems: "center",
