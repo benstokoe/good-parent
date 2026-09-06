@@ -113,7 +113,7 @@ export const darkSemantic = {
   actionPrimary: colors.clay[400],
   actionPrimaryHover: colors.clay[300],
   actionPrimaryActive: colors.clay[200],
-  actionSecondary: colors.warm[700],
+  actionSecondary: colors.warm[800],
   actionInverse: colors.warm[50],
 
   focusRing: colors.clay[300],
