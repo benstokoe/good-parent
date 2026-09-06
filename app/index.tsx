@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/expo";
 import { router } from "expo-router";
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Button } from "@/components/ui/Button";
 import { Icon, type IconName } from "@/components/ui/icon";
-import { colors } from "@/lib/theme";
+import { colors, fontFamily, typography } from "@/lib/theme";
 import { useSemantic } from "@/lib/theme-context";
 
 type Step = {
@@ -82,55 +82,39 @@ function OnboardingCarousel() {
   const finish = () => router.replace("/auth");
 
   return (
-    <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
-      <View className="flex-1 px-4 pb-6">
-        <View className="h-6 items-end justify-center">
+    <SafeAreaView style={[styles.flex1, { backgroundColor: semantic.surfacePage }]}>
+      <View style={styles.container}>
+        <View style={styles.skipRow}>
           <Button variant="ghost" size="sm" onPress={finish}>
             Skip
           </Button>
         </View>
 
-        <View className="flex-1 items-center justify-center gap-1.5 px-0.5">
+        <View style={styles.content}>
           {current.tour ? (
             <>
               <View>
-                <Text
-                  className="font-display text-title-md text-center"
-                  style={{ color: semantic.textHeading }}
-                >
+                <Text style={[styles.titleCentered, { color: semantic.textHeading }]}>
                   {current.title}
                 </Text>
-                <Text
-                  className="font-sans text-body-sm text-center mt-1.5"
-                  style={{ color: semantic.textMuted }}
-                >
+                <Text style={[styles.bodyCenteredMt6, { color: semantic.textMuted }]}>
                   {current.body}
                 </Text>
               </View>
-              <View className="gap-2.5 w-full mt-0.5">
+              <View style={styles.featureList}>
                 {FEATURES.map((f) => (
                   <View
                     key={f.label}
-                    className="flex-row items-center gap-2.5 rounded-lg px-1.5 py-2.5"
-                    style={{ backgroundColor: colors.warm[100] }}
+                    style={[styles.featureRow, { backgroundColor: colors.warm[100] }]}
                   >
-                    <View
-                      className="w-[30px] h-[30px] rounded-full items-center justify-center"
-                      style={{ backgroundColor: semantic.surfaceCard }}
-                    >
+                    <View style={[styles.featureIcon, { backgroundColor: semantic.surfaceCard }]}>
                       <Icon name={f.icon} size={14} color={colors.clay[400]} />
                     </View>
-                    <View className="flex-1">
-                      <Text
-                        className="font-sans-semibold text-body-sm"
-                        style={{ color: semantic.textHeading }}
-                      >
+                    <View style={styles.flex1}>
+                      <Text style={[styles.featureLabel, { color: semantic.textHeading }]}>
                         {f.label}
                       </Text>
-                      <Text
-                        className="font-sans text-caption mt-0.5"
-                        style={{ color: semantic.textMuted }}
-                      >
+                      <Text style={[styles.featureText, { color: semantic.textMuted }]}>
                         {f.text}
                       </Text>
                     </View>
@@ -140,47 +124,30 @@ function OnboardingCarousel() {
             </>
           ) : (
             <>
-              <View
-                className="w-[76px] h-[76px] rounded-full items-center justify-center"
-                style={{ backgroundColor: colors.clay[50] }}
-              >
+              <View style={[styles.stepIcon, { backgroundColor: colors.clay[50] }]}>
                 <Icon name={current.icon} size={32} color={colors.clay[400]} />
               </View>
               <View>
                 {step === 0 ? (
-                  <View className="flex-row items-center justify-center flex-wrap gap-2.5">
-                    <Text
-                      className="font-display text-display-md"
-                      style={{ color: semantic.textHeading }}
-                    >
-                      Good
-                    </Text>
+                  <View style={styles.brandRow}>
+                    <Text style={[typography.displayMD, { color: semantic.textHeading }]}>Good</Text>
                     <View
-                      className="rounded-lg px-2 py-0.5"
-                      style={{
-                        backgroundColor: cycleWord === "Dad" ? colors.skyTint : colors.manillaTint,
-                      }}
+                      style={[
+                        styles.brandPill,
+                        { backgroundColor: cycleWord === "Dad" ? colors.skyTint : colors.manillaTint },
+                      ]}
                     >
-                      <Text
-                        className="font-display text-display-md"
-                        style={{ color: semantic.textHeading }}
-                      >
+                      <Text style={[typography.displayMD, { color: semantic.textHeading }]}>
                         {cycleWord}
                       </Text>
                     </View>
                   </View>
                 ) : (
-                  <Text
-                    className="font-display text-title-md text-center"
-                    style={{ color: semantic.textHeading }}
-                  >
+                  <Text style={[styles.titleCentered, { color: semantic.textHeading }]}>
                     {current.title}
                   </Text>
                 )}
-                <Text
-                  className="font-sans text-body-sm text-center mt-1"
-                  style={{ color: semantic.textMuted }}
-                >
+                <Text style={[styles.bodyCenteredMt4, { color: semantic.textMuted }]}>
                   {current.body}
                 </Text>
               </View>
@@ -188,20 +155,22 @@ function OnboardingCarousel() {
           )}
         </View>
 
-        <View className="flex-row justify-center gap-1.5 mb-3">
+        <View style={styles.dotsRow}>
           {STEPS.map((_, i) => (
             <View
               key={i}
-              className="h-1.5 rounded-pill"
-              style={{
-                width: i === step ? 18 : 6,
-                backgroundColor: i === step ? colors.clay[400] : colors.warm[200],
-              }}
+              style={[
+                styles.dot,
+                {
+                  width: i === step ? 18 : 6,
+                  backgroundColor: i === step ? colors.clay[400] : colors.warm[200],
+                },
+              ]}
             />
           ))}
         </View>
 
-        <View className="flex-row items-center justify-between">
+        <View style={styles.footerRow}>
           {step > 0 ? (
             <Button variant="secondary" size="lg" onPress={() => setStep((s) => Math.max(0, s - 1))}>
               Back
@@ -221,3 +190,31 @@ function OnboardingCarousel() {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  flex1: { flex: 1 },
+  container: { flex: 1, paddingHorizontal: 16, paddingBottom: 24 },
+  skipRow: { height: 24, alignItems: "flex-end", justifyContent: "center" },
+  content: { flex: 1, alignItems: "center", justifyContent: "center", gap: 6, paddingHorizontal: 2 },
+  titleCentered: { ...typography.titleMD, textAlign: "center" },
+  bodyCenteredMt6: { ...typography.bodySM, textAlign: "center", marginTop: 6 },
+  bodyCenteredMt4: { ...typography.bodySM, textAlign: "center", marginTop: 4 },
+  featureList: { gap: 10, width: "100%", marginTop: 2 },
+  featureRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    borderRadius: 12,
+    paddingHorizontal: 6,
+    paddingVertical: 10,
+  },
+  featureIcon: { width: 30, height: 30, borderRadius: 999, alignItems: "center", justifyContent: "center" },
+  featureLabel: { ...typography.bodySM, fontFamily: fontFamily.bodySemibold },
+  featureText: { ...typography.caption, marginTop: 2 },
+  stepIcon: { width: 76, height: 76, borderRadius: 999, alignItems: "center", justifyContent: "center" },
+  brandRow: { flexDirection: "row", alignItems: "center", justifyContent: "center", flexWrap: "wrap", gap: 10 },
+  brandPill: { borderRadius: 12, paddingHorizontal: 8, paddingVertical: 2 },
+  dotsRow: { flexDirection: "row", justifyContent: "center", gap: 6, marginBottom: 12 },
+  dot: { height: 6, borderRadius: 999 },
+  footerRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+});
