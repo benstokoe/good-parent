@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { BreathingOrb } from "@/components/BreathingOrb";
@@ -11,7 +11,7 @@ import { IconButton } from "@/components/ui/IconButton";
 import { Input } from "@/components/ui/Input";
 import { Tabs } from "@/components/ui/Tabs";
 import { AFFIRMATIONS } from "@/lib/affirmations";
-import { colors } from "@/lib/theme";
+import { colors, fontFamily, typography } from "@/lib/theme";
 import { useSemantic } from "@/lib/theme-context";
 
 type PanicTab = "breathe" | "affirmations" | "talk";
@@ -70,26 +70,24 @@ export default function PanicScreen() {
 
   return (
     <SafeAreaView
-      className="flex-1"
       edges={["top", "left", "right"]}
-      style={{ backgroundColor: semantic.surfacePage }}
+      style={[styles.flex1, { backgroundColor: semantic.surfacePage }]}
     >
-      <View className="flex-row items-center justify-between gap-2.5 px-6 pt-6 pb-3">
-        <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
+      <View style={styles.header}>
+        <Text style={[typography.titleSM, styles.displayFont, { color: semantic.textHeading }]}>
           Panic Button
         </Text>
         <IconButton name="x" label="Close" onPress={() => router.back()} />
       </View>
 
-      <View className="px-6 pb-2.5">
+      <View style={styles.crisisSection}>
         <Card tone="sunken" padding="sm">
-          <View className="flex-row items-start gap-1">
+          <View style={styles.crisisRow}>
             <Icon name="triangle-alert" size={15} color={colors.amber} />
-            <Text className="font-sans text-caption flex-1" style={{ color: semantic.textMuted, lineHeight: 18 }}>
+            <Text style={[typography.caption, styles.flex1, { color: semantic.textMuted, lineHeight: 18 }]}>
               A lightweight coping tool, not crisis care.{" "}
               <Text
-                className="font-sans-medium"
-                style={{ color: semantic.textLink }}
+                style={[styles.sansMedium, { color: semantic.textLink }]}
                 onPress={() => setShowCrisis((s) => !s)}
               >
                 See real help
@@ -98,23 +96,23 @@ export default function PanicScreen() {
           </View>
         </Card>
         {showCrisis ? (
-          <View className="mt-1 gap-1.5">
+          <View style={styles.crisisCards}>
             <Card padding="sm">
-              <Text className="font-sans text-caption" style={{ color: semantic.textBody }}>
-                <Text className="font-sans-semibold">988 Suicide &amp; Crisis Lifeline</Text> — call
+              <Text style={[typography.caption, { color: semantic.textBody }]}>
+                <Text style={styles.sansSemibold}>988 Suicide &amp; Crisis Lifeline</Text> — call
                 or text 988, 24/7
               </Text>
             </Card>
             <Card padding="sm">
-              <Text className="font-sans text-caption" style={{ color: semantic.textBody }}>
-                <Text className="font-sans-semibold">Crisis Text Line</Text> — text HOME to 741741
+              <Text style={[typography.caption, { color: semantic.textBody }]}>
+                <Text style={styles.sansSemibold}>Crisis Text Line</Text> — text HOME to 741741
               </Text>
             </Card>
           </View>
         ) : null}
       </View>
 
-      <View className="px-6">
+      <View style={styles.tabsSection}>
         <Tabs
           items={[
             { value: "breathe", label: "Breathe" },
@@ -127,94 +125,138 @@ export default function PanicScreen() {
       </View>
 
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
+        style={styles.flex1}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-      <ScrollView className="flex-1" contentContainerClassName="px-6 pt-2 pb-6">
-        {tab === "breathe" ? (
-          <View className="items-center pt-6">
-            <View className="mb-4">
-              <BreathingOrb size={130} colors={[colors.clay[300], colors.clay[500]]} durationMs={14000} />
-            </View>
-            <Text className="font-display text-title-sm" style={{ color: semantic.textHeading }}>
-              {breatheCue}
-            </Text>
-            <Text className="text-caption mt-1" style={{ color: semantic.textMuted }}>
-              4 seconds in, 4 hold, 6 out
-            </Text>
-          </View>
-        ) : null}
-
-        {tab === "affirmations" ? (
-          <View className="items-center pt-8">
-            <Text className="font-display text-title-sm" style={{ fontSize: 19, color: semantic.textHeading }}>
-              I am a good parent.
-            </Text>
-            <Text
-              className="font-sans text-body-sm text-center mt-2"
-              style={{ color: semantic.textMuted, minHeight: 50 }}
-            >
-              {AFFIRMATIONS[affirmIndex % AFFIRMATIONS.length]}
-            </Text>
-            <View className="mt-3">
-              <Button
-                variant="secondary"
-                onPress={() => setAffirmIndex((i) => (i + 1) % AFFIRMATIONS.length)}
-              >
-                Next
-              </Button>
-            </View>
-          </View>
-        ) : null}
-
-        {tab === "talk" ? (
-          <>
-            <View className="flex-row items-center gap-1.5 mb-1.5">
-              <Icon name="lock" size={12} color={semantic.textMuted} />
-              <Text className="text-caption" style={{ color: semantic.textMuted }}>
-                On-device · nothing here is saved or sent anywhere
+        <ScrollView style={styles.flex1} contentContainerStyle={styles.scrollContent}>
+          {tab === "breathe" ? (
+            <View style={styles.breatheContainer}>
+              <View style={styles.orbWrap}>
+                <BreathingOrb size={130} colors={[colors.clay[300], colors.clay[500]]} durationMs={14000} />
+              </View>
+              <Text style={[typography.titleSM, styles.displayFont, { color: semantic.textHeading }]}>
+                {breatheCue}
+              </Text>
+              <Text style={[typography.caption, styles.mt1, { color: semantic.textMuted }]}>
+                4 seconds in, 4 hold, 6 out
               </Text>
             </View>
-            <View className="gap-2.5">
-              {messages.map((m, i) => (
-                <View key={i} style={{ alignSelf: m.role === "user" ? "flex-end" : "flex-start", maxWidth: "82%" }}>
-                  <View
-                    className="rounded-2xl px-3.5 py-2.5"
-                    style={{
-                      backgroundColor: m.role === "user" ? semantic.actionPrimary : colors.warm[100],
-                    }}
-                  >
-                    <Text
-                      className="font-sans text-body-sm"
-                      style={{ color: m.role === "user" ? "#fff" : semantic.textBody, lineHeight: 20 }}
-                    >
-                      {m.text}
-                    </Text>
-                  </View>
-                </View>
-              ))}
-            </View>
-          </>
-        ) : null}
-      </ScrollView>
+          ) : null}
 
-      {tab === "talk" ? (
-        <View
-          className="flex-row gap-1 px-6 pt-1.5 border-t"
-          style={{ borderColor: semantic.borderSubtle, paddingBottom: insets.bottom + 32 }}
-        >
-          <View className="flex-1">
-            <Input
-              placeholder="What's going on right now?"
-              value={input}
-              onChangeText={setInput}
-              onSubmitEditing={send}
-            />
+          {tab === "affirmations" ? (
+            <View style={styles.affirmationsContainer}>
+              <Text style={[typography.titleSM, styles.displayFont, { fontSize: 19, color: semantic.textHeading }]}>
+                I am a good parent.
+              </Text>
+              <Text
+                style={[typography.bodySM, styles.affirmationText, { color: semantic.textMuted, minHeight: 50 }]}
+              >
+                {AFFIRMATIONS[affirmIndex % AFFIRMATIONS.length]}
+              </Text>
+              <View style={styles.mt3}>
+                <Button
+                  variant="secondary"
+                  onPress={() => setAffirmIndex((i) => (i + 1) % AFFIRMATIONS.length)}
+                >
+                  Next
+                </Button>
+              </View>
+            </View>
+          ) : null}
+
+          {tab === "talk" ? (
+            <>
+              <View style={styles.encryptedRow}>
+                <Icon name="lock" size={12} color={semantic.textMuted} />
+                <Text style={[typography.caption, { color: semantic.textMuted }]}>
+                  On-device · nothing here is saved or sent anywhere
+                </Text>
+              </View>
+              <View style={styles.messagesList}>
+                {messages.map((m, i) => (
+                  <View
+                    key={i}
+                    style={[styles.messageWrap, { alignSelf: m.role === "user" ? "flex-end" : "flex-start" }]}
+                  >
+                    <View
+                      style={[
+                        styles.messageBubble,
+                        { backgroundColor: m.role === "user" ? semantic.actionPrimary : colors.warm[100] },
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          typography.bodySM,
+                          { color: m.role === "user" ? "#fff" : semantic.textBody, lineHeight: 20 },
+                        ]}
+                      >
+                        {m.text}
+                      </Text>
+                    </View>
+                  </View>
+                ))}
+              </View>
+            </>
+          ) : null}
+        </ScrollView>
+
+        {tab === "talk" ? (
+          <View
+            style={[
+              styles.inputRow,
+              { borderColor: semantic.borderSubtle, paddingBottom: insets.bottom + 32 },
+            ]}
+          >
+            <View style={styles.flex1}>
+              <Input
+                placeholder="What's going on right now?"
+                value={input}
+                onChangeText={setInput}
+                onSubmitEditing={send}
+              />
+            </View>
+            <IconButton name="send" label="Send" variant="secondary" onPress={send} />
           </View>
-          <IconButton name="send" label="Send" variant="secondary" onPress={send} />
-        </View>
-      ) : null}
+        ) : null}
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  flex1: { flex: 1 },
+  displayFont: { fontFamily: typography.titleSM.fontFamily },
+  sansMedium: { fontFamily: fontFamily.bodyMedium },
+  sansSemibold: { fontFamily: fontFamily.bodySemibold },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 10,
+    paddingHorizontal: 24,
+    paddingTop: 24,
+    paddingBottom: 12,
+  },
+  crisisSection: { paddingHorizontal: 24, paddingBottom: 10 },
+  crisisRow: { flexDirection: "row", alignItems: "flex-start", gap: 4 },
+  crisisCards: { marginTop: 4, gap: 6 },
+  tabsSection: { paddingHorizontal: 24 },
+  scrollContent: { paddingHorizontal: 24, paddingTop: 8, paddingBottom: 24 },
+  breatheContainer: { alignItems: "center", paddingTop: 24 },
+  orbWrap: { marginBottom: 16 },
+  mt1: { marginTop: 4 },
+  mt3: { marginTop: 12 },
+  affirmationsContainer: { alignItems: "center", paddingTop: 32 },
+  affirmationText: { textAlign: "center", marginTop: 8 },
+  encryptedRow: { flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 6 },
+  messagesList: { gap: 10 },
+  messageWrap: { maxWidth: "82%" },
+  messageBubble: { borderRadius: 24, paddingHorizontal: 14, paddingVertical: 10 },
+  inputRow: {
+    flexDirection: "row",
+    gap: 4,
+    paddingHorizontal: 24,
+    paddingTop: 6,
+    borderTopWidth: 1,
+  },
+});
