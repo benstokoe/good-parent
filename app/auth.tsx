@@ -1,7 +1,7 @@
 import { useSignIn, useSignUp, useSSO } from "@clerk/expo";
 import { router } from "expo-router";
 import { useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as WebBrowser from "expo-web-browser";
 import Svg, { Path } from "react-native-svg";
@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
 import { Input } from "@/components/ui/Input";
 import { Tabs } from "@/components/ui/Tabs";
+import { fontFamily, typography } from "@/lib/theme";
 import { useSemantic } from "@/lib/theme-context";
 
 WebBrowser.maybeCompleteAuthSession();
@@ -59,8 +60,10 @@ function OAuthButton({
   return (
     <Pressable
       onPress={onPress}
-      className="h-12 rounded-md border flex-row items-center justify-center gap-1"
-      style={{ backgroundColor: semantic.actionSecondary, borderColor: semantic.borderDefault }}
+      style={[
+        styles.oauthButton,
+        { backgroundColor: semantic.actionSecondary, borderColor: semantic.borderDefault },
+      ]}
     >
       {children}
     </Pressable>
@@ -158,13 +161,11 @@ export default function AuthScreen() {
 
   if (verifyStep) {
     return (
-      <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
-        <View className="flex-1 px-4 pt-16 gap-4">
+      <SafeAreaView style={[styles.flex1, { backgroundColor: semantic.surfacePage }]}>
+        <View style={styles.verifyContainer}>
           <View>
-            <Text className="font-display text-title-md" style={{ color: semantic.textHeading }}>
-              Check your email
-            </Text>
-            <Text className="font-sans text-body-sm mt-0.5" style={{ color: semantic.textMuted }}>
+            <Text style={[typography.titleMD, { color: semantic.textHeading }]}>Check your email</Text>
+            <Text style={[styles.bodySmMt2, { color: semantic.textMuted }]}>
               Enter the code we sent to {email}.
             </Text>
           </View>
@@ -176,11 +177,7 @@ export default function AuthScreen() {
               placeholder="123456"
             />
           </Field>
-          {error ? (
-            <Text className="font-sans text-body-sm" style={{ color: semantic.textAccent }}>
-              {error}
-            </Text>
-          ) : null}
+          {error ? <Text style={[typography.bodySM, { color: semantic.textAccent }]}>{error}</Text> : null}
           <Button variant="primary" size="lg" fullWidth loading={submitting} onPress={submitVerification}>
             Verify
           </Button>
@@ -190,18 +187,16 @@ export default function AuthScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1" style={{ backgroundColor: semantic.surfacePage }}>
-      <View className="flex-1 items-center px-4 pt-16 pb-6">
-        <View className="items-center mb-4">
-          <Text className="font-display text-title-md" style={{ color: semantic.textHeading }}>
-            GoodParent
-          </Text>
-          <Text className="font-sans text-body-sm mt-0.5" style={{ color: semantic.textMuted }}>
+    <SafeAreaView style={[styles.flex1, { backgroundColor: semantic.surfacePage }]}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={[typography.titleMD, { color: semantic.textHeading }]}>GoodParent</Text>
+          <Text style={[styles.bodySmMt2, { color: semantic.textMuted }]}>
             {mode === "login" ? "Welcome back." : "Create your private account."}
           </Text>
         </View>
 
-        <View className="w-full max-w-[320px] gap-4">
+        <View style={styles.form}>
           <Tabs
             items={[
               { value: "login", label: "Log in" },
@@ -211,33 +206,28 @@ export default function AuthScreen() {
             onChange={(v) => setMode(v as Mode)}
           />
 
-          <View className="gap-2.5">
+          <View style={styles.oauthGroup}>
             <OAuthButton onPress={() => submitOAuth("oauth_apple")}>
               <AppleLogo />
-              <Text className="font-sans-medium text-body-md" style={{ color: semantic.textBody }}>
+              <Text style={[styles.bodyMdMedium, { color: semantic.textBody }]}>
                 Continue with Apple
               </Text>
             </OAuthButton>
             <OAuthButton onPress={() => submitOAuth("oauth_google")}>
               <GoogleLogo />
-              <Text className="font-sans-medium text-body-md" style={{ color: semantic.textBody }}>
+              <Text style={[styles.bodyMdMedium, { color: semantic.textBody }]}>
                 Continue with Google
               </Text>
             </OAuthButton>
           </View>
 
-          <View className="flex-row items-center gap-2.5">
-            <View className="flex-1 h-px" style={{ backgroundColor: semantic.borderSubtle }} />
-            <Text
-              className="font-sans text-caption tracking-wide"
-              style={{ color: semantic.textSubtle }}
-            >
-              OR
-            </Text>
-            <View className="flex-1 h-px" style={{ backgroundColor: semantic.borderSubtle }} />
+          <View style={styles.dividerRow}>
+            <View style={[styles.dividerLine, { backgroundColor: semantic.borderSubtle }]} />
+            <Text style={[styles.captionTracked, { color: semantic.textSubtle }]}>OR</Text>
+            <View style={[styles.dividerLine, { backgroundColor: semantic.borderSubtle }]} />
           </View>
 
-          <View className="gap-2">
+          <View style={styles.fields}>
             <Field label="Email">
               <Input
                 value={email}
@@ -257,23 +247,18 @@ export default function AuthScreen() {
             </Field>
           </View>
 
-          {error ? (
-            <Text className="font-sans text-body-sm" style={{ color: semantic.textAccent }}>
-              {error}
-            </Text>
-          ) : null}
+          {error ? <Text style={[typography.bodySM, { color: semantic.textAccent }]}>{error}</Text> : null}
 
           <Button variant="primary" size="lg" fullWidth loading={submitting} onPress={submit}>
             {mode === "login" ? "Log in" : "Create account"}
           </Button>
         </View>
 
-        <View className="mt-2">
-          <Text className="font-sans text-caption" style={{ color: semantic.textMuted }}>
+        <View style={styles.footer}>
+          <Text style={[typography.caption, { color: semantic.textMuted }]}>
             {mode === "login" ? "Don't have an account? " : "Already have an account? "}
             <Text
-              className="font-sans-medium"
-              style={{ color: semantic.textLink }}
+              style={[styles.captionMedium, { color: semantic.textLink }]}
               onPress={() => setMode(mode === "login" ? "signup" : "login")}
             >
               {mode === "login" ? "Sign up" : "Log in"}
@@ -284,3 +269,29 @@ export default function AuthScreen() {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  flex1: { flex: 1 },
+  oauthButton: {
+    height: 48,
+    borderRadius: 8,
+    borderWidth: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 4,
+  },
+  verifyContainer: { flex: 1, paddingHorizontal: 16, paddingTop: 64, gap: 16 },
+  container: { flex: 1, alignItems: "center", paddingHorizontal: 16, paddingTop: 64, paddingBottom: 24 },
+  header: { alignItems: "center", marginBottom: 16 },
+  form: { width: "100%", maxWidth: 320, gap: 16 },
+  bodySmMt2: { ...typography.bodySM, marginTop: 2 },
+  bodyMdMedium: { ...typography.bodyMD, fontFamily: fontFamily.bodyMedium },
+  oauthGroup: { gap: 10 },
+  dividerRow: { flexDirection: "row", alignItems: "center", gap: 10 },
+  dividerLine: { flex: 1, height: 1 },
+  captionTracked: { ...typography.caption, letterSpacing: 0.3 },
+  fields: { gap: 8 },
+  footer: { marginTop: 8 },
+  captionMedium: { ...typography.caption, fontFamily: fontFamily.bodyMedium },
+});
