@@ -1,8 +1,4 @@
 import { router } from "expo-router";
-import {
-  ExpoSpeechRecognitionModule,
-  useSpeechRecognitionEvent,
-} from "expo-speech-recognition";
 import { useRef, useState } from "react";
 import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
@@ -26,6 +22,16 @@ const RATING_OPTIONS = [
 
 const WENT_WELL_TAGS = ["Solo parenting", "Extra help", "Good day"];
 const NOT_WELL_TAGS = ["No sleep", "Solo parenting", "Sick kid", "Long day"];
+
+type SpeechRecognitionModule = typeof import("expo-speech-recognition");
+
+let speechRecognition: SpeechRecognitionModule | null = null;
+try {
+  speechRecognition = require("expo-speech-recognition");
+} catch {
+  // Native module not present (e.g. Expo Go) — voice notes are unavailable.
+}
+const useSpeechRecognitionEvent = speechRecognition?.useSpeechRecognitionEvent ?? (() => {});
 
 export default function CheckinScreen() {
   const semantic = useSemantic();
@@ -59,20 +65,22 @@ export default function CheckinScreen() {
   useSpeechRecognitionEvent("error", () => setRecordingField(null));
 
   const toggleRecording = async (field: "wentWell" | "notWell") => {
+    const module = speechRecognition?.ExpoSpeechRecognitionModule;
+    if (!module) return;
     if (recordingField === field) {
-      ExpoSpeechRecognitionModule.stop();
+      module.stop();
       return;
     }
     if (recordingField) {
-      ExpoSpeechRecognitionModule.stop();
+      module.stop();
     }
     if (Platform.OS !== "web") {
-      const { granted } = await ExpoSpeechRecognitionModule.requestPermissionsAsync();
+      const { granted } = await module.requestPermissionsAsync();
       if (!granted) return;
     }
     baseTextRef.current = field === "wentWell" ? wentWell : notWell;
     setRecordingField(field);
-    ExpoSpeechRecognitionModule.start({
+    module.start({
       lang: "en-US",
       interimResults: true,
       continuous: true,
@@ -159,12 +167,14 @@ export default function CheckinScreen() {
               >
                 What went well today?
               </Text>
-              <IconButton
-                name="mic"
-                label="Record a voice note"
-                variant={recordingField === "wentWell" ? "primary" : "secondary"}
-                onPress={() => toggleRecording("wentWell")}
-              />
+              {speechRecognition ? (
+                <IconButton
+                  name="mic"
+                  label="Record a voice note"
+                  variant={recordingField === "wentWell" ? "primary" : "secondary"}
+                  onPress={() => toggleRecording("wentWell")}
+                />
+              ) : null}
             </View>
             <View className="flex-row flex-wrap gap-2 mb-5">
               {WENT_WELL_TAGS.map((tag) => (
@@ -196,12 +206,14 @@ export default function CheckinScreen() {
               >
                 What didn&apos;t go so well?
               </Text>
-              <IconButton
-                name="mic"
-                label="Record a voice note"
-                variant={recordingField === "notWell" ? "primary" : "secondary"}
-                onPress={() => toggleRecording("notWell")}
-              />
+              {speechRecognition ? (
+                <IconButton
+                  name="mic"
+                  label="Record a voice note"
+                  variant={recordingField === "notWell" ? "primary" : "secondary"}
+                  onPress={() => toggleRecording("notWell")}
+                />
+              ) : null}
             </View>
             <View className="flex-row flex-wrap gap-2 mb-5">
               {NOT_WELL_TAGS.map((tag) => (
