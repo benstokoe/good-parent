@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Pressable, type View } from "react-native";
 
 import { Icon, type IconName } from "@/components/ui/icon";
@@ -34,6 +35,7 @@ export function IconButton({
   const semantic = useSemantic();
   const { backgroundColor, borderColor, iconColor } = iconButtonColors(variant, semantic);
   const dimension = SIZE[size];
+  const [pressed, setPressed] = useState(false);
 
   return (
     <Pressable
@@ -42,19 +44,19 @@ export function IconButton({
       accessibilityRole="button"
       disabled={disabled}
       onPress={onPress}
-      style={({ pressed }) => [
-        {
-          alignItems: "center",
-          justifyContent: "center",
-          width: dimension,
-          height: dimension,
-          borderRadius: radius.pill,
-          backgroundColor,
-          borderWidth: borderColor ? 1 : 0,
-          borderColor,
-          opacity: disabled ? 0.5 : pressed ? 0.7 : 1,
-        },
-      ]}
+      onPressIn={() => setPressed(true)}
+      onPressOut={() => setPressed(false)}
+      style={{
+        alignItems: "center",
+        justifyContent: "center",
+        width: dimension,
+        height: dimension,
+        borderRadius: radius.pill,
+        backgroundColor,
+        borderWidth: borderColor ? 1 : 0,
+        borderColor,
+        opacity: disabled ? 0.5 : pressed ? 0.7 : 1,
+      }}
     >
       <Icon name={name} size={ICON_SIZE[size]} color={color ?? iconColor} />
     </Pressable>
